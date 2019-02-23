@@ -1,0 +1,71 @@
+html, body { height: 100%; position: relative; background: #343f60}
+
+.menu-topo{
+	background: #384670;
+}
+
+.menu-topo .navegacao{
+	padding: 2px;
+}
+
+.menu-topo .navegacao ul{
+	list-style: none;
+	margin-bottom: 0px;
+	padding: 0 15px;
+}
+
+.menu-topo .navegacao li{
+	padding: 0px 10px;
+}
+
+.menu-topo .navegacao li i{
+	padding: 0 3px;
+}
+
+.menu-topo .navegacao ul li{
+	display: inline-block;
+}
+
+.menu-topo .navegacao ul li a{
+	text-decoration: none;	
+}
+
+.menu-topo .navegacao a {
+	color: #fff;
+}
+
+.menu-topo .navegacao-ususario ul{
+	list-style: none;
+	margin-bottom: 0px;
+	padding: 0 15px;
+}
+
+.menu-topo .navegacao-ususario li{
+	color: #fff;
+}
+
+.menu-topo .navegacao-ususario li i{
+	padding: 0 3px;
+}
+
+.menu-topo .navegacao-ususario ul li{
+	display: inline-block;
+}
+
+.menu-topo .navegacao-ususario ul li a{
+	text-decoration: none;	
+}
+
+.menu-sub{
+	background: #343f60;
+	height: 70px;
+}
+
+.container-fluid{
+	background: #F4F5F7;
+}
+
+.rodape{
+	background: #384670;
+}
+
