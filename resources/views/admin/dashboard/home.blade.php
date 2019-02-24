@@ -36,27 +36,129 @@
 	</div> -->
 
 	<div class="container-fluid">
-		<div class="row">
-			<div class="card col-4" style="width: 18rem;">
-				<div class="card-body">
-					<h5 class="card-title">Special title treatment</h5>
-					<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-					<a href="#" class="btn btn-primary">Go somewhere</a>
+		<div class="row ">
+			<div class="col-8 tarefas">
+				<h4>Tarefas</h4>
+				<div class="board-tarefas">
+					<table class="table">
+						<thead class="text-center">
+							<tr>
+								<th scope="col">Ref</th>
+								<th scope="col">Tipo</th>
+								<th scope="col">Situação</th>
+								<th scope="col">Prioridade</th>
+								<th scope="col">Titulo</th>
+								<th scope="col">Autor</th>
+								<th scope="col">Atualização</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">1</th>
+								<td>Funcionalidade</td>
+								<td><span class="badge badge-primary">Nova</span></td>
+								<td><span class="badge badge-danger">Alta</span></td>
+								<td>Fazer retorno API</td>
+								<td>Fredrumond</td>
+								<td>20/02/2019 23:08:46</td>
+							</tr>
+							<tr>
+								<th scope="row">1</th>
+								<td>Funcionalidade</td>
+								<td><span class="badge badge-secondary">Nova</span></td>
+								<td><span class="badge badge-danger">Alta</span></td>
+								<td>Fazer retorno API</td>
+								<td>Fredrumond</td>
+								<td>20/02/2019 23:08:46</td>
+							</tr>	
+							<tr>
+								<th scope="row">1</th>
+								<td>Funcionalidade</td>
+								<td><span class="badge badge-success">Nova</span></td>
+								<td><span class="badge badge-danger">Alta</span></td>
+								<td>Fazer retorno API</td>
+								<td>Fredrumond</td>
+								<td>20/02/2019 23:08:46</td>
+							</tr>	
+							<tr>
+								<th scope="row">1</th>
+								<td>Funcionalidade</td>
+								<td><span class="badge badge-danger">Nova</span></td>
+								<td><span class="badge badge-danger">Alta</span></td>
+								<td>Fazer retorno API</td>
+								<td>Fredrumond</td>
+								<td>20/02/2019 23:08:46</td>
+							</tr>	
+							<tr>
+								<th scope="row">1</th>
+								<td>Funcionalidade</td>
+								<td><span class="badge badge-warning">Nova</span></td>
+								<td><span class="badge badge-danger">Alta</span></td>
+								<td>Fazer retorno API</td>
+								<td>Fredrumond</td>
+								<td>20/02/2019 23:08:46</td>
+							</tr>	
+							<tr>
+								<th scope="row">1</th>
+								<td>Funcionalidade</td>
+								<td><span class="badge badge-info">Nova</span></td>
+								<td><span class="badge badge-danger">Alta</span></td>
+								<td>Fazer retorno API</td>
+								<td>Fredrumond</td>
+								<td>20/02/2019 23:08:46</td>
+							</tr>	
+							<tr>
+								<th scope="row">1</th>
+								<td>Funcionalidade</td>
+								<td><span class="badge badge-light">Nova</span></td>
+								<td><span class="badge badge-danger">Alta</span></td>
+								<td>Fazer retorno API</td>
+								<td>Fredrumond</td>
+								<td>20/02/2019 23:08:46</td>
+							</tr>
+							<tr>
+								<th scope="row">1</th>
+								<td>Funcionalidade</td>
+								<td><span class="badge badge-dark">Nova</span></td>
+								<td><span class="badge badge-danger">Alta</span></td>
+								<td>Fazer retorno API</td>
+								<td>Fredrumond</td>
+								<td>20/02/2019 23:08:46</td>
+							</tr>							
+							
+						</tbody>
+					</table>
 				</div>
 			</div>
-			<div class="card col-4" style="width: 18rem;">
-				<div class="card-body">
-					<h5 class="card-title">Special title treatment</h5>
-					<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-					<a href="#" class="btn btn-primary">Go somewhere</a>
-				</div>
-			</div>
-			<div class="card col-4" style="width: 18rem;">
-				<div class="card-body">
-					<h5 class="card-title">Special title treatment</h5>
-					<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-					<a href="#" class="btn btn-primary">Go somewhere</a>
-				</div>
+			<div class="col-4 atualizacoes">
+				<h4 class="text-center">Atualizações</h4>
+				<ul class="timeline">
+					<li>
+						<a target="_blank" href="https://www.totoprayogo.com/#">New Web Design</a>
+						<a href="#" class="float-right">21 Fev, 2019</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales vehicula....</p>
+					</li>
+					<li>
+						<a href="#">21 000 Job Seekers</a>
+						<a href="#" class="float-right">21 Fev, 2019</a>
+						<p>Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo accumsan, sed semper nisi sollicitudin...</p>
+					</li>
+					<li>
+						<a href="#">Awesome Employers</a>
+						<a href="#" class="float-right">21 Fev, 2019</a>
+						<p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio, tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...</p>
+					</li>
+					<li>
+						<a href="#">Awesome Employers</a>
+						<a href="#" class="float-right">21 Fev, 2019</a>
+						<p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio, tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...</p>
+					</li>					
+				</ul>
+
+
+				
+				
+
 			</div>
 		</div>
 	</div>
