@@ -12,9 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('/email',function(){
+	\Illuminate\Support\Facades\Mail::to('fredrumond@gmail.com')->send(new \App\Mail\BemVindo());
+
+});
