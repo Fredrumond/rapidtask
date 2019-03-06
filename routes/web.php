@@ -17,7 +17,16 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
+
+$this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.'],function(){
+
+	/*DASHBOARD*/
+	$this->get('/dashboard', 'AdminController@index')->name('dashboard');
+
+	/*TAREAS*/
+	$this->get('/tarefas', 'TarefasController@index')->name('tarefas');
+});
 
 
 Route::get('/email',function(){

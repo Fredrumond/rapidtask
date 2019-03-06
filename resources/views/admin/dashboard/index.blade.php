@@ -16,7 +16,7 @@
 				<ul>
 					<a href=""><li><i class="fas fa-home"></i>Home</li></a>
 					<a href=""><li><i class="fas fa-folder-open"></i>Projetos</li></a>
-					<a href=""><li><i class="far fa-calendar-check"></i>Tarefas</li></a>
+					<a href="{{ route('admin.tarefas') }}"><li><i class="far fa-calendar-check"></i>Tarefas</li></a>
 					<a href=""><li><i class="fas fa-comment-dollar"></i>Orçamentos</li></a>
 					<a href=""><li><i class="far fa-file-alt"></i>Blog</li></a>
 				</ul>
@@ -38,7 +38,7 @@
 	<div class="container-fluid">
 		<div class="row ">
 			<div class="col-8 tarefas">
-				<h4>Tarefas</h4>
+				<h4>Tarefas</h4><button>Nova</button>
 				<div class="board-tarefas">
 					<table class="table">
 						<thead class="text-center">
@@ -47,8 +47,7 @@
 								<th scope="col">Tipo</th>
 								<th scope="col">Situação</th>
 								<th scope="col">Prioridade</th>
-								<th scope="col">Titulo</th>
-								<th scope="col">Autor</th>
+								<th scope="col">Titulo</th>								
 								<th scope="col">Atualização</th>
 							</tr>
 						</thead>
@@ -58,8 +57,7 @@
 								<td>Funcionalidade</td>
 								<td><span class="badge badge-primary">Nova</span></td>
 								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>
-								<td>Fredrumond</td>
+								<td>Fazer retorno API</td>								
 								<td>20/02/2019 23:08:46</td>
 							</tr>
 							<tr>
@@ -67,8 +65,7 @@
 								<td>Funcionalidade</td>
 								<td><span class="badge badge-secondary">Nova</span></td>
 								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>
-								<td>Fredrumond</td>
+								<td>Fazer retorno API</td>								
 								<td>20/02/2019 23:08:46</td>
 							</tr>	
 							<tr>
@@ -76,8 +73,7 @@
 								<td>Funcionalidade</td>
 								<td><span class="badge badge-success">Nova</span></td>
 								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>
-								<td>Fredrumond</td>
+								<td>Fazer retorno API</td>								
 								<td>20/02/2019 23:08:46</td>
 							</tr>	
 							<tr>
@@ -85,8 +81,7 @@
 								<td>Funcionalidade</td>
 								<td><span class="badge badge-danger">Nova</span></td>
 								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>
-								<td>Fredrumond</td>
+								<td>Fazer retorno API</td>								
 								<td>20/02/2019 23:08:46</td>
 							</tr>	
 							<tr>
@@ -94,8 +89,7 @@
 								<td>Funcionalidade</td>
 								<td><span class="badge badge-warning">Nova</span></td>
 								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>
-								<td>Fredrumond</td>
+								<td>Fazer retorno API</td>								
 								<td>20/02/2019 23:08:46</td>
 							</tr>	
 							<tr>
@@ -103,8 +97,7 @@
 								<td>Funcionalidade</td>
 								<td><span class="badge badge-info">Nova</span></td>
 								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>
-								<td>Fredrumond</td>
+								<td>Fazer retorno API</td>								
 								<td>20/02/2019 23:08:46</td>
 							</tr>	
 							<tr>
@@ -112,8 +105,7 @@
 								<td>Funcionalidade</td>
 								<td><span class="badge badge-light">Nova</span></td>
 								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>
-								<td>Fredrumond</td>
+								<td>Fazer retorno API</td>								
 								<td>20/02/2019 23:08:46</td>
 							</tr>
 							<tr>
@@ -121,8 +113,7 @@
 								<td>Funcionalidade</td>
 								<td><span class="badge badge-dark">Nova</span></td>
 								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>
-								<td>Fredrumond</td>
+								<td>Fazer retorno API</td>								
 								<td>20/02/2019 23:08:46</td>
 							</tr>							
 							
