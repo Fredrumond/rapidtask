@@ -10,4 +10,9 @@ class TarefasController extends Controller
 	public function index(){
 		return view('admin.tarefas.index');
 	}
+
+	public function novaTarefa()
+	{
+		return view('admin.tarefas.nova');
+	}
 }

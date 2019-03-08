@@ -38,7 +38,7 @@
 	<div class="container-fluid">
 		<div class="row ">
 			<div class="col-8 tarefas">
-				<h4>Tarefas</h4><button>Nova</button>
+				<h4>Tarefas</h4><a href="{{ route('admin.nova-tarefa') }}">Nova Tarefa</a>
 				<div class="board-tarefas">
 					<table class="table">
 						<thead class="text-center">

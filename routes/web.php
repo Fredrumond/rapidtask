@@ -26,6 +26,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 
 	/*TAREAS*/
 	$this->get('/tarefas', 'TarefasController@index')->name('tarefas');
+	$this->get('/tarefa/nova', 'TarefasController@novaTarefa')->name('nova-tarefa');
 });
 
 
