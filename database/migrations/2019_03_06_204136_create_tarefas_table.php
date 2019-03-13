@@ -18,15 +18,15 @@ class CreateTarefasTable extends Migration
             $table->integer('tipo_id')->unsigned();
             $table->foreign('tipo_id')->references('id')->on('tipos');
             $table->string('titulo');
-            $table->text('descricao');
+            $table->text('descricao')->nullable();
             $table->integer('situacao_id')->unsigned();
             $table->foreign('situacao_id')->references('id')->on('situacoes');
             $table->integer('prioridade_id')->unsigned();
             $table->foreign('prioridade_id')->references('id')->on('prioridades');
-            $table->date('dt_inicio');
-            $table->date('dt_prevista');
-            $table->date('dt_fim');
-            $table->integer('tempo_estimado');
+            $table->date('dt_inicio')->nullable();
+            $table->date('dt_prevista')->nullable();
+            $table->date('dt_fim')->nullable();
+            $table->integer('tempo_estimado')->nullable();
             $table->timestamps();
         });
     }
