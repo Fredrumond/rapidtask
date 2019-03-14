@@ -52,70 +52,47 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<th scope="row">1</th>
-								<td>Funcionalidade</td>
-								<td><span class="badge badge-primary">Nova</span></td>
-								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>								
-								<td>20/02/2019 23:08:46</td>
+							@foreach ($tarefas as $tarefa)
+							<tr class="text-center">
+								<th scope="row">{{$tarefa->id}}</th>
+								<td>{{$tarefa->tipoTarefa->nome}}</td>
+								<td>
+									<?php 
+										if ($tarefa->situacao_id == 1) {
+											echo '<span class="badge badge-primary">Nova</span>';
+										}
+										if ($tarefa->situacao_id == 2) {
+											echo '<span class="badge badge-light">Andamento </span>';
+										}
+										if ($tarefa->situacao_id == 3) {
+											echo '<span class="badge badge-warning">Em espera</span>';
+										}
+										if ($tarefa->situacao_id == 4) {
+											echo '<span class="badge badge-success">Finalizado </span>';
+										}
+									?>									
+								</td>
+								<td>
+									<?php 
+										if ($tarefa->prioridade_id == 1) {
+											echo '<span class="badge badge-info">Baixo</span>';
+										}
+										if ($tarefa->situacao_id == 2) {
+											echo '<span class="badge badge-secondary">Normal</span>';
+										}
+										if ($tarefa->situacao_id == 3) {
+											echo '<span class="badge badge-warning">Urgente</span>';
+										}
+										if ($tarefa->situacao_id == 4) {
+											echo '<span class="badge badge-danger">Imediato</span>';
+										}
+									?>
+								</td>
+								<td>{{$tarefa->titulo}}</td>								
+								<td>{{$tarefa->updated_at}}</td>
 							</tr>
-							<tr>
-								<th scope="row">1</th>
-								<td>Funcionalidade</td>
-								<td><span class="badge badge-secondary">Nova</span></td>
-								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>								
-								<td>20/02/2019 23:08:46</td>
-							</tr>	
-							<tr>
-								<th scope="row">1</th>
-								<td>Funcionalidade</td>
-								<td><span class="badge badge-success">Nova</span></td>
-								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>								
-								<td>20/02/2019 23:08:46</td>
-							</tr>	
-							<tr>
-								<th scope="row">1</th>
-								<td>Funcionalidade</td>
-								<td><span class="badge badge-danger">Nova</span></td>
-								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>								
-								<td>20/02/2019 23:08:46</td>
-							</tr>	
-							<tr>
-								<th scope="row">1</th>
-								<td>Funcionalidade</td>
-								<td><span class="badge badge-warning">Nova</span></td>
-								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>								
-								<td>20/02/2019 23:08:46</td>
-							</tr>	
-							<tr>
-								<th scope="row">1</th>
-								<td>Funcionalidade</td>
-								<td><span class="badge badge-info">Nova</span></td>
-								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>								
-								<td>20/02/2019 23:08:46</td>
-							</tr>	
-							<tr>
-								<th scope="row">1</th>
-								<td>Funcionalidade</td>
-								<td><span class="badge badge-light">Nova</span></td>
-								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>								
-								<td>20/02/2019 23:08:46</td>
-							</tr>
-							<tr>
-								<th scope="row">1</th>
-								<td>Funcionalidade</td>
-								<td><span class="badge badge-dark">Nova</span></td>
-								<td><span class="badge badge-danger">Alta</span></td>
-								<td>Fazer retorno API</td>								
-								<td>20/02/2019 23:08:46</td>
-							</tr>							
+							@endforeach
+											
 							
 						</tbody>
 					</table>

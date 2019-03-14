@@ -10,7 +10,8 @@ use App\Models\Tarefas;
 class TarefasController extends Controller
 {
 	public function index(){
-		return view('admin.tarefas.index');
+		$tarefas = Tarefas::all();		
+		return view('admin.tarefas.index',compact('tarefas'));
 	}
 
 	public function novaTarefa()

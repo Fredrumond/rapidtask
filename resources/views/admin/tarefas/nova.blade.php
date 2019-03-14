@@ -54,8 +54,7 @@
 						</div>
 						<div class="form-group col-md-2">
 							<label for="inputState">Tipo</label>
-							<select class="form-control" name="tipo_id" id="tipo_id">
-								<option></option>
+							<select class="form-control" name="tipo_id" id="tipo_id">								
 								<option value="1">1</option>								
 							</select>
 						</div>
