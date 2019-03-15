@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Tarefas extends Model
 {
 	protected $table = 'tarefas';
-	protected $fillable = ['titulo','tipo_id','situacao_id','prioridade_id'];
+	protected $fillable = ['titulo','tipo_id','situacao_id','prioridade_id','descricao','dt_inicio','dt_prevista','tempo_estimado'];
 
 	public function getCreatedAtAttribute($value)
 	{
@@ -24,8 +24,18 @@ class Tarefas extends Model
 		return $data->format('d/m/Y H:i');
 	}
 
-	public function tipoTarefa()
+	public function tipo()
 	{
 		return $this->belongsTo(Tipos::class, 'tipo_id');
+	}
+
+	public function situacao()
+	{
+		return $this->belongsTo(Situacao::class, 'situacao_id');
+	}
+
+	public function prioridade()
+	{
+		return $this->belongsTo(Prioridade::class, 'prioridade_id');
 	}
 }

@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Tipos extends Model
+class Prioridades extends Model
 {
-	protected $table = 'tipos';
+	protected $table = 'prioridades';
 	protected $fillable = ['id','nome'];
 }

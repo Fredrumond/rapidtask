@@ -122,3 +122,10 @@ ul.timeline > li:before {
 	background: #384670;
 }
 
+
+/* TERAFAS */
+
+.ver-detalhes-tarefa{
+	cursor: pointer;
+}
+
