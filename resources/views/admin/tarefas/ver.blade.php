@@ -43,28 +43,21 @@
 	<div class="container-fluid">
 		<div class="row ">
 			<div class="col-12 tarefas">
-				<h4><?php echo(isset($tarefa->titulo)) ? $tarefa->titulo : '' ?></h4>				
+				<h4>{{$tarefa->titulo}}</h4>				
+				<button class="btn btn-info arquivar-tarefa">Arquivar</button>				
 				<form id="form-atualiza-tarefa">
 					@csrf
 					<div class="form-row">
-						<input type="hidden" name="tarefa_id" id="tarefa_id" value="<?php echo(isset($tarefa->id)) ? $tarefa->id : '' ?>">
+						<input type="hidden" name="tarefa_id" id="tarefa_id" value="{{$tarefa->id}}">
 						<div class="form-group col-md-6">
 							<label for="inputEmail4">Titulo</label>
-							<input type="text" class="form-control" name="titulo" id="titulo" value="<?php echo(isset($tarefa->titulo)) ? $tarefa->titulo : '' ?>">
+							<input type="text" class="form-control" name="titulo" id="titulo" value="{{$tarefa->titulo}}">
 						</div>
 						<div class="form-group col-md-2">
 							<label for="inputState">Tipo</label>
 							<select class="form-control" name="tipo_id">								
 								@foreach($tipos as $tipo)
-								<?php 
-
-								if(isset($tarefa->tipo_id))
-								{
-									$selected = $tarefa->tipo_id == $tipo->id ? "selected":"";
-									echo '<option value="' . $tipo->id . '" '.$selected.'>' .$tipo->nome . '</option>';
-								}
-
-								?>
+								<option value="{{ $tipo->id }}" {{$tarefa->tipo_id == $tipo->id ? 'selected="selected"' : '' }}>{{ $tipo->nome }}</option>
 								
 								@endforeach								
 							</select>
@@ -73,15 +66,7 @@
 							<label for="inputState">Situação</label>
 							<select class="form-control" name="situacao_id" id="situacao_id">
 								@foreach($situacoes as $situacao)
-								<?php 
-
-								if(isset($tarefa->tipo_id))
-								{
-									$selected = $tarefa->situacao_id == $situacao->id ? "selected":"";
-									echo '<option value="' . $situacao->id . '" '.$selected.'>' .$situacao->nome . '</option>';
-								}
-
-								?>
+								<option value="{{ $situacao->id }}" {{$tarefa->situacao_id == $situacao->id ? 'selected="selected"' : '' }}>{{ $situacao->nome }}</option>
 								@endforeach	
 							</select>
 						</div>
@@ -89,15 +74,7 @@
 							<label for="inputState">Prioridade</label>
 							<select class="form-control" name="prioridade_id" id="prioridade_id">
 								@foreach($prioridades as $prioridade)
-								<?php 
-
-								if(isset($tarefa->prioridade_id))
-								{
-									$selected = $tarefa->prioridade_id == $prioridade->id ? "selected":"";
-									echo '<option value="' . $prioridade->id . '" '.$selected.'>' .$prioridade->nome . '</option>';
-								}
-
-								?>
+								<option value="{{ $prioridade->id }}" {{$tarefa->prioridade_id == $prioridade->id ? 'selected="selected"' : '' }}>{{ $prioridade->nome }}</option>
 								
 								@endforeach									
 							</select>
@@ -105,31 +82,30 @@
 					</div>
 					<div class="form-group">
 						<label for="descricao">Descrição</label>
-						<textarea class="form-control" id="descricao" rows="3" name="descricao" id="descricao">
-							<?php echo(isset($tarefa->descricao)) ? $tarefa->descricao : '' ?> </textarea>
+						<textarea class="form-control" id="descricao" rows="3" name="descricao" id="descricao">	{{$tarefa->descricao}}</textarea>
 					</div>
-					
+
 					<div class="form-row">						
 						<div class="form-group col-md-2">
 							<label for="inputCity">Data Inicio</label>
-							<input type="text" class="form-control" name="dt_inicio" id="dt_inicio" value="<?php echo(isset($tarefa->dt_inicio)) ? $tarefa->dt_inicio : '' ?>">
+							<input type="text" class="form-control" name="dt_inicio" id="dt_inicio" value="{{$tarefa->dt_inicio}}">
 						</div>
 						<div class="form-group col-md-2">
 							<label for="inputCity">Data Prevista</label>
-							<input type="text" class="form-control" name="dt_prevista" id="dt_prevista" value="<?php echo(isset($tarefa->dt_prevista)) ? $tarefa->dt_prevista : '' ?>">
+							<input type="text" class="form-control" name="dt_prevista" id="dt_prevista" value="{{$tarefa->dt_prevista}}">
 						</div>
 						<div class="form-group col-md-2">
 							<label for="inputCity">Tempo Estimado</label>
-							<input type="text" class="form-control" name="tempo_estimado" id="tempo_estimado" value="<?php echo(isset($tarefa->dt_fim)) ? $tarefa->dt_fim : '' ?>">
+							<input type="text" class="form-control" name="tempo_estimado" id="tempo_estimado" value="{{$tarefa->dt_fim}}">
 						</div>
 					</div>					
 					<button type="submit" class="btn btn-primary">Salvar</button>
 				</form>
 			</div>
-			
+
 		</div>
 	</div>
-	
+
 
 
 
@@ -156,7 +132,7 @@
 			let dados = form.serialize()
 			console.log(dados)
 			alertify.set('notifier','position', 'top-right');
-			
+
 
 			if ($('#titulo').val() == '') {
 				alertify.warning('Preencha o titulo!'); 
@@ -186,11 +162,36 @@
 						window.location.replace("/admin/tarefas");
 					}
 				})
-				.fail(function() {
+				.fail(function(error) {
 					console.log("error");
 				})
 
 			}
+		});
+
+		
+
+		$('.arquivar-tarefa').click(function(e) {
+			e.preventDefault();
+
+			let tarefaId = $('#tarefa_id').val();		
+			alertify.confirm('Deseja realmente arquivar a tarefa?').set('onok', function(closeEvent){
+				$.ajax({
+					url: ' /admin/tarefa/arquivar',
+					type: 'GET',
+					dataType: 'json',
+					data: {'tarefaId':tarefaId},
+				})
+				.done(function(response) {
+					if (response.status == '200') {
+						window.location.replace("/admin/tarefas");
+					}
+				})
+				.fail(function(error) {
+					console.log("error");
+				});
+				
+			});
 		});
 
 	</script>

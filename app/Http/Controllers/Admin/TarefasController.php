@@ -13,7 +13,7 @@ use App\Models\Situacoes;
 class TarefasController extends Controller
 {
 	public function index(){
-		$tarefas = Tarefas::all();		
+		$tarefas = Tarefas::where('status',0)->get();		
 		return view('admin.tarefas.index',compact('tarefas'));
 	}
 
@@ -35,17 +35,9 @@ class TarefasController extends Controller
 	{
 		
 		$tarefa = Tarefas::find($id);
-		
-		$tipos = Tipos::all();			
-		//$tipoSelecionado = $tarefa->tipo_id;
-
-
+		$tipos = Tipos::all();
 		$situacoes = Situacoes::all();
-		//$situacaoSelecionada = $tarefa->situacao_id;
-
 		$prioridades = Prioridades::all();
-		//$prioridadeSelecionada = $tarefa->prioridade_id;
-
 
 		return view('admin.tarefas.ver',compact('tarefa','tipos','situacoes','prioridades'));
 	}
@@ -68,8 +60,29 @@ class TarefasController extends Controller
 		return $arrResponse;
 	}
 
-	public function excluirTarefa()
+	public function excluirTarefa(Request $request)
+	{		
+		Tarefas::find($request->tarefaId)->delete();
+
+		$arrResponse['status'] = '200';	
+
+		return $arrResponse;
+	}
+
+	public function arquivarTarefa(Request $request)
 	{
-		echo 'oi';
+		$tarefa = Tarefas::find($request->tarefaId)->update(array(
+			'status' => 1
+		));
+		
+		$arrResponse['status'] = '200';	
+
+		return $arrResponse;
+	}
+
+	public function verTarefasArquivadas()
+	{
+		$tarefas = Tarefas::where('status',1)->get();		
+		return view('admin.tarefas.arquivadas',compact('tarefas'));
 	}
 }

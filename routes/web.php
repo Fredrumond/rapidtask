@@ -28,8 +28,11 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 	$this->get('/tarefas', 'TarefasController@index')->name('tarefas');
 	$this->get('/tarefa/nova', 'TarefasController@novaTarefa')->name('nova-tarefa');
 	$this->post('/tarefa/salvar', 'TarefasController@salvaTarefa')->name('salva-tarefa');
-	$this->get('/tarefa/{id}', 'TarefasController@verTarefa')->name('ver-tarefa');
+	$this->get('/tarefa/ver/{id}', 'TarefasController@verTarefa')->name('ver-tarefa');
 	$this->post('/tarefa/editar', 'TarefasController@editarTarefa')->name('editar-tarefa');
+	$this->get('/tarefa/excluir', 'TarefasController@excluirTarefa')->name('excluir-tarefa');
+	$this->get('/tarefa/arquivar', 'TarefasController@arquivarTarefa')->name('arquivar-tarefa');
+	$this->get('/tarefa/arquivadas', 'TarefasController@verTarefasArquivadas')->name('arquivadas-tarefa');
 });
 
 
