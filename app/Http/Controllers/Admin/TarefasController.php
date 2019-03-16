@@ -19,7 +19,10 @@ class TarefasController extends Controller
 
 	public function novaTarefa()
 	{
-		return view('admin.tarefas.nova');
+		$tipos = Tipos::all();
+		$situacoes = Situacoes::all();
+		$prioridades = Prioridades::all();
+		return view('admin.tarefas.nova',compact('tipos','situacoes','prioridades'));
 	}
 
 	public function salvaTarefa(Request $request)
