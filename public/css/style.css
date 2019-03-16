@@ -129,3 +129,11 @@ ul.timeline > li:before {
 	cursor: pointer;
 }
 
+.box-btn{
+	text-align: right;
+}
+
+.box-btn .btn{
+	margin-top: -60px;
+}
+
