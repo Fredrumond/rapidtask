@@ -70,3 +70,16 @@
 
 </div>
 @endsection
+
+@section('script')
+
+    $(document).ready(function() {
+         $(".ver-detalhes-tarefa").click(function() {
+                console.log("oi")
+                let id = $(this).data("id");
+                
+                window.location = '/admin/tarefa/ver/'+id;
+            });
+    });
+
+@endsection

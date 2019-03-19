@@ -1,5 +1,10 @@
 html, body { height: 100%; width: 100%; position: relative; background: #343f60}
 
+/*
+*
+* CSS DO LAYOUT
+*
+*/
 .menu-topo{
 	background: #384670;
 }
@@ -61,6 +66,25 @@ html, body { height: 100%; width: 100%; position: relative; background: #343f60}
 	text-decoration: none;	
 }
 
+.menu-sub{
+	background: #343f60;
+	height: 70px;
+}
+
+.container-fluid{
+	background: #F4F5F7;
+}
+
+.rodape{
+	background: #384670;
+}
+
+/*
+*
+* CSS DASHBOARD
+*
+*/
+
 .atualizacoes {
 	padding: 20px;
 }
@@ -109,21 +133,11 @@ ul.timeline > li:before {
 	z-index: 400;
 }
 
-.menu-sub{
-	background: #343f60;
-	height: 70px;
-}
-
-.container-fluid{
-	background: #F4F5F7;
-}
-
-.rodape{
-	background: #384670;
-}
-
-
-/* TERAFAS */
+/*
+*
+* CSS TAREFAS
+*
+*/
 
 .ver-detalhes-tarefa{
 	cursor: pointer;

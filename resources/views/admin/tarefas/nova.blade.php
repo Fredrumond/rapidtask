@@ -64,3 +64,56 @@
 
 </div>
 @endsection
+@section('script')
+
+    $(document).ready(function() {
+         $('#form-tarefa').submit( function(e) {
+                e.preventDefault();         
+
+                let form = $(this);
+                let dados = form.serialize()
+                console.log(dados)
+                alertify.set('notifier','position', 'top-right');
+
+
+                if ($('#titulo').val() == '') {
+                    alertify.warning('Preencha o titulo!'); 
+                }
+
+                if ($('#tipo_id').val() == '') {
+                    alertify.warning('Preencha o tipo!'); 
+                }
+
+                if ($('#situacao_id').val() == '') {
+                    alertify.warning('Preencha a situação!'); 
+                }
+
+                if ($('#prioridade_id').val() == '') {
+                    alertify.warning('Preencha a prioridade!'); 
+                }
+
+
+
+                if ($('#titulo').val() != '' && $('#tipo_id').val() != '' && $('#situacao_id').val() != '' && $('#prioridade_id').val() != '' ) {
+                    $.ajax({
+                        url: '/admin/tarefa/salvar',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: dados,
+                    })
+                    .done(function(response) {
+                        if (response.status == '200') {
+                            window.location.replace("/admin/tarefas");
+                        }
+                        console.log(response);
+                    })
+                    .fail(function() {
+                        console.log("error");
+                    })
+
+                }
+
+            });
+    });
+
+@endsection
