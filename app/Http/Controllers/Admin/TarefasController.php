@@ -55,6 +55,7 @@ class TarefasController extends Controller
 			'descricao' => $request->descricao,
 			'dt_inicio' => $request->dt_inicio,
 			'dt_prevista' => $request->dt_prevista,
+			'dt_fim' => $request->dt_fim,
 			'tempo_estimado' => $request->tempo_estimado
 		));
 

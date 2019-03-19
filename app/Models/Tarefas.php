@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Tarefas extends Model
 {
 	protected $table = 'tarefas';
-	protected $fillable = ['titulo','tipo_id','situacao_id','prioridade_id','descricao','dt_inicio','dt_prevista','tempo_estimado','status'];
+	protected $fillable = ['titulo','tipo_id','situacao_id','prioridade_id','descricao','dt_inicio','dt_prevista','tempo_estimado','dt_fim','status'];
 
 	public function getCreatedAtAttribute($value)
 	{
