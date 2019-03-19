@@ -41,13 +41,13 @@
 							if ($tarefa->prioridade_id == 1) {
 								echo '<span class="badge badge-info">Baixo</span>';
 							}
-							if ($tarefa->situacao_id == 2) {
+							if ($tarefa->prioridade_id == 2) {
 								echo '<span class="badge badge-secondary">Normal</span>';
 							}
-							if ($tarefa->situacao_id == 3) {
+							if ($tarefa->prioridade_id == 3) {
 								echo '<span class="badge badge-warning">Urgente</span>';
 							}
-							if ($tarefa->situacao_id == 4) {
+							if ($tarefa->prioridade_id == 4) {
 								echo '<span class="badge badge-danger">Imediato</span>';
 							}
 							?>
@@ -88,4 +88,16 @@
 		</ul>
 	</div>
 </div>
+@endsection
+@section('script')
+
+    $(document).ready(function() {
+         $(".ver-detalhes-tarefa").click(function() {
+                console.log("oi")
+                let id = $(this).data("id");
+                
+                window.location = '/admin/tarefa/ver/'+id;
+            });
+    });
+
 @endsection
