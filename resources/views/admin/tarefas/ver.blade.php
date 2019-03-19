@@ -49,15 +49,19 @@
 			<div class="form-row">						
 				<div class="form-group col-md-2">
 					<label for="inputCity">Data Inicio</label>
-					<input type="text" class="form-control" name="dt_inicio" id="dt_inicio" value="{{$tarefa->dt_inicio}}">
+					<input type="date" class="form-control" name="dt_inicio" id="dt_inicio" value="{{$tarefa->dt_inicio}}">
 				</div>
 				<div class="form-group col-md-2">
 					<label for="inputCity">Data Prevista</label>
-					<input type="text" class="form-control" name="dt_prevista" id="dt_prevista" value="{{$tarefa->dt_prevista}}">
+					<input type="date" class="form-control" name="dt_prevista" id="dt_prevista" value="{{$tarefa->dt_prevista}}">
+				</div>
+				<div class="form-group col-md-2">
+					<label for="inputCity">Data Conclusão</label>
+					<input type="date" class="form-control" name="dt_fim" id="dt_fim" value="{{$tarefa->dt_fim}}">
 				</div>
 				<div class="form-group col-md-2">
 					<label for="inputCity">Tempo Estimado</label>
-					<input type="text" class="form-control" name="tempo_estimado" id="tempo_estimado" value="{{$tarefa->dt_fim}}">
+					<input type="text" class="form-control" name="tempo_estimado" id="tempo_estimado" value="{{$tarefa->tempo_estimado}}">
 				</div>
 			</div>					
 			<button type="submit" class="btn btn-primary">Salvar</button>
