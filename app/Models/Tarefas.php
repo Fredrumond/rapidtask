@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class Tarefas extends Model
 {
 	protected $table = 'tarefas';
-	protected $fillable = ['titulo','tipo_id','situacao_id','prioridade_id','descricao','dt_inicio','dt_prevista','tempo_estimado','dt_fim','status'];
+	protected $fillable = ['titulo','tipo_id','situacao_id','prioridade_id','descricao','dt_inicio','dt_prevista','tempo_estimado','dt_fim','status','projeto_id'];
 
 	public function getCreatedAtAttribute($value)
 	{
@@ -37,5 +37,10 @@ class Tarefas extends Model
 	public function prioridade()
 	{
 		return $this->belongsTo(Prioridade::class, 'prioridade_id');
+	}
+
+	public function projeto()
+	{
+		return $this->belongsTo(Projetos::class, 'projeto_id');
 	}
 }

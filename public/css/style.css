@@ -168,3 +168,77 @@ ul.timeline > li:before {
 .box-btn .btn{
 	margin-top: -60px;
 }
+
+/*
+*
+* CSS PROJETOS
+*
+*/
+
+.ver-detalhes-projeto{
+	cursor: pointer;
+}
+
+.projeto-nome {
+	margin-top: 5%;
+}
+.projeto-nome h1 {
+	font-size: 20px;
+}
+
+.projeto-nome i {
+	margin-right: 10px;
+}
+
+.projeto-dados {
+	margin-top: 5%;
+	text-align: right;
+}
+.projeto-dados h1 {
+	font-size: 20px;
+}
+.projeto-dados i {
+	margin-right: 10px;
+}
+
+.projeto-dados ul {
+	list-style: none;
+}
+
+.projeto-dados li {
+	margin-right: 5%;
+}
+
+.projeto-dados ul li {
+	display: inline-block;
+}
+
+.tab-content{
+	background: rgba(204, 204, 204, 0.31);
+}
+
+.tab-content #passo1 .row {
+	margin: auto;
+}
+
+.tab-content #passo1 .row .list{
+	background: red;
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.nav-tabs {
+	margin-bottom: 20px;
+}
+
+.card-header {
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	color: #000;
+	text-transform: uppercase;
+}
+
+
+

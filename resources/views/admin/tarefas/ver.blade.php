@@ -10,9 +10,17 @@
 			@csrf
 			<div class="form-row">
 				<input type="hidden" name="tarefa_id" id="tarefa_id" value="{{$tarefa->id}}">
-				<div class="form-group col-md-6">
+				<div class="form-group col-md-3">
 					<label for="inputEmail4">Titulo</label>
 					<input type="text" class="form-control" name="titulo" id="titulo" value="{{$tarefa->titulo}}">
+				</div>
+				<div class="form-group col-md-3">
+					<label for="inputState">Projeto</label>
+					<select class="form-control" name="projeto_id" id="projeto_id">								
+						@foreach($projetos as $projeto)						
+						<option value="{{ $projeto->id }}" {{$tarefa->projeto_id == $projeto->id ? 'selected="selected"' : '' }}>{{ $projeto->nome }}</option>
+						@endforeach											
+					</select>
 				</div>
 				<div class="form-group col-md-2">
 					<label for="inputState">Tipo</label>

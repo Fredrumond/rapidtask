@@ -40,6 +40,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 	$this->get('/projeto/nova', 'ProjetosController@novoProjeto')->name('novo-projeto');
 	$this->post('/projeto/salvar', 'ProjetosController@salvaProjeto')->name('salva-projeto');
 	$this->get('/projeto/ver/{id}', 'ProjetosController@verProjeto')->name('ver-projeto');
+	$this->get('/projeto/detalhe/{id}', 'ProjetosController@detalheProjeto')->name('detalhe-projeto');
 	$this->post('/projeto/editar', 'ProjetosController@editarProjeto')->name('editar-projeto');
 	$this->get('/projeto/excluir', 'ProjetosController@excluirProjeto')->name('excluir-projeto');
 	

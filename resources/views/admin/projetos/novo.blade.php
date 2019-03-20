@@ -1,37 +1,25 @@
 @extends('layouts.admin')
 @section('content')
 <div class="row ">
-	<div class="col-12 tarefas">
-		<h4>Nova tarefa</h4>
-		<form id="form-tarefa">
+	<div class="col-12 projetos">
+		<h4>Novo Projeto</h4>
+		<form id="form-projeto">
 			@csrf
 			<div class="form-row">
-				<div class="form-group col-md-6">
-					<label for="inputEmail4">Titulo</label>
-					<input type="text" class="form-control" name="titulo" id="titulo">
+				<div class="form-group col-md-4">
+					<label for="inputEmail4">Nome</label>
+					<input type="text" class="form-control" name="nome" id="nome">
 				</div>
-				<div class="form-group col-md-2">
-					<label for="inputState">Tipo</label>
-					<select class="form-control" name="tipo_id" id="tipo_id">								
-						@foreach($tipos as $tipo)
-						<option value="{{ $tipo->id }}">{{ $tipo->nome }}</option>
+				<div class="form-group col-md-4">
+					<label for="inputEmail4">Sigla</label>
+					<input type="text" class="form-control" name="sigla" id="sigla">
+				</div>
+				<div class="form-group col-md-4">
+					<label for="inputState">Cliente</label>
+					<select class="form-control" name="cliente_id" id="cliente_id">								
+						@foreach($clientes as $cliente)
+						<option value="{{ $cliente->id }}">{{ $cliente->nome }}</option>
 						@endforeach											
-					</select>
-				</div>
-				<div class="form-group col-md-2">
-					<label for="inputState">Situação</label>
-					<select class="form-control" name="situacao_id" id="situacao_id">
-						@foreach($situacoes as $situacao)
-						<option value="{{ $situacao->id }}">{{ $situacao->nome }}</option>
-						@endforeach	
-					</select>
-				</div>
-				<div class="form-group col-md-2">
-					<label for="inputState">Prioridade</label>
-					<select class="form-control" name="prioridade_id" id="prioridade_id">
-						@foreach($prioridades as $prioridade)
-						<option value="{{ $prioridade->id }}">{{ $prioridade->nome }}</option>
-						@endforeach
 					</select>
 				</div>
 			</div>
@@ -40,24 +28,7 @@
 				<textarea class="form-control" id="descricao" rows="3" name="descricao" id="descricao"></textarea>
 			</div>
 
-			<div class="form-row">						
-				<div class="form-group col-md-2">
-					<label for="inputCity">Data Inicio</label>
-					<input type="date" class="form-control" name="dt_inicio" id="dt_inicio">
-				</div>
-				<div class="form-group col-md-2">
-					<label for="inputCity">Data Prevista</label>
-					<input type="date" class="form-control" name="dt_prevista" id="dt_prevista">
-				</div>
-				<div class="form-group col-md-2">
-					<label for="inputCity">Data Conclusão</label>
-					<input type="date" class="form-control" name="dt_fim" id="dt_fim">
-				</div>
-				<div class="form-group col-md-2">
-					<label for="inputCity">Tempo Estimado(Horas)</label>
-					<input type="text" class="form-control" name="tempo_estimado" id="tempo_estimado">
-				</div>
-			</div>					
+						
 			<button type="submit" class="btn btn-primary">Criar</button>
 		</form>
 	</div>
@@ -67,7 +38,7 @@
 @section('script')
 
     $(document).ready(function() {
-         $('#form-tarefa').submit( function(e) {
+         $('#form-projeto').submit( function(e) {
                 e.preventDefault();         
 
                 let form = $(this);
@@ -76,34 +47,28 @@
                 alertify.set('notifier','position', 'top-right');
 
 
-                if ($('#titulo').val() == '') {
-                    alertify.warning('Preencha o titulo!'); 
+                if ($('#nome').val() == '') {
+                    alertify.warning('Preencha o nome!'); 
                 }
 
-                if ($('#tipo_id').val() == '') {
-                    alertify.warning('Preencha o tipo!'); 
+                 if ($('#sigla').val() == '') {
+                    alertify.warning('Preencha a sigla!'); 
                 }
 
-                if ($('#situacao_id').val() == '') {
-                    alertify.warning('Preencha a situação!'); 
+                if ($('#cliente_id').val() == '') {
+                    alertify.warning('Preencha o cliente!'); 
                 }
 
-                if ($('#prioridade_id').val() == '') {
-                    alertify.warning('Preencha a prioridade!'); 
-                }
-
-
-
-                if ($('#titulo').val() != '' && $('#tipo_id').val() != '' && $('#situacao_id').val() != '' && $('#prioridade_id').val() != '' ) {
+                if ($('#titulo').val() != '' && $('#cliente_id').val() != '' && $('#sigla').val() != '') {
                     $.ajax({
-                        url: '/admin/tarefa/salvar',
+                        url: '/admin/projeto/salvar',
                         type: 'POST',
                         dataType: 'json',
                         data: dados,
                     })
                     .done(function(response) {
                         if (response.status == '200') {
-                            window.location.replace("/admin/tarefas");
+                            window.location.replace("/admin/projetos");
                         }
                         console.log(response);
                     })
