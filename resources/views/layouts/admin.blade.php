@@ -20,7 +20,7 @@
             <div class="col-6 navegacao">
                 <ul>
                     <a href="{{ route('admin.dashboard') }}"><li><i class="fas fa-home"></i>Home</li></a>
-                    <a href=""><li><i class="fas fa-folder-open"></i>Projetos</li></a>
+                    <a href="{{ route('admin.projetos') }}"><li><i class="fas fa-folder-open"></i>Projetos</li></a>
                     <a href="{{ route('admin.tarefas') }}"><li><i class="far fa-calendar-check"></i>Tarefas</li></a>
                     <a href=""><li><i class="fas fa-comment-dollar"></i>Orçamentos</li></a>
                     <a href=""><li><i class="far fa-file-alt"></i>Blog</li></a>

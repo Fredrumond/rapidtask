@@ -33,6 +33,15 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 	$this->get('/tarefa/excluir', 'TarefasController@excluirTarefa')->name('excluir-tarefa');
 	$this->get('/tarefa/arquivar', 'TarefasController@arquivarTarefa')->name('arquivar-tarefa');
 	$this->get('/tarefa/arquivadas', 'TarefasController@verTarefasArquivadas')->name('arquivadas-tarefa');
+
+	/*PROJETOS*/
+	$this->get('/projetos', 'ProjetosController@index')->name('projetos');
+	$this->get('/projeto/nova', 'ProjetosController@novoProjeto')->name('novo-projeto');
+	$this->post('/projeto/salvar', 'ProjetosController@salvaProjeto')->name('salva-projeto');
+	$this->get('/projeto/ver/{id}', 'ProjetosController@verProjeto')->name('ver-projeto');
+	$this->post('/projeto/editar', 'ProjetosController@editarProjeto')->name('editar-projeto');
+	$this->get('/projeto/excluir', 'ProjetosController@excluirProjeto')->name('excluir-projeto');
+	
 });
 
 
