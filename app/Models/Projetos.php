@@ -23,5 +23,10 @@ class Projetos extends Model
 
 		return $data->format('d/m/Y H:i');
 	}
+
+	public function cliente()
+	{
+		return $this->belongsTo(Clientes::class, 'cliente_id');
+	}
 	
 }

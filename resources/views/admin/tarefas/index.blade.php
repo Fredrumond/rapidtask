@@ -23,7 +23,7 @@
 				<tbody>
 					@foreach ($tarefas as $tarefa)
 					<tr class="text-center ver-detalhes-tarefa" data-id="{{$tarefa->id}}">
-						<th scope="row">{{$tarefa->id}}</th>
+						<th scope="row">#{{$tarefa->projeto->sigla}}-{{$tarefa->id}}</th>
 						<td>{{$tarefa->tipo->nome}}</td>
 						<td>
 							<?php 

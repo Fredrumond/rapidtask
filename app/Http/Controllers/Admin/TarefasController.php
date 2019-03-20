@@ -9,6 +9,7 @@ use App\Models\Tarefas;
 use App\Models\Tipos;
 use App\Models\Prioridades;
 use App\Models\Situacoes;
+use App\Models\Projetos;
 
 class TarefasController extends Controller
 {
@@ -22,7 +23,8 @@ class TarefasController extends Controller
 		$tipos = Tipos::all();
 		$situacoes = Situacoes::all();
 		$prioridades = Prioridades::all();
-		return view('admin.tarefas.nova',compact('tipos','situacoes','prioridades'));
+		$projetos = Projetos::all();
+		return view('admin.tarefas.nova',compact('tipos','situacoes','prioridades','projetos'));
 	}
 
 	public function salvaTarefa(Request $request)
@@ -41,8 +43,9 @@ class TarefasController extends Controller
 		$tipos = Tipos::all();
 		$situacoes = Situacoes::all();
 		$prioridades = Prioridades::all();
+		$projetos = Projetos::all();
 
-		return view('admin.tarefas.ver',compact('tarefa','tipos','situacoes','prioridades'));
+		return view('admin.tarefas.ver',compact('tarefa','tipos','situacoes','prioridades','projetos'));
 	}
 
 	public function editarTarefa(Request $request)
@@ -56,7 +59,8 @@ class TarefasController extends Controller
 			'dt_inicio' => $request->dt_inicio,
 			'dt_prevista' => $request->dt_prevista,
 			'dt_fim' => $request->dt_fim,
-			'tempo_estimado' => $request->tempo_estimado
+			'tempo_estimado' => $request->tempo_estimado,
+			'projeto_id' => $request->projeto_id
 		));
 
 		$arrResponse['status'] = '200';	

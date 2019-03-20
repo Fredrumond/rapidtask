@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Projetos;
+use App\Models\Clientes;
 
 class ProjetosController extends Controller
 {
@@ -15,7 +16,8 @@ class ProjetosController extends Controller
 
 	public function novoProjeto()
 	{		
-		return view('admin.projetos.nova');
+		$clientes = Clientes::all();
+		return view('admin.projetos.novo',compact('clientes'));
 	}
 
 	public function salvaProjeto(Request $request)
@@ -29,15 +31,23 @@ class ProjetosController extends Controller
 
 	public function verProjeto($id)
 	{
-		
+		$clientes = Clientes::all();
 		$projeto = Projetos::find($id);		
 
-		return view('admin.projetos.ver',compact('projeto'));
+		return view('admin.projetos.ver',compact('projeto','clientes'));
+	}
+
+	public function detalheProjeto($id)
+	{
+		$clientes = Clientes::all();
+		$projeto = Projetos::find($id);		
+
+		return view('admin.projetos.detalhes',compact('projeto','clientes'));
 	}
 
 	public function editarProjeto(Request $request)
 	{
-		$projeto = Projetos::find($request->cliente_id)->update(array(
+		$projeto = Projetos::find($request->projeto_id)->update(array(
 			'nome' => $request->nome,           
 			'descricao' => $request->descricao,
 			'sigla' => $request->sigla,
@@ -51,7 +61,7 @@ class ProjetosController extends Controller
 
 	public function excluirProjeto(Request $request)
 	{		
-		Projetos::find($request->clienteId)->delete();
+		Projetos::find($request->projetoId)->delete();
 
 		$arrResponse['status'] = '200';	
 
