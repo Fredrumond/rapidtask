@@ -151,3 +151,20 @@ ul.timeline > li:before {
 	margin-top: -60px;
 }
 
+/*
+*
+* CSS CLIENTES
+*
+*/
+
+.ver-detalhes-cliente{
+	cursor: pointer;
+}
+
+.box-btn{
+	text-align: right;
+}
+
+.box-btn .btn{
+	margin-top: -60px;
+}

@@ -34,6 +34,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 	$this->get('/tarefa/arquivar', 'TarefasController@arquivarTarefa')->name('arquivar-tarefa');
 	$this->get('/tarefa/arquivadas', 'TarefasController@verTarefasArquivadas')->name('arquivadas-tarefa');
 
+
 	/*PROJETOS*/
 	$this->get('/projetos', 'ProjetosController@index')->name('projetos');
 	$this->get('/projeto/nova', 'ProjetosController@novoProjeto')->name('novo-projeto');
@@ -42,6 +43,15 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 	$this->post('/projeto/editar', 'ProjetosController@editarProjeto')->name('editar-projeto');
 	$this->get('/projeto/excluir', 'ProjetosController@excluirProjeto')->name('excluir-projeto');
 	
+
+	/*CLIENTES*/
+	$this->get('/clientes', 'ClientesController@index')->name('clientes');
+	$this->get('/cliente/novo', 'ClientesController@novoCliente')->name('novo-cliente');
+	$this->post('/cliente/salvar', 'ClientesController@salvaCliente')->name('salva-cliente');
+	$this->get('/cliente/ver/{id}', 'ClientesController@verCliente')->name('ver-cliente');
+	$this->post('/cliente/editar', 'ClientesController@editarCliente')->name('editar-cliente');
+	$this->get('/cliente/excluir', 'ClientesController@excluirCliente')->name('excluir-cliente');
+
 });
 
 
