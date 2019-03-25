@@ -10,6 +10,7 @@ use App\Models\Tipos;
 use App\Models\Prioridades;
 use App\Models\Situacoes;
 use App\Models\Projetos;
+use Illuminate\Support\Facades\Auth;
 
 class TarefasController extends Controller
 {
@@ -29,7 +30,20 @@ class TarefasController extends Controller
 
 	public function salvaTarefa(Request $request)
 	{		
-		$tarefa = Tarefas::create($request->all());
+		
+		$tarefa = new Tarefas();
+		$tarefa->titulo = $request->titulo;
+		$tarefa->projeto_id =  $request->projeto_id;
+		$tarefa->tipo_id =  $request->tipo_id;
+		$tarefa->situacao_id =  $request->situacao_id;
+		$tarefa->prioridade_id =  $request->prioridade_id;
+		$tarefa->descricao =  $request->descricao;
+		$tarefa->dt_inicio =  $request->dt_inicio;
+		$tarefa->dt_prevista =  $request->dt_prevista;
+		$tarefa->dt_fim =  $request->dt_fim;
+		$tarefa->tempo_estimado =  $request->tempo_estimado;
+		$tarefa->usuario_id =  Auth::user()->id;
+		$tarefa->save();
 		
 		$arrResponse['status'] = '200';	
 
