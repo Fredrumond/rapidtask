@@ -34,6 +34,11 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 	$this->get('/tarefa/arquivar', 'TarefasController@arquivarTarefa')->name('arquivar-tarefa');
 	$this->get('/tarefa/arquivadas', 'TarefasController@verTarefasArquivadas')->name('arquivadas-tarefa');
 
+	/*TAREFA COMENTARIO*/
+	$this->get('/tarefa-comentarios', 'TarefaComentarioController@todosComentarios')->name('comentarios');
+	$this->post('/tarefa-comentario/salvar', 'TarefaComentarioController@salvaComentario')->name('salva-comentario');
+
+
 
 	/*PROJETOS*/
 	$this->get('/projetos', 'ProjetosController@index')->name('projetos');

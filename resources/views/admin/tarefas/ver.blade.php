@@ -100,18 +100,13 @@
 					<form id="form-comentario">
 						@csrf
 						<label>Novo comentario</label>
+						<input type="hidden" name="tarefaId" id="tarefaId" value="{{$tarefa->id}}">
 						<textarea class="form-control" rows="3" name="comentario" id="comentario">	
 						</textarea>
 						<button type="submit" class="btn btn-primary">Enviar</button>
 					</form>
 				</div>
-				<ul class="timeline-comentarios">
-					<li>
-						<a target="_blank" href="https://www.totoprayogo.com/#">New Web Design</a>
-						<a href="#" class="float-right">21 Fev, 2019</a>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales vehicula....</p>
-					</li>			
-				</ul>
+				<ul class="timeline-comentarios"></ul>
 			</div>
 			<div id="historico" class="tab-pane fade">
 				<h1>Historico</h1>
@@ -201,20 +196,20 @@
 
 			if($("#comentario").val().trim().length < 1){
 				alertify.warning('Preencha o comentario!'); 
-			}
-
-			
+			}			
 
 			if ($("#comentario").val().trim().length > 1) {
 				$.ajax({
-					url: ' /admin/tarefa/editar',
+					url: ' /admin/tarefa-comentario/salvar',
 					type: 'POST',
 					dataType: 'json',
 					data: dados,
 				})
 				.done(function(response) {
-					if (response.status == '200') {
-						window.location.replace("/admin/tarefas");
+					if (response.status == '200') {						
+						let id = $('#tarefaId').val();
+						console.log(id)
+						window.location = '/admin/tarefa/ver/'+id;
 					}
 				})
 				.fail(function(error) {
@@ -223,6 +218,28 @@
 
 			}
 		});
+		retornaComentarios();
+		function retornaComentarios(){
+			let tarefa_id = $('#tarefaId').val();
+			$.ajax({
+				url: '/admin/tarefa-comentarios',
+				type: 'GET',
+				dataType: 'json',
+				data: {'tarefa_id' : tarefa_id}
+			})
+			.done(function(response) {
+				console.log(response)
+				$.each( response.comentarios, function( key, value ) {
+					$('.timeline-comentarios').append('<li><a href="#">'+value.nome+'</a><a href="#" class="float-right">'+value.data+'</a><p>'+value.comentario+'</p></li>')
+				});
+
+			})
+			.fail(function(error) {
+				console.log("error");
+			})
+		}
+
+
 	});
 </script>
 @endsection
