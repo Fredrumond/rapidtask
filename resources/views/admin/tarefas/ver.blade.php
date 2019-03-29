@@ -106,14 +106,36 @@
 						<button type="submit" class="btn btn-primary">Enviar</button>
 					</form>
 				</div>
-				<ul class="timeline-comentarios"></ul>
+				<ul class="timeline-comentarios">					
+				</ul>
 			</div>
 			<div id="historico" class="tab-pane fade">
 				<h1>Historico</h1>
+
 			</div>			
 		</div>
 	</div>
 
+</div>
+
+<div class="modal" id="editarComentarioModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Editar comentario</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Modal body text goes here.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-primary">Salvar</button>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
 @section('script')
@@ -230,7 +252,7 @@
 			.done(function(response) {
 				console.log(response)
 				$.each( response.comentarios, function( key, value ) {
-					$('.timeline-comentarios').append('<li><a href="#">'+value.nome+'</a><a href="#" class="float-right">'+value.data+'</a><p>'+value.comentario+'</p></li>')
+					$('.timeline-comentarios').append('<li><a href="#">'+value.nome+'</a><a href="#" class="float-right">'+value.data+'</a><p>'+value.comentario+'</p><div class="acoes-comentario"><i class="fas fa-edit editar-comentario" data-id="'+value.id+'"></i><i class="fas fa-trash remover-comentario" data-id="'+value.id+'"></i></div></li>')
 				});
 
 			})
@@ -238,6 +260,48 @@
 				console.log("error");
 			})
 		}
+
+		$('.teste').click(function(event) {
+			/* Act on the event */
+			e.preventDefault();     
+			console.log(	'')
+		});
+
+		$(document).on('click', '.editar-comentario', function(){ 
+			
+			let id = $(this).data("id");
+			$('#editarComentarioModal').modal('show');
+			console.log("OI EDIÇÃO")
+			console.log(id)
+		}); 
+
+		$(document).on('click', '.remover-comentario', function(){ 
+			
+			let id = $(this).data("id");
+
+			alertify.confirm('Deseja realmente excluir a tarefa?').set('onok', function(closeEvent){
+				$.ajax({
+					url: ' /admin/tarefa/excluir',
+					type: 'GET',
+					dataType: 'json',
+					data: {'tarefaId':tarefaId},
+				})
+				.done(function(response) {
+					if (response.status == '200') {
+						window.location.replace("/admin/tarefa/arquivadas");
+					}
+				})
+				.fail(function(error) {
+					console.log("error");
+				});
+
+			});
+			
+			console.log("OI REMOÃÇÃO")
+			console.log(id)
+		}); 
+
+		
 
 
 	});

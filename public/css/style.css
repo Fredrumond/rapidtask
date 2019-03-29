@@ -184,7 +184,28 @@ ul.timeline-comentarios > li:before {
 
 #form-comentario input {
 	width: 100%;
-    height: 100px;
+	height: 100px;
+}
+
+.editar-comentario,
+.remover-comentario{
+	cursor: pointer;
+}
+
+.acoes-comentario,{
+	position: relative;	
+}
+
+.acoes-comentario i{
+	padding: 3px;	
+}
+
+.acoes-comentario .fa-trash{
+	color: #ce1818;
+}
+
+.acoes-comentario .fa-edit{
+	color: #384670;
 }
 
 /*
