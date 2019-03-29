@@ -90,7 +90,7 @@
 </div>
 @endsection
 @section('script')
-
+<script type="text/javascript">
     $(document).ready(function() {
          $(".ver-detalhes-tarefa").click(function() {
                 console.log("oi")
@@ -99,5 +99,5 @@
                 window.location = '/admin/tarefa/ver/'+id;
             });
     });
-
+</script>
 @endsection

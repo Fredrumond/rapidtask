@@ -35,7 +35,7 @@
 @endsection
 
 @section('script')
-
+<script type="text/javascript">
     $(document).ready(function() {
          $(".ver-detalhes-projeto").click(function() {
                 console.log("oi")
@@ -44,5 +44,5 @@
                 window.location = '/admin/projeto/detalhe/'+id;
             });
     });
-
+</script>
 @endsection

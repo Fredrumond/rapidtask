@@ -56,7 +56,7 @@
 			</div>
 			<div class="form-group">
 				<label for="descricao">Descrição</label>
-				<textarea class="form-control" id="descricao" rows="3" name="descricao" id="descricao">	{{$tarefa->descricao}}</textarea>
+				<textarea class="form-control" id="descricao" rows="3" name="descricao" id="descricao">{{$tarefa->descricao}}</textarea>
 			</div>
 
 			<div class="form-row">						
@@ -94,16 +94,16 @@
 		<div class="tab-content">
 			<div id="comentarios" class="tab-pane active">
 				<div class="box-btn">
-					<button class="btn btn-success novo-comentario-view">Novo </button>	
+					<button class="btn btn-success novo-comentario">Novo</button>	
 				</div>
-				<div class="comentario">
+				<div class="box-comentario">
 					<form id="form-comentario">
 						@csrf
 						<label>Novo comentario</label>
 						<input type="hidden" name="tarefaId" id="tarefaId" value="{{$tarefa->id}}">
-						<textarea class="form-control" rows="3" name="comentario" id="comentario">	
-						</textarea>
+						<textarea class="form-control" rows="3" name="comentario" id="comentario"></textarea>
 						<button type="submit" class="btn btn-primary">Enviar</button>
+						<button type ="button" class="btn btn-primary cancelar-comentario">Cancelar</button>
 					</form>
 				</div>
 				<ul class="timeline-comentarios">					
@@ -141,6 +141,44 @@
 @section('script')
 <script>
 	$(document).ready(function() {
+
+		function retornaComentarios(){
+			let tarefa_id = $('#tarefaId').val();
+			$.ajax({
+				url: '/admin/tarefa-comentarios',
+				type: 'GET',
+				dataType: 'json',
+				data: {'tarefa_id' : tarefa_id}
+			})
+			.done(function(response) {
+				console.log(response)
+				var comentarios = "";
+				$.each( response.comentarios, function( key, value ) {						
+						comentarios += '<li><a href="#">'+value.nome+'</a><a href="#" class="float-right">'+value.data+'</a><p>'+value.comentario+'</p><div class="acoes-comentario"><i class="fas fa-edit editar-comentario" data-id="'+value.id+'"></i><i class="fas fa-trash remover-comentario" data-id="'+value.id+'"></i></div></li>';
+
+					
+				});
+				$('.timeline-comentarios').html(comentarios);
+				console.log(comentarios)
+			})
+			.fail(function(error) {
+				console.log("error");
+			})
+		}
+
+		$('.box-comentario').hide();
+
+		$('.novo-comentario').click(function(event) {
+			$('.box-comentario').show();
+			$('.novo-comentario').hide();			
+		});
+
+		$('.cancelar-comentario').click(function(event) {
+			$('.box-comentario').hide();
+			$('.novo-comentario').show();
+		});
+
+
 		$('#form-atualiza-tarefa').submit( function(e) {
 			e.preventDefault();         
 
@@ -231,7 +269,8 @@
 					if (response.status == '200') {						
 						let id = $('#tarefaId').val();
 						console.log(id)
-						window.location = '/admin/tarefa/ver/'+id;
+						//window.location = '/admin/tarefa/ver/'+id;
+						retornaComentarios();
 					}
 				})
 				.fail(function(error) {
@@ -240,26 +279,10 @@
 
 			}
 		});
-		retornaComentarios();
-		function retornaComentarios(){
-			let tarefa_id = $('#tarefaId').val();
-			$.ajax({
-				url: '/admin/tarefa-comentarios',
-				type: 'GET',
-				dataType: 'json',
-				data: {'tarefa_id' : tarefa_id}
-			})
-			.done(function(response) {
-				console.log(response)
-				$.each( response.comentarios, function( key, value ) {
-					$('.timeline-comentarios').append('<li><a href="#">'+value.nome+'</a><a href="#" class="float-right">'+value.data+'</a><p>'+value.comentario+'</p><div class="acoes-comentario"><i class="fas fa-edit editar-comentario" data-id="'+value.id+'"></i><i class="fas fa-trash remover-comentario" data-id="'+value.id+'"></i></div></li>')
-				});
 
-			})
-			.fail(function(error) {
-				console.log("error");
-			})
-		}
+		retornaComentarios();
+
+
 
 		$('.teste').click(function(event) {
 			/* Act on the event */
