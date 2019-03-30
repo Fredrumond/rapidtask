@@ -37,7 +37,9 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 	/*TAREFA COMENTARIO*/
 	$this->get('/tarefa-comentarios', 'TarefaComentarioController@todosComentarios')->name('comentarios');
 	$this->post('/tarefa-comentario/salvar', 'TarefaComentarioController@salvaComentario')->name('salva-comentario');
-
+	$this->get('/tarefa-comentario/excluir', 'TarefaComentarioController@excluirComentario')->name('excluir-comentario');
+	$this->get('/tarefa-comentario/ver', 'TarefaComentarioController@verComentario')->name('ver-comentario');
+	$this->post('/tarefa-comentario/editar', 'TarefaComentarioController@editarComentario')->name('editar-comentario');
 
 
 	/*PROJETOS*/

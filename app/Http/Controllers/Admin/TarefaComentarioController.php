@@ -49,31 +49,22 @@ class TarefaComentarioController extends Controller
 		return $arrResponse;
 	}
 
-	public function verComentario($id)
+	public function verComentario(Request $request)
 	{
 		
-		$tarefa = Tarefas::find($id);
-		$tipos = Tipos::all();
-		$situacoes = Situacoes::all();
-		$prioridades = Prioridades::all();
-		$projetos = Projetos::all();
+		$tarefaComentario = TarefaComentario::find($request->comentarioId);
 
-		return view('admin.tarefas.ver',compact('tarefa','tipos','situacoes','prioridades','projetos'));
+		$arrResponse['status'] = '200';	
+		$arrResponse['data'] = $tarefaComentario;	
+
+		return $arrResponse;		
 	}
 
 	public function editarComentario(Request $request)
 	{
-		$tarefa = Tarefas::find($request->tarefa_id)->update(array(
-			'titulo' => $request->titulo,           
-			'tipo_id' => $request->tipo_id,
-			'situacao_id' => $request->situacao_id,
-			'prioridade_id' => $request->prioridade_id,
-			'descricao' => $request->descricao,
-			'dt_inicio' => $request->dt_inicio,
-			'dt_prevista' => $request->dt_prevista,
-			'dt_fim' => $request->dt_fim,
-			'tempo_estimado' => $request->tempo_estimado,
-			'projeto_id' => $request->projeto_id
+		
+		$tarefaComentario = TarefaComentario::find($request->comentarioId)->update(array(
+			'comentario' => $request->comentarioEditar
 		));
 
 		$arrResponse['status'] = '200';	
@@ -83,7 +74,7 @@ class TarefaComentarioController extends Controller
 
 	public function excluirComentario(Request $request)
 	{		
-		Tarefas::find($request->tarefaId)->delete();
+		TarefaComentario::find($request->comentarioId)->delete();
 
 		$arrResponse['status'] = '200';	
 

@@ -128,12 +128,15 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<p>Modal body text goes here.</p>
+				<form id="form-comentario-editar">
+					@csrf						
+					<input type="hidden" name="comentarioId" id="comentarioId">
+					<textarea class="form-control" rows="3" name="comentarioEditar" id="comentarioEditar"></textarea>
+					<button type="submit" class="btn btn-primary">Salvar</button>
+					<button type ="button" class="btn btn-primary cancelar-comentario-editar">Cancelar</button>
+				</form>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-				<button type="button" class="btn btn-primary">Salvar</button>
-			</div>
+			
 		</div>
 	</div>
 </div>
@@ -150,16 +153,12 @@
 				dataType: 'json',
 				data: {'tarefa_id' : tarefa_id}
 			})
-			.done(function(response) {
-				console.log(response)
+			.done(function(response) {				
 				var comentarios = "";
 				$.each( response.comentarios, function( key, value ) {						
-						comentarios += '<li><a href="#">'+value.nome+'</a><a href="#" class="float-right">'+value.data+'</a><p>'+value.comentario+'</p><div class="acoes-comentario"><i class="fas fa-edit editar-comentario" data-id="'+value.id+'"></i><i class="fas fa-trash remover-comentario" data-id="'+value.id+'"></i></div></li>';
-
-					
+					comentarios += '<li><a href="#">'+value.nome+'</a><a href="#" class="float-right">'+value.data+'</a><p>'+value.comentario+'</p><div class="acoes-comentario"><i class="fas fa-edit editar-comentario" data-id="'+value.id+'"></i><i class="fas fa-trash remover-comentario" data-id="'+value.id+'"></i></div></li>';					
 				});
-				$('.timeline-comentarios').html(comentarios);
-				console.log(comentarios)
+				$('.timeline-comentarios').html(comentarios);				
 			})
 			.fail(function(error) {
 				console.log("error");
@@ -177,7 +176,6 @@
 			$('.box-comentario').hide();
 			$('.novo-comentario').show();
 		});
-
 
 		$('#form-atualiza-tarefa').submit( function(e) {
 			e.preventDefault();         
@@ -268,8 +266,11 @@
 				.done(function(response) {
 					if (response.status == '200') {						
 						let id = $('#tarefaId').val();
-						console.log(id)
-						//window.location = '/admin/tarefa/ver/'+id;
+						
+						$('.box-comentario').hide();
+						$('.novo-comentario').show();
+
+						$('#comentario').val('');
 						retornaComentarios();
 					}
 				})
@@ -282,36 +283,40 @@
 
 		retornaComentarios();
 
-
-
-		$('.teste').click(function(event) {
-			/* Act on the event */
-			e.preventDefault();     
-			console.log(	'')
-		});
-
 		$(document).on('click', '.editar-comentario', function(){ 
 			
-			let id = $(this).data("id");
-			$('#editarComentarioModal').modal('show');
-			console.log("OI EDIÇÃO")
-			console.log(id)
+			let comentarioId = $(this).data("id");
+
+			$.ajax({
+				url: '/admin/tarefa-comentario/ver',
+				type: 'GET',
+				dataType: 'json',
+				data: {'comentarioId' : comentarioId}
+			})
+			.done(function(response) {
+				$('#comentarioEditar').val(response.data.comentario);
+				$('#comentarioId').val(response.data.id);
+				$('#editarComentarioModal').modal('show');				
+			})
+			.fail(function(error) {
+				console.log("error");
+			})
 		}); 
 
 		$(document).on('click', '.remover-comentario', function(){ 
 			
-			let id = $(this).data("id");
+			let comentarioId = $(this).data("id");
 
-			alertify.confirm('Deseja realmente excluir a tarefa?').set('onok', function(closeEvent){
+			alertify.confirm('Deseja realmente excluir o comentario?').set('onok', function(closeEvent){
 				$.ajax({
-					url: ' /admin/tarefa/excluir',
+					url: ' /admin/tarefa-comentario/excluir',
 					type: 'GET',
 					dataType: 'json',
-					data: {'tarefaId':tarefaId},
+					data: {'comentarioId':comentarioId},
 				})
 				.done(function(response) {
 					if (response.status == '200') {
-						window.location.replace("/admin/tarefa/arquivadas");
+						retornaComentarios();
 					}
 				})
 				.fail(function(error) {
@@ -319,9 +324,43 @@
 				});
 
 			});
-			
-			console.log("OI REMOÃÇÃO")
-			console.log(id)
+		});
+
+		$('.cancelar-comentario-editar').click(function(event) {
+			$('#editarComentarioModal').modal('hide');	
+		});
+
+		$('#form-comentario-editar').submit( function(e) {
+			e.preventDefault();         
+
+			let form = $(this);
+			let dados = form.serialize()
+			console.log(dados)
+			alertify.set('notifier','position', 'top-right');
+
+			if($("#comentarioEditar").val().trim().length < 1){
+				alertify.warning('Preencha o comentario!'); 
+			}			
+
+			if ($("#comentarioEditar").val().trim().length > 1) {
+				$.ajax({
+					url: ' /admin/tarefa-comentario/editar',
+					type: 'POST',
+					dataType: 'json',
+					data: dados,
+				})
+				.done(function(response) {
+					if (response.status == '200') {
+
+						$('#editarComentarioModal').modal('hide');	
+						retornaComentarios();
+					}
+				})
+				.fail(function(error) {
+					console.log("error");
+				})
+
+			}
 		}); 
 
 		
