@@ -50,7 +50,7 @@
       <tbody>
         <tr>
           <th>1.0.0-alpha.0</th>
-          <td>29/03/2019</td>
+          <td>02/04/2019</td>
           <td>
             <ul>
                 <li>Trefas</li>
@@ -60,8 +60,8 @@
                     <li><span class="badge badge-success">Editar</span></li>
                     <li><span class="badge badge-success">Excluir</span></li>
                     <li><span class="badge badge-success">Arquivar</span></li>                    
-                    <li><span class="badge badge-info">Comentario tarefa</span></li>                    
-                    <li><span class="badge badge-info">Historico tarefa</span></li>                    
+                    <li><span class="badge badge-success">Comentario tarefa</span></li>                    
+                    <li><span class="badge badge-success">Historico tarefa</span></li>                    
                 </ul>
                 <li>Projetos</li>
                 <ul>
