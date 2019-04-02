@@ -1,97 +1,63 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+    <title>Laravel</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+    <!-- Styles -->
+    <style>
 
-            .full-height {
-                height: 100vh;
-            }
+    body {
+        background: #384670;
+    }
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+    .manutencao {
+        display: block;
+        width: 600px;
+        margin: 10% auto;
+        max-width: 90%;
+        background: #f4f5f7;
+        padding: 50px;
+    }
 
-            .position-ref {
-                position: relative;
-            }
+    .manutencao h1{
+        font-size: 2em;
+        font-weight: 600;
+        color: #343f60;
+        text-shadow: 1px 1px 0 #eee;
+    }
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+    .manutencao p{
+        margin: 15px 0;
+    }
 
-            .content {
-                text-align: center;
-            }
+    .versao {
+        bottom: 0;
+        right: 20px;
+        position: absolute;
+        color: #fff;
+        font-size: 16px;
+    }
 
-            .title {
-                font-size: 84px;
-            }
+    .versao a {
+        text-decoration: none;
+        color: #fff;
+    }
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-           
-                <div class="top-right links">
-                   
-                        <a href="{{ url('/home') }}">Home</a>
-                   
-                        <a href="{{ route('login') }}">Login</a>
-
-                        
-                            <a href="{{ route('register') }}">Register</a>
-                        
-                </div>
-           
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
-        </div>
-    </body>
+</style>
+</head>
+<body>   
+    <div class="manutencao">
+        <h1>Desculpe, estamos em manutenção!</h1>
+        <p>Neste momento estamos trabalhando para melhorar ainda mais sua experiência em nosso site.</p>
+        <p><b>Por favor, volte em algumas horas para conferir as novidades!</b></p>
+        <em>Atenciosamente Rapidtask</em>
+        <span class="versao"><a href="{{ route('versao') }}">1.0.0-alpha.0</a></span>
+    </div>    
+</body>
 </html>

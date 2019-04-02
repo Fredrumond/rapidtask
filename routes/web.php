@@ -15,6 +15,8 @@ Route::get('/', function () {
 	return view('welcome');
 });
 
+Route::get('/versao', 'versao\VersaoController@index')->name('versao');
+
 Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
