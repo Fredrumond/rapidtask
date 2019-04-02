@@ -56,9 +56,9 @@
         });
     </script>
 
-    <script>
+   
         @yield('script')
-    </script>
+   
     
 </body>
 </html>

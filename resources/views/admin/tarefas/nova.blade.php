@@ -73,7 +73,7 @@
 </div>
 @endsection
 @section('script')
-
+<script>
     $(document).ready(function() {
          $('#form-tarefa').submit( function(e) {
                 e.preventDefault();         
@@ -123,5 +123,5 @@
 
             });
     });
-
+</script>
 @endsection

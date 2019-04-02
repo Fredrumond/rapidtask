@@ -36,7 +36,7 @@
 </div>
 @endsection
 @section('script')
-
+<script>
     $(document).ready(function() {
          $('#form-projeto').submit( function(e) {
                 e.preventDefault();         
@@ -80,5 +80,5 @@
 
             });
     });
-
+</script>
 @endsection

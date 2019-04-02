@@ -30,7 +30,7 @@
 </div>
 @endsection
 @section('script')
-
+<script type="text/javascript">
     $(document).ready(function() {
          $('#form-atualiza-cliente').submit( function(e) {
                 e.preventDefault();         
@@ -87,5 +87,5 @@
                 });
             });            
     });
-
+</script>
 @endsection

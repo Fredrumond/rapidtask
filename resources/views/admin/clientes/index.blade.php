@@ -35,9 +35,8 @@
 
 </div>
 @endsection
-
 @section('script')
-
+<script type="text/javascript">
     $(document).ready(function() {
          $(".ver-detalhes-cliente").click(function() {
                 let id = $(this).data("id");
@@ -45,5 +44,5 @@
                 window.location = '/admin/cliente/ver/'+id;
             });
     });
-
+</script>
 @endsection

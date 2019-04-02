@@ -67,7 +67,7 @@
 </div>
 @endsection
 @section('script')
-
+<script>
     $(document).ready(function() {
          $('.excluir-tarefa').click(function(e) {
                 e.preventDefault();
@@ -92,5 +92,5 @@
                 });
             });
     });
-
+</script>
 @endsection
