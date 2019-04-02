@@ -67,30 +67,30 @@
 </div>
 @endsection
 @section('script')
+<script>
+	$(document).ready(function() {
+		$('.excluir-tarefa').click(function(e) {
+			e.preventDefault();
 
-    $(document).ready(function() {
-         $('.excluir-tarefa').click(function(e) {
-                e.preventDefault();
+			let tarefaId = $(this).data('id')       
+			alertify.confirm('Deseja realmente excluir a tarefa?').set('onok', function(closeEvent){
+				$.ajax({
+					url: ' /admin/tarefa/excluir',
+					type: 'GET',
+					dataType: 'json',
+					data: {'tarefaId':tarefaId},
+				})
+				.done(function(response) {
+					if (response.status == '200') {
+						window.location.replace("/admin/tarefa/arquivadas");
+					}
+				})
+				.fail(function(error) {
+					console.log("error");
+				});
 
-                let tarefaId = $(this).data('id')       
-                alertify.confirm('Deseja realmente excluir a tarefa?').set('onok', function(closeEvent){
-                    $.ajax({
-                        url: ' /admin/tarefa/excluir',
-                        type: 'GET',
-                        dataType: 'json',
-                        data: {'tarefaId':tarefaId},
-                    })
-                    .done(function(response) {
-                        if (response.status == '200') {
-                            window.location.replace("/admin/tarefa/arquivadas");
-                        }
-                    })
-                    .fail(function(error) {
-                        console.log("error");
-                    });
-
-                });
-            });
-    });
-
+			});
+		});
+	});
+</script>
 @endsection

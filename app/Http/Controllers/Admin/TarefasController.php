@@ -11,10 +11,12 @@ use App\Models\Prioridades;
 use App\Models\Situacoes;
 use App\Models\Projetos;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ServiceTarefaHistorico; 
 
 class TarefasController extends Controller
 {
-	public function index(){
+	public function index()
+	{
 		$tarefas = Tarefas::where('status',0)->get();		
 		return view('admin.tarefas.index',compact('tarefas'));
 	}
@@ -29,7 +31,7 @@ class TarefasController extends Controller
 	}
 
 	public function salvaTarefa(Request $request)
-	{		
+	{
 		
 		$tarefa = new Tarefas();
 		$tarefa->titulo = $request->titulo;
@@ -64,6 +66,10 @@ class TarefasController extends Controller
 
 	public function editarTarefa(Request $request)
 	{
+
+		$tarefaHistorico = new ServiceTarefaHistorico();
+		$tarefaHistorico->salvaHistorico($request);
+
 		$tarefa = Tarefas::find($request->tarefa_id)->update(array(
 			'titulo' => $request->titulo,           
 			'tipo_id' => $request->tipo_id,
@@ -93,6 +99,7 @@ class TarefasController extends Controller
 
 	public function arquivarTarefa(Request $request)
 	{
+		
 		$tarefa = Tarefas::find($request->tarefaId)->update(array(
 			'status' => 1
 		));

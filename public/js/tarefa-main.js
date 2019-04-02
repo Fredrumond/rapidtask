@@ -94,21 +94,6 @@
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  function error(erro) {
-    if (!alertify.errorAlert) {
-      alertify.dialog('errorAlert', function factory() {
-        return {
-          build: function build() {
-            var errorHeader = '<span class="fa fa-times-circle fa-2x" ' + 'style="vertical-align:middle;color:#e10000;">' + '</span> Erro na aplicação';
-            this.setHeader(errorHeader);
-          }
-        };
-      }, true, 'alert');
-    }
-
-    alertify.errorAlert("Foi encontrado um erro inesperado na aplicação! <br/><br/><br/>" + "Reporte o erro para o administrador: <br/><br/><br/>" + erro);
-  }
-
   function retornaComentarios() {
     var tarefa_id = $('#tarefaId').val();
     $.ajax({
@@ -129,6 +114,30 @@ $(document).ready(function () {
     });
   }
 
+  retornaComentarios();
+
+  function retornaHistorico() {
+    var tarefa_id = $('#tarefaId').val();
+    $.ajax({
+      url: '/admin/tarefa-historico',
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        'tarefa_id': tarefa_id
+      }
+    }).done(function (response) {
+      console.log(response);
+      var historico = "";
+      $.each(response.historico, function (key, value) {
+        historico += '<li><a href="#">' + value.nome + ' alterou ' + value.atividade + ' </a><a href="#" class="float-right">' + value.data + '</a></li>';
+      });
+      $('.timeline-historico').html(historico);
+    }).fail(function (error) {
+      console.log("error");
+    });
+  }
+
+  retornaHistorico();
   $('.box-comentario').hide();
   $('.novo-comentario').click(function (event) {
     $('.box-comentario').show();
@@ -142,7 +151,6 @@ $(document).ready(function () {
     e.preventDefault();
     var form = $(this);
     var dados = form.serialize();
-    console.log(dados);
     alertify.set('notifier', 'position', 'top-right');
 
     if ($('#titulo').val() == '') {
@@ -226,7 +234,6 @@ $(document).ready(function () {
       });
     }
   });
-  retornaComentarios();
   $(document).on('click', '.editar-comentario', function () {
     var comentarioId = $(this).data("id");
     $.ajax({

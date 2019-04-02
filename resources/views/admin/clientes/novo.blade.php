@@ -26,41 +26,41 @@
 </div>
 @endsection
 @section('script')
-
+<script>
     $(document).ready(function() {
-         $('#form-cliente').submit( function(e) {
-                e.preventDefault();         
+       $('#form-cliente').submit( function(e) {
+        e.preventDefault();         
 
-                let form = $(this);
-                let dados = form.serialize()
-                console.log(dados)
-                alertify.set('notifier','position', 'top-right');
+        let form = $(this);
+        let dados = form.serialize()
+        console.log(dados)
+        alertify.set('notifier','position', 'top-right');
 
 
-                if ($('#nome').val() == '') {
-                    alertify.warning('Preencha o Nome!'); 
-                }                
+        if ($('#nome').val() == '') {
+            alertify.warning('Preencha o Nome!'); 
+        }                
 
-                if ($('#nome').val() != '') {
-                    $.ajax({
-                        url: '/admin/cliente/salvar',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: dados,
-                    })
-                    .done(function(response) {
-                        if (response.status == '200') {
-                            window.location.replace("/admin/clientes");
-                        }
-                        console.log(response);
-                    })
-                    .fail(function() {
-                        console.log("error");
-                    })
-
+        if ($('#nome').val() != '') {
+            $.ajax({
+                url: '/admin/cliente/salvar',
+                type: 'POST',
+                dataType: 'json',
+                data: dados,
+            })
+            .done(function(response) {
+                if (response.status == '200') {
+                    window.location.replace("/admin/clientes");
                 }
+                console.log(response);
+            })
+            .fail(function() {
+                console.log("error");
+            })
 
-            });
+        }
+
     });
-
+   });
+</script>
 @endsection

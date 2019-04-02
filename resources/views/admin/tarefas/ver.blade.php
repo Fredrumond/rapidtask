@@ -110,7 +110,8 @@
 				</ul>
 			</div>
 			<div id="historico" class="tab-pane fade">
-				<h1>Historico</h1>
+				<ul class="timeline-historico">					
+				</ul>
 
 			</div>			
 		</div>

@@ -41,6 +41,9 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 	$this->get('/tarefa-comentario/ver', 'TarefaComentarioController@verComentario')->name('ver-comentario');
 	$this->post('/tarefa-comentario/editar', 'TarefaComentarioController@editarComentario')->name('editar-comentario');
 
+	/*TAREFA HISTORICO*/
+	$this->get('/tarefa-historico', 'TarefaHistoricoController@todoHistorico')->name('historico');
+
 
 	/*PROJETOS*/
 	$this->get('/projetos', 'ProjetosController@index')->name('projetos');
