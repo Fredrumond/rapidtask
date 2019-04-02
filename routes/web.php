@@ -36,6 +36,16 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 	$this->get('/tarefa/arquivar', 'TarefasController@arquivarTarefa')->name('arquivar-tarefa');
 	$this->get('/tarefa/arquivadas', 'TarefasController@verTarefasArquivadas')->name('arquivadas-tarefa');
 
+	/*TAREFA COMENTARIO*/
+	$this->get('/tarefa-comentarios', 'TarefaComentarioController@todosComentarios')->name('comentarios');
+	$this->post('/tarefa-comentario/salvar', 'TarefaComentarioController@salvaComentario')->name('salva-comentario');
+	$this->get('/tarefa-comentario/excluir', 'TarefaComentarioController@excluirComentario')->name('excluir-comentario');
+	$this->get('/tarefa-comentario/ver', 'TarefaComentarioController@verComentario')->name('ver-comentario');
+	$this->post('/tarefa-comentario/editar', 'TarefaComentarioController@editarComentario')->name('editar-comentario');
+
+	/*TAREFA HISTORICO*/
+	$this->get('/tarefa-historico', 'TarefaHistoricoController@todoHistorico')->name('historico');
+
 
 	/*PROJETOS*/
 	$this->get('/projetos', 'ProjetosController@index')->name('projetos');
