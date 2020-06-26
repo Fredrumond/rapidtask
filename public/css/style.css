@@ -1,0 +1,472 @@
+/*MANIUPULANDO TEMA*/
+
+.navbar-custom {   
+	margin-left: 0px;	
+}
+
+.menu-custom >ul>li>a {
+    color: #fff;
+    display: block;
+    padding: 12px 10px;
+    font-size: 14px;
+    position: relative;
+    -webkit-transition: all .5s;
+    transition: all .5s;
+    font-family: Sarabun, sans-serif;
+    line-height: 42px;
+}
+
+.menu-custom >ul>li>a:hover {
+    color: #b4c9de;
+    text-decoration: none;
+}
+
+.menu-custom ul li a i {
+    vertical-align: middle;
+    font-size: 14.7px;
+    width: 20px;
+    display: inline-block;
+}
+
+.menu-custom >ul>li>a>span {
+    vertical-align: middle;
+    margin-left: 1px;
+}
+
+.content-page {
+    margin-left: 0px;
+}
+
+/*
+*
+* CSS DO LAYOUT
+*
+*/
+
+
+.table {
+	color: #fff;
+}
+
+.topbar .topbar-logo{
+	background: #2a3142;
+	float: left;
+	text-align: center;
+	height: 70px;
+	position: relative;
+	width: 240px;
+	z-index: 1;
+}
+
+.topbar .topbar-logo img{
+	width: 25%;
+}
+
+/*----------------*/
+.menu-topo{
+	background: #384670;
+}
+
+.menu-topo .row{
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.menu-topo .navegacao{
+	padding: 2px;
+}
+
+.menu-topo .navegacao ul{
+	list-style: none;
+	margin-bottom: 0px;
+	padding: 0;
+}
+
+.menu-topo .navegacao li{
+	padding: 0px 10px;
+}
+
+.menu-topo .navegacao li i{
+	padding: 0 3px;
+}
+
+.menu-topo .navegacao ul li{
+	display: inline-block;
+}
+
+.menu-topo .navegacao ul li a{
+	text-decoration: none;	
+}
+
+.menu-topo .navegacao a {
+	color: #fff;
+}
+
+.menu-topo .navegacao-ususario ul{
+	list-style: none;
+	margin-bottom: 0px;
+	padding: 0;
+}
+
+.menu-topo .navegacao-ususario li{
+	color: #fff;
+}
+
+.menu-topo .navegacao-ususario li i{
+	padding: 0 3px;
+}
+
+.menu-topo .navegacao-ususario ul li{
+	display: inline-block;
+}
+
+.menu-topo .navegacao-ususario ul li a{
+	text-decoration: none;	
+}
+
+.menu-sub{
+	background: #343f60;
+	height: 70px;
+}
+
+/*.container-fluid{
+	background: #F4F5F7;
+	}*/
+
+	.rodape{
+		background: #384670;
+	}
+
+/*
+*
+* CSS DASHBOARD
+*
+*/
+
+.atualizacoes {
+	padding: 20px;
+}
+
+.atualizacoes h4{
+	color: #343f60;
+}
+
+.tarefas {
+	padding: 20px;
+}
+
+.tarefas h4{
+	color: #343f60;
+}
+
+
+ul.timeline {
+	list-style-type: none;
+	position: relative;
+}
+ul.timeline:before {
+	content: ' ';
+	background: #d4d9df;
+	display: inline-block;
+	position: absolute;
+	left: 29px;
+	width: 2px;
+	height: 100%;
+	z-index: 400;
+}
+ul.timeline > li {
+	margin: 20px 0;
+	padding-left: 20px;
+}
+ul.timeline > li:before {
+	content: ' ';
+	background: white;
+	display: inline-block;
+	position: absolute;
+	border-radius: 50%;
+	border: 3px solid #343f60;
+	left: 20px;
+	width: 20px;
+	height: 20px;
+	z-index: 400;
+}
+
+/*
+*
+* CSS TAREFAS
+*
+*/
+
+.ver-detalhes-tarefa{
+	cursor: pointer;
+}
+
+.box-btn{
+	text-align: right;
+}
+
+.box-btn .btn{
+	margin-top: -60px;
+}
+
+ul.timeline-comentarios {
+	list-style-type: none;
+	position: relative;
+}
+ul.timeline-comentarios:before {
+	content: ' ';
+	background: #d4d9df;
+	display: inline-block;
+	position: absolute;
+	left: 29px;
+	width: 2px;
+	height: 100%;
+	z-index: 400;
+}
+ul.timeline-comentarios > li {
+	margin: 20px 0;
+	padding-left: 20px;
+}
+ul.timeline-comentarios > li:before {
+	content: ' ';
+	background: white;
+	display: inline-block;
+	position: absolute;
+	border-radius: 50%;
+	border: 3px solid #343f60;
+	left: 20px;
+	width: 20px;
+	height: 20px;
+	z-index: 400;
+}
+
+ul.timeline-historico {
+	list-style-type: none;
+	position: relative;
+}
+ul.timeline-historico:before {
+	content: ' ';
+	background: #d4d9df;
+	display: inline-block;
+	position: absolute;
+	left: 29px;
+	width: 2px;
+	height: 100%;
+	z-index: 400;
+}
+ul.timeline-historico > li {
+	margin: 20px 0;
+	padding-left: 20px;
+}
+ul.timeline-historico > li:before {
+	content: ' ';
+	background: white;
+	display: inline-block;
+	position: absolute;
+	border-radius: 50%;
+	border: 3px solid #343f60;
+	left: 20px;
+	width: 20px;
+	height: 20px;
+	z-index: 400;
+}
+
+#form-comentario input {
+	width: 100%;
+	height: 100px;
+}
+
+.editar-comentario,
+.remover-comentario{
+	cursor: pointer;
+}
+
+.acoes-comentario,{
+	position: relative;	
+}
+
+.acoes-comentario i{
+	padding: 3px;	
+}
+
+.acoes-comentario .fa-trash{
+	color: #ce1818;
+}
+
+.acoes-comentario .fa-edit{
+	color: #384670;
+}
+
+/*
+*
+* CSS CLIENTES
+*
+*/
+
+.ver-detalhes-cliente{
+	cursor: pointer;
+}
+
+.box-btn{
+	text-align: right;
+}
+
+.box-btn .btn{
+	margin-top: -60px;
+}
+
+/*
+*
+* CSS PROJETOS
+*
+*/
+
+.card>.list-group:last-child .list-group-item:last-child {
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.ver-detalhes-projeto{
+	cursor: pointer;
+}
+
+.projeto-nome {
+	margin-top: 5%;
+}
+.projeto-nome h1 {
+	font-size: 20px;
+}
+
+.projeto-nome i {
+	margin-right: 10px;
+}
+
+.projeto-dados {
+	margin-top: 5%;
+	text-align: right;
+}
+.projeto-dados h1 {
+	font-size: 20px;
+}
+.projeto-dados i {
+	margin-right: 10px;
+}
+
+.projeto-dados ul {
+	list-style: none;
+}
+
+.projeto-dados li {
+	margin-right: 5%;
+}
+
+.projeto-dados ul li {
+	display: inline-block;
+}
+
+.tab-content-projeto{
+	background: rgba(204, 204, 204, 0.31);
+}
+
+.tab-content #passo1 .row {
+	margin: auto;
+}
+
+.tab-content #passo1 .row .list{
+	background: red;
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.nav-tabs {
+	margin-bottom: 20px;
+}
+
+.card-header {
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	color: #000;
+	text-transform: uppercase;
+}
+
+ul.timeline-anotacoes {
+	list-style-type: none;
+	position: relative;
+}
+ul.timeline-anotacoes:before {
+	content: ' ';
+	background: #d4d9df;
+	display: inline-block;
+	position: absolute;
+	left: 29px;
+	width: 2px;
+	height: 100%;
+	z-index: 400;
+}
+ul.timeline-anotacoes > li {
+	margin: 20px 0;
+	padding-left: 20px;
+}
+ul.timeline-anotacoes > li:before {
+	content: ' ';
+	background: white;
+	display: inline-block;
+	position: absolute;
+	border-radius: 50%;
+	border: 3px solid #343f60;
+	left: 20px;
+	width: 20px;
+	height: 20px;
+	z-index: 400;
+}
+
+#form-anotacao input {
+	width: 100%;
+	height: 100px;
+}
+
+.editar-anotacao,
+.remover-anotacao{
+	cursor: pointer;
+}
+
+.acoes-anotacao,{
+	position: relative;	
+}
+
+.acoes-anotacao i{
+	padding: 3px;	
+}
+
+.acoes-anotacao .fa-trash{
+	color: #ce1818;
+}
+
+.acoes-anotacao .fa-edit{
+	color: #384670;
+}
+
+/*
+*
+* CSS TIMES
+*
+*/
+
+.ver-detalhes-time,.ver-detalhes-membro-time{
+	cursor: pointer;
+}
+
+.box-btn{
+	text-align: right;
+}
+
+.box-btn .btn{
+	margin-top: -60px;
+}
+
+
+
+
+

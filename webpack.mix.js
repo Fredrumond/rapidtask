@@ -11,5 +11,13 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+ mix.js('resources/js/app.js', 'public/js')
+ .js('resources/js/tarefas/tarefa-main.js', 'public/js')
+ .js('resources/js/times/time-main.js', 'public/js')
+ .js('resources/js/times/time-ver.js', 'public/js')
+ .js('resources/js/clientes/cliente-main.js', 'public/js')
+ .js('resources/js/clientes/cliente-ver.js', 'public/js')
+  .js('resources/js/projetos/projeto-main.js', 'public/js')
+ .js('resources/js/projetos/projeto-ver.js', 'public/js')
+ .js('resources/js/projetos/projeto-detalhes.js', 'public/js')
+ .sass('resources/sass/app.scss', 'public/css');
