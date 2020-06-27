@@ -169,7 +169,7 @@ class TarefasController extends Controller
 		from tarefas t 
 		INNER JOIN tipos tp ON t.tipo_id = tp.id
 		INNER JOIN projetos p ON p.id = t.projeto_id
-		INNER JOIN TIME ti ON ti.id = p.time_id
+		INNER JOIN time ti ON ti.id = p.time_id
 		INNER JOIN time_membro tm ON tm.time_id = ti.id
 		WHERE tm.usuario_id = '" . Auth::user()->id . "'
 		GROUP BY t.tipo_id";		
