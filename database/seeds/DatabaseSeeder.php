@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
     		TiposTableSeeder::class,
     		PrioridadesTableSeeder::class,
     		TimeNivelTableSeeder::class,
+    		LogAcaoTableSeeder::class,
+    		LogTipoTableSeeder::class,
     	]);
     }
 }
