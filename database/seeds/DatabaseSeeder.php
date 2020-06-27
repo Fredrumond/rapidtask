@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     		SituacoesTableSeeder::class,
     		TiposTableSeeder::class,
     		PrioridadesTableSeeder::class,
+    		TimeNivelTableSeeder::class,
     	]);
     }
 }
