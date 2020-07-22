@@ -73,10 +73,10 @@ class ProjetosController extends Controller
 		$projeto = Projetos::find($id);
 		$atraso = $this->calculaAtraso($projeto->dt_inicio,$projeto->dt_prevista);
 		$tarefasTotal = Tarefas::where('projeto_id',$projeto->id)->get();
-		$tarefasNovas = Tarefas::where('projeto_id',$projeto->id)->where('situacao_id','=','1')->get();
-		$tarefasAndamento = Tarefas::where('projeto_id',$projeto->id)->where('situacao_id','=','2')->get();
-		$tarefasEspera = Tarefas::where('projeto_id',$projeto->id)->where('situacao_id','=','3')->get();
-		$tarefasConcluida = Tarefas::where('projeto_id',$projeto->id)->where('situacao_id','=','4')->get();		
+		$tarefasNovas = Tarefas::where('projeto_id',$projeto->id)->where('situacao_id','=','1')->where('status','=','0')->get();
+		$tarefasAndamento = Tarefas::where('projeto_id',$projeto->id)->where('situacao_id','=','2')->where('status','=','0')->get();
+		$tarefasEspera = Tarefas::where('projeto_id',$projeto->id)->where('situacao_id','=','3')->where('status','=','0')->get();
+		$tarefasConcluida = Tarefas::where('projeto_id',$projeto->id)->where('situacao_id','=','4')->where('status','=','0')->get();		
 		$progressoProjeto = $this->calculaProgresso($tarefasTotal,$tarefasConcluida);
 		
 		return view('admin.projetos.detalhes',compact('projeto','atraso','progressoProjeto','tarefasNovas','tarefasAndamento','tarefasEspera','tarefasConcluida'));
