@@ -364,6 +364,10 @@ ul.timeline-historico > li:before {
 	display: inline-block;
 }
 
+.projeto-dados .config-projeto {
+	cursor: pointer;
+}
+
 .tab-content-projeto{
 	background: rgba(204, 204, 204, 0.31);
 }
