@@ -221,7 +221,7 @@ $('#form-membro-time').submit(function (e) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\FREDERICO\Desktop\Projetos\rapidtask\resources\js\times\time-ver.js */"./resources/js/times/time-ver.js");
+module.exports = __webpack_require__(/*! /Users/fredericodrumond/Documents/Projetos/rapidtask/resources/js/times/time-ver.js */"./resources/js/times/time-ver.js");
 
 
 /***/ })

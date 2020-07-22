@@ -155,9 +155,9 @@
 	padding: 20px;
 }
 
-.tarefas h4{
+/* .tarefas h4{
 	color: #343f60;
-}
+} */
 
 
 ul.timeline {
@@ -281,7 +281,7 @@ ul.timeline-historico > li:before {
 	cursor: pointer;
 }
 
-.acoes-comentario,{
+.acoes-comentario {
 	position: relative;	
 }
 
