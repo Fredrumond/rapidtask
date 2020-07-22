@@ -60,5 +60,5 @@
 </div>
 @endsection
 @section('script')
-<script type="text/javascript" src="{{ asset('js/cliente-main.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/cliente-ver.js') }}"></script>
 @endsection

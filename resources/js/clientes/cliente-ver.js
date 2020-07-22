@@ -1,5 +1,5 @@
  $(document).ready(function() {
-
+  console.log("TA ENTRANDO NO CV?")
   //VER DETALHES DO PROJETO
   $(".ver-detalhes-projeto").click(function() {      
     let id = $(this).data("id");      
@@ -9,7 +9,7 @@
   //ATUALIZAR DADOS DO CLIENTE
   $('#form-atualiza-cliente').submit( function(e) {
     e.preventDefault();         
-
+    console.log("VEIO NO SUBMIT")
     let form = $(this);
     let dados = form.serialize()
     

@@ -94,7 +94,8 @@
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  //VER DETALHES DO PROJETO
+  console.log("TA ENTRANDO NO CV?"); //VER DETALHES DO PROJETO
+
   $(".ver-detalhes-projeto").click(function () {
     var id = $(this).data("id");
     window.location = '/admin/projeto/detalhe/' + id;
@@ -102,6 +103,7 @@ $(document).ready(function () {
 
   $('#form-atualiza-cliente').submit(function (e) {
     e.preventDefault();
+    console.log("VEIO NO SUBMIT");
     var form = $(this);
     var dados = form.serialize();
     alertify.set('notifier', 'position', 'top-right');
