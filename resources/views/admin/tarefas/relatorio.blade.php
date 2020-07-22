@@ -4,7 +4,7 @@
 	<div class="col-12 tarefas">
 		<h4>Relatorio Tarefas</h4>
 		<div class="box-btn">
-			<a class="btn btn-success" href="#">Botao</a>			
+			<!-- <a class="btn btn-success" href="#">Botao</a>			 -->
 		</div>		
 		<div class="board-tarefas">
 			<table class="table">
