@@ -49,8 +49,8 @@
             <div class="card bg-primary" style="width: 18rem; margin-right: 14px;">
                 <div class="card-header">Nova</div>
                 <ul class="list-group list-group-flush">
-                    @foreach ($tarefasNovas as $nova)                        
-                    <li class="list-group-item">                            
+                    @foreach ($tarefasNovas as $nova)
+                    <li class="list-group-item ver-detalhes-tarefa" data-id="{{$nova->id}}">                            
                         {{$nova->titulo}} 
                         <?php 
                         if ($nova->prioridade_id == 1) {
@@ -74,7 +74,7 @@
                 <div class="card-header">Andamento</div>
                 <ul class="list-group list-group-flush">
                  @foreach ($tarefasAndamento as $andamento)                        
-                 <li class="list-group-item">                            
+                 <li class="list-group-item ver-detalhes-tarefa" data-id="{{$andamento->id}}">                             
                     {{$andamento->titulo}} 
                     <?php 
                     if ($andamento->prioridade_id == 1) {
@@ -98,7 +98,7 @@
             <div class="card-header">Em espera</div>
             <ul class="list-group list-group-flush">
              @foreach ($tarefasEspera as $espera)                        
-             <li class="list-group-item">                            
+             <li class="list-group-item ver-detalhes-tarefa" data-id="{{$espera->id}}">                             
                 {{$espera->titulo}} 
                 <?php 
                 if ($espera->prioridade_id == 1) {
