@@ -17,7 +17,8 @@ const mix = require('laravel-mix');
  .js('resources/js/times/time-ver.js', 'public/js')
  .js('resources/js/clientes/cliente-main.js', 'public/js')
  .js('resources/js/clientes/cliente-ver.js', 'public/js')
-  .js('resources/js/projetos/projeto-main.js', 'public/js')
+ .js('resources/js/projetos/projeto-main.js', 'public/js')
  .js('resources/js/projetos/projeto-ver.js', 'public/js')
  .js('resources/js/projetos/projeto-detalhes.js', 'public/js')
- .sass('resources/sass/app.scss', 'public/css');
+ .sass('resources/sass/app.scss', 'public/css')
+ .sass('resources/sass/global.scss', 'public/css');

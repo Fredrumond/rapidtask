@@ -11,9 +11,10 @@
     <!-- ALERTFY-->
     <link rel="stylesheet" href="{{ asset('alertfy/css/alertify.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('alertfy/css/themes/default.min.css') }}" />
-    <!-- STYLE -->    
+    <!-- STYLE --> 
     <link rel="stylesheet" href="/css/tema.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <!-- <link rel="stylesheet" href="/css/style.css"> -->
+    <link rel="stylesheet" href="/css/global.css">   
 </head>
 <body>
 

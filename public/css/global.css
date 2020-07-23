@@ -1,0 +1,30 @@
+.content-page,
+.navbar-custom {
+  margin-left: 0px;
+}
+
+.menu-custom ul li a {
+  color: #fff;
+  padding: 12px 10px;
+  font-size: 14px;
+  font-family: Sarabun, sans-serif;
+  line-height: 42px;
+}
+
+.menu-custom ul li a:hover {
+  color: #b4c9de;
+  text-decoration: none;
+}
+
+.menu-custom ul li a i {
+  vertical-align: middle;
+  font-size: 14px;
+  width: 20px;
+  display: inline-block;
+}
+
+.menu-custom ul li a span {
+  vertical-align: middle;
+  margin-left: 1px;
+}
+

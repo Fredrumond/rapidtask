@@ -1,0 +1,35 @@
+// Variables
+@import 'variables';
+
+.content-page, .navbar-custom  { margin-left: 0px; }
+
+.menu-custom {
+    ul {
+        li {
+            a {
+                color: $text-primary;
+                padding: 12px 10px;
+                font-size: $font-size-default;
+                font-family: Sarabun, sans-serif;
+                line-height: 42px;
+
+                &:hover {
+                    color: $text-primary-hover;
+                    text-decoration: none;
+                }
+
+                i {
+                    vertical-align: middle;
+                    font-size: $font-size-default;
+                    width: 20px;
+                    display: inline-block;
+                }
+
+                span {
+                    vertical-align: middle;
+                    margin-left: 1px;
+                }
+            }
+        }
+    }
+}
