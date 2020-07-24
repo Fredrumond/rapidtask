@@ -2,13 +2,16 @@
 @section('content')
 <div class="row ">
 	<div class="col-12 tarefas">
-		<h4>Tarefas</h4>
-		<div class="box-btn">
-			<a class="btn btn-success" href="{{ route('admin.nova-tarefa') }}">Nova Tarefa</a>
-			<a class="btn btn-info" href="{{ route('admin.arquivadas-tarefa') }}">Arquivadas</a></td>
-			<a class="btn btn-secondary" href="{{ route('admin.relatorio-tarefa') }}">Relatorio</a></td>
+		<div class="panel-header">
+			<div class="panel-title">
+				<h4>Tarefas</h4>
+			</div>
+			<div class="panel-action">
+				<a class="btn btn-success" href="{{ route('admin.nova-tarefa') }}">Nova Tarefa</a>
+				<a class="btn btn-info" href="{{ route('admin.arquivadas-tarefa') }}">Arquivadas</a></td>
+				<a class="btn btn-secondary" href="{{ route('admin.relatorio-tarefa') }}">Relatorio</a></td>
+			</div>
 		</div>
-
 		<div class="board-tarefas">
 			<table class="table">
 				<thead class="text-center">

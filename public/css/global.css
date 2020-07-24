@@ -3,6 +3,10 @@
   margin-left: 0px;
 }
 
+.table {
+  color: #fff;
+}
+
 .menu-custom ul li a {
   color: #fff;
   padding: 12px 10px;
@@ -26,5 +30,26 @@
 .menu-custom ul li a span {
   vertical-align: middle;
   margin-left: 1px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.acoes-comentario {
+  color: #fff;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.acoes-comentario i {
+  padding: 3px;
 }
 

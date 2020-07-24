@@ -16,7 +16,7 @@
             .done(function(response) {              
                 var comentarios = "";
                 $.each( response.comentarios, function( key, value ) {                      
-                    comentarios += '<li class="feed-item"><div class="feed-item-list"><span class="date">'+value.nome+'   '+value.data+'</span> <span class="activity-text">'+value.comentario+'</span><div class="acoes-comentario"><i class="fas fa-edit editar-comentario" data-id="'+value.id+'"></i><i class="fas fa-trash remover-comentario" data-id="'+value.id+'"></i></div></div></li>';                    
+                    comentarios += '<li class="feed-item"><div class="feed-item-list"><span class="date">'+value.nome+'   '+value.data+'</span> <span class="activity-text">'+value.comentario+'</span><div class="acoes-comentario cursor"><i class="fas fa-edit editar-comentario" data-id="'+value.id+'"></i><i class="fas fa-trash remover-comentario" data-id="'+value.id+'"></i></div></div></li>';                    
                 });
                 $('.timeline-comentarios').html(comentarios);               
             })

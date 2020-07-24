@@ -19,13 +19,6 @@
 <body>
 
     <div class="topbar">
-        <!-- <div class="topbar-logo">
-            <a href="index.html" class="logo">
-                <span>
-                    <img src=""> 
-                </span>
-            </a>
-        </div> -->
         <nav class="navbar-custom">
             <div class="menu-custom">
                 <ul class="navbar-left d-flex list-inline float-left mb-0">

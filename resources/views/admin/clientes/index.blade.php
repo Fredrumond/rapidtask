@@ -2,9 +2,13 @@
 @section('content')
 <div class="row ">
 	<div class="col-12 clientes">
-		<h4>Clientes</h4>
-		<div class="box-btn">
-			<a class="btn btn-success" href="{{ route('admin.novo-cliente') }}">Novo Cliente</a>
+		<div class="panel-header">
+			<div class="panel-title">
+				<h4>Clientes</h4>
+			</div>
+			<div class="panel-action">
+				<a class="btn btn-success" href="{{ route('admin.novo-cliente') }}">Novo Cliente</a>
+			</div>
 		</div>
 		<div class="board-clientes">
 			<table class="table">
@@ -13,7 +17,7 @@
 						<th scope="col">Ref</th>
 						<th scope="col">Nome</th>
 						<th scope="col">Email</th>
-						<th scope="col">Telefone</th
+						<th scope="col">Telefone</th>
 					</tr>
 				</thead>
 				<tbody>

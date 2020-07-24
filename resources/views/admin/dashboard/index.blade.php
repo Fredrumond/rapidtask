@@ -94,7 +94,7 @@
 						</thead>
 						<tbody>
 							@foreach ($tarefas as $tarefa)
-							<tr class="text-center ver-detalhes-tarefa" data-id="{{$tarefa->id}}">
+							<tr class="text-center cursor ver-detalhes-tarefa" data-id="{{$tarefa->id}}">
 								<th scope="row">#{{$tarefa->sigla}}-{{$tarefa->id}}</th>
 								<td>{{$tarefa->tipo}}</td>
 								<td>

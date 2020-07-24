@@ -3,6 +3,8 @@
 
 .content-page, .navbar-custom  { margin-left: 0px; }
 
+.table { color: $text-primary;}
+
 .menu-custom {
     ul {
         li {
@@ -33,3 +35,28 @@
         }
     }
 }
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.cursor { cursor: pointer; }
+
+// TAREFAS
+
+.acoes-comentario {
+    color: $white;
+    display: flex;
+    justify-content: flex-end;
+
+    i { padding: 3px; }
+}
+
+// CLIENTES
+
+// .ver-detalhes-cliente{
+// 	cursor: pointer;
+// }

@@ -2,9 +2,13 @@
 @section('content')
 <div class="row ">
 	<div class="col-12 projetos">
-		<h4>Projetos</h4>
-		<div class="box-btn">
-			<a class="btn btn-success" href="{{ route('admin.novo-projeto') }}">Novo Projeto</a>
+		<div class="panel-header">
+			<div class="panel-title">
+				<h4>Projetos</h4>
+			</div>
+			<div class="panel-action">
+				<a class="btn btn-success" href="{{ route('admin.novo-projeto') }}">Novo Projeto</a>
+			</div>
 		</div>
 		<div class="board-projetos">
 			<table class="table">

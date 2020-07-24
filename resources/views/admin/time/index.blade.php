@@ -2,11 +2,14 @@
 @section('content')
 <div class="row ">
 	<div class="col-12 times">
-		<h4>Times</h4>
-		<div class="box-btn">					
-			<button class="btn btn-success adicionar-novo-time">Novo Time</button>
+		<div class="panel-header">
+			<div class="panel-title">
+				<h4>Times</h4>
+			</div>
+			<div class="panel-action">
+				<button class="btn btn-success adicionar-novo-time">Novo Time</button>
+			</div>
 		</div>
-
 		<div class="board-times">
 			<table class="table">
 				<thead class="text-center">
