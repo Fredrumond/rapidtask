@@ -36,14 +36,6 @@
                 </ul>
             </div>
             <ul class="navbar-right d-flex list-inline float-right mb-0">
-                <li class="dropdown notification-list d-none d-md-block">
-                    <form role="search" class="app-search">
-                        <div class="form-group mb-0">
-                            <input type="text" class="form-control" placeholder="Buscar...">
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </div>
-                    </form>
-                </li>
                 <li class="dropdown notification-list">
                     <a class="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <i class="fas fa-bell noti-icon"></i>                        
@@ -95,7 +87,15 @@
                                 <a class="dropdown-item" href="{{ route('admin.perfil') }}"><i class="mdi mdi-account-circle m-r-5"></i> Perfil</a> 
                                 <a class="dropdown-item" href="#"><i class="mdi mdi-wallet m-r-5"></i>Configuraões</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#"><i class="mdi mdi-power text-danger"></i> Sair</a>
+                                <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                    <i class="mdi mdi-power text-danger"></i> Sair
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </li>                    

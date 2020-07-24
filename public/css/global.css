@@ -46,7 +46,6 @@
 
 .panel-header .panel-action {
   display: flex;
-  flex: 1;
 }
 
 .cursor {
@@ -66,5 +65,6 @@
 .project-details {
   justify-content: space-evenly;
   font-size: 20px;
+  flex: 1;
 }
 
