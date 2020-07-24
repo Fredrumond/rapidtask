@@ -39,6 +39,16 @@
   padding: 10px 0;
 }
 
+.panel-header .panel-title {
+  display: flex;
+  flex: 1;
+}
+
+.panel-header .panel-action {
+  display: flex;
+  flex: 1;
+}
+
 .cursor {
   cursor: pointer;
 }
@@ -51,5 +61,10 @@
 
 .acoes-comentario i {
   padding: 3px;
+}
+
+.project-details {
+  justify-content: space-evenly;
+  font-size: 20px;
 }
 

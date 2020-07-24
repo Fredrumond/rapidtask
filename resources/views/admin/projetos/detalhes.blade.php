@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-6 projeto-nome">
         <h1><i class="fas fa-book"></i>{{$projeto->nome}} - {{$projeto->sigla}} / {{$projeto->cliente->nome}}</h1>
     </div>
@@ -23,9 +23,36 @@
             <li><i class="fas fa-cog config-projeto" data-id="{{$projeto->id}}"></i></li>
         </ul>
     </div>
-</div>
+</div> -->
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-12">
+        <div class="panel-header">
+			<div class="panel-title">
+                <h4>{{$projeto->nome}} - {{$projeto->sigla}} / {{$projeto->cliente->nome}}</h4>
+			</div>
+			<div class="panel-action project-details">
+                <div>
+                    <i class="far fa-calendar-alt"></i>
+                    @if(isset($projeto->dt_inicio) && isset($projeto->dt_prevista))
+                    {{date('d/m/Y', strtotime($projeto->dt_inicio))}} - {{date('d/m/Y', strtotime($projeto->dt_prevista))}}
+                    @else
+                    <span>Sem data programada</span>
+                    @endif
+                </div>
+                @if($atraso > 0)
+                    <div>
+                        <i class="far fa-clock"></i>
+                        <span style="background: red; color: #fff;padding: 0px 3px;">{{$atraso}} dias atrasado</span>
+                    </div>
+                @endif
+                <div>
+                    <i class="fas fa-chart-line"></i>{{$progressoProjeto}}%
+                </div>
+                <div>
+                    <i class="fas fa-cog config-projeto cursor" data-id="{{$projeto->id}}"></i>
+                </div>
+			</div>
+		</div>
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#passo1">Tarefas</a>

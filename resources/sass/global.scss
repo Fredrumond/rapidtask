@@ -41,6 +41,16 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
+
+    .panel-title {
+        display: flex;
+        flex: 1;
+    }
+
+    .panel-action {
+        display: flex;
+        flex: 1;
+    }
 }
 
 .cursor { cursor: pointer; }
@@ -55,8 +65,10 @@
     i { padding: 3px; }
 }
 
-// CLIENTES
+// PROJETOS
 
-// .ver-detalhes-cliente{
-// 	cursor: pointer;
-// }
+.project-details {
+    justify-content: space-evenly;
+    font-size: 20px;
+}
+

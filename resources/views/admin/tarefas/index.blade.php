@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-<div class="row ">
+<div class="row">
 	<div class="col-12 tarefas">
 		<div class="panel-header">
 			<div class="panel-title">
