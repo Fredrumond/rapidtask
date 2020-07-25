@@ -129,7 +129,7 @@ $(document).ready(function () {
     }).done(function (response) {
       var anotacoes = "";
       $.each(response.anotacoes, function (key, value) {
-        anotacoes += '<li class="feed-item"><div class="feed-item-list"><span class="date">' + value.nome + '   ' + value.data + '</span> <span class="activity-text">' + value.anotacao + '</span><div class="acoes-anotacao"><i class="fas fa-edit editar-anotacao" data-id="' + value.id + '"></i><i class="fas fa-trash remover-anotacao" data-id="' + value.id + '"></i></div></div></li>';
+        anotacoes += '<li class="feed-item"><div class="feed-item-list"><span class="date">' + value.nome + '   ' + value.data + '</span> <span class="activity-text">' + value.anotacao + '</span><div class="acoes-anotacao cursor"><i class="fas fa-edit editar-anotacao" data-id="' + value.id + '"></i><i class="fas fa-trash remover-anotacao" data-id="' + value.id + '"></i></div></div></li>';
       });
       $('.timeline-anotacoes').html(anotacoes);
     }).fail(function (error) {

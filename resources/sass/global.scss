@@ -72,3 +72,17 @@
     flex: 1;
 }
 
+.card-header {
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+	color: #000;
+	text-transform: uppercase;
+}
+
+.acoes-anotacao {
+    color: $white;
+    display: flex;
+
+    i { padding: 3px; }	
+}
