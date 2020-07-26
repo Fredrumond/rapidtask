@@ -48,150 +48,150 @@
             <div class="box-btn">
                <a class="btn btn-success" href="{{ route('admin.nova-tarefa') }}">Nova Tarefa</a>
            </div>
-           <div class="row container-fluid">
-            <div class="card bg-primary" style="width: 18rem; margin-right: 14px;">
-                <div class="card-header">Nova</div>
-                <ul class="list-group list-group-flush">
+            <div class="board">
+                <div class="item">
+                    <div class="title news">Novas</div>
                     @foreach ($tarefasNovas as $nova)
-                    <li class="list-group-item ver-detalhes-tarefa" data-id="{{$nova->id}}">                            
-                        {{$nova->titulo}} 
-                        <?php 
-                        if ($nova->prioridade_id == 1) {
-                            echo '<span class="badge badge-info">Baixo</span>';
-                        }
-                        if ($nova->prioridade_id == 2) {
-                            echo '<span class="badge badge-secondary">Normal</span>';
-                        }
-                        if ($nova->prioridade_id == 3) {
-                            echo '<span class="badge badge-warning">Urgente</span>';
-                        }
-                        if ($nova->prioridade_id == 4) {
-                            echo '<span class="badge badge-danger">Imediato</span>';
-                        }
-                        ?>                           
-                    </li>                        
-                    @endforeach                        
-                </ul>                    
+                        <div class="card-board cursor ver-detalhes-tarefa" data-id="{{$nova->id}}">
+                            <div class="card-badge">
+                            <?php 
+                                if ($nova->prioridade_id == 1) {
+                                    echo '<span class="badge badge-info">Baixo</span>';
+                                }
+                                if ($nova->prioridade_id == 2) {
+                                    echo '<span class="badge badge-secondary">Normal</span>';
+                                }
+                                if ($nova->prioridade_id == 3) {
+                                    echo '<span class="badge badge-warning">Urgente</span>';
+                                }
+                                if ($nova->prioridade_id == 4) {
+                                    echo '<span class="badge badge-danger">Imediato</span>';
+                                }
+                            ?>         
+                            </div>
+                            <span>{{$nova->titulo}}</span>
+                        </div>
+                    @endforeach  
+                </div>
+                <div class="item">
+                    <div class="title inProgress">Em andamento</div>
+                    @foreach ($tarefasAndamento as $andamento) 
+                        <div class="card-board cursor ver-detalhes-tarefa" data-id="{{$nova->id}}">
+                            <div class="card-badge">
+                            <?php 
+                                if ($andamento->prioridade_id == 1) {
+                                    echo '<span class="badge badge-info">Baixo</span>';
+                                }
+                                if ($andamento->prioridade_id == 2) {
+                                    echo '<span class="badge badge-secondary">Normal</span>';
+                                }
+                                if ($andamento->prioridade_id == 3) {
+                                    echo '<span class="badge badge-warning">Urgente</span>';
+                                }
+                                if ($andamento->prioridade_id == 4) {
+                                    echo '<span class="badge badge-danger">Imediato</span>';
+                                }
+                            ?>         
+                            </div>
+                            <span>{{$andamento->titulo}}</span>
+                        </div>
+                    @endforeach  
+                </div>
+                <div class="item">
+                    <div class="title waiting">Em espera</div>
+                    @foreach ($tarefasEspera as $espera)
+                        <div class="card-board cursor ver-detalhes-tarefa" data-id="{{$nova->id}}">
+                            <div class="card-badge">
+                            <?php 
+                                if ($espera->prioridade_id == 1) {
+                                    echo '<span class="badge badge-info">Baixo</span>';
+                                }
+                                if ($espera->prioridade_id == 2) {
+                                    echo '<span class="badge badge-secondary">Normal</span>';
+                                }
+                                if ($espera->prioridade_id == 3) {
+                                    echo '<span class="badge badge-warning">Urgente</span>';
+                                }
+                                if ($espera->prioridade_id == 4) {
+                                    echo '<span class="badge badge-danger">Imediato</span>';
+                                }
+                            ?>         
+                            </div>
+                            <span>{{$espera->titulo}}</span>
+                        </div>
+                    @endforeach  
+                </div>
+                <div class="item">
+                    <div class="title done">Finalizadas</div>
+                    @foreach ($tarefasConcluida as $concluida)
+                        <div class="card-board cursor ver-detalhes-tarefa" data-id="{{$nova->id}}">
+                            <div class="card-badge">
+                            <?php 
+                                if ($concluida->prioridade_id == 1) {
+                                    echo '<span class="badge badge-info">Baixo</span>';
+                                }
+                                if ($concluida->prioridade_id == 2) {
+                                    echo '<span class="badge badge-secondary">Normal</span>';
+                                }
+                                if ($concluida->prioridade_id == 3) {
+                                    echo '<span class="badge badge-warning">Urgente</span>';
+                                }
+                                if ($concluida->prioridade_id == 4) {
+                                    echo '<span class="badge badge-danger">Imediato</span>';
+                                }
+                            ?>         
+                            </div>
+                            <span>{{$concluida->titulo}}</span>
+                        </div>
+                    @endforeach  
+                </div>
             </div>
-            <div class="card bg-light" style="width: 18rem; margin-right: 14px;">
-                <div class="card-header">Andamento</div>
-                <ul class="list-group list-group-flush">
-                 @foreach ($tarefasAndamento as $andamento)                        
-                 <li class="list-group-item ver-detalhes-tarefa" data-id="{{$andamento->id}}">                             
-                    {{$andamento->titulo}} 
-                    <?php 
-                    if ($andamento->prioridade_id == 1) {
-                        echo '<span class="badge badge-info">Baixo</span>';
-                    }
-                    if ($andamento->prioridade_id == 2) {
-                        echo '<span class="badge badge-secondary">Normal</span>';
-                    }
-                    if ($andamento->prioridade_id == 3) {
-                        echo '<span class="badge badge-warning">Urgente</span>';
-                    }
-                    if ($andamento->prioridade_id == 4) {
-                        echo '<span class="badge badge-danger">Imediato</span>';
-                    }
-                    ?>                           
-                </li>                        
-                @endforeach
-            </ul>                    
         </div>
-        <div class="card bg-warning" style="width: 18rem; margin-right: 14px;">
-            <div class="card-header">Em espera</div>
-            <ul class="list-group list-group-flush">
-             @foreach ($tarefasEspera as $espera)                        
-             <li class="list-group-item ver-detalhes-tarefa" data-id="{{$espera->id}}">                             
-                {{$espera->titulo}} 
-                <?php 
-                if ($espera->prioridade_id == 1) {
-                    echo '<span class="badge badge-info">Baixo</span>';
-                }
-                if ($espera->prioridade_id == 2) {
-                    echo '<span class="badge badge-secondary">Normal</span>';
-                }
-                if ($espera->prioridade_id == 3) {
-                    echo '<span class="badge badge-warning">Urgente</span>';
-                }
-                if ($espera->prioridade_id == 4) {
-                    echo '<span class="badge badge-danger">Imediato</span>';
-                }
-                ?>                           
-            </li>                        
-            @endforeach
-        </ul>                    
-    </div>
-    <div class="card bg-success" style="width: 18rem; margin-right: 14px;">
-        <div class="card-header">Finalizado</div>
-        <ul class="list-group list-group-flush">
-         @foreach ($tarefasConcluida as $concluida)                        
-         <li class="list-group-item ver-detalhes-tarefa" data-id="{{$concluida->id}}">                            
-            {{$concluida->titulo}} 
-            <?php 
-            if ($concluida->prioridade_id == 1) {
-                echo '<span class="badge badge-info">Baixo</span>';
-            }
-            if ($concluida->prioridade_id == 2) {
-                echo '<span class="badge badge-secondary">Normal</span>';
-            }
-            if ($concluida->prioridade_id == 3) {
-                echo '<span class="badge badge-warning">Urgente</span>';
-            }
-            if ($concluida->prioridade_id == 4) {
-                echo '<span class="badge badge-danger">Imediato</span>';
-            }
-            ?>                           
-        </li>                        
-        @endforeach  
-    </ul>            
-</div>
-</div>
-</div>
-<div id="passo2" class="tab-pane fade">
- <a class="btn btn-success adicionar-arquivo-projeto">Adicionar arquivo</a>
- <div class="board-tarefas">
-    <table class="table tabela-arquivos">
-        <thead class="text-center">
-            <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Data</th>
-                <th scope="col">Acões</th>                        
-            </tr>
-        </thead>
-        <tbody class="tabela-arquivos-lista">
-            <tr class="text-center tarefa-arquivada">
-                <td><button class="btn btn-danger excluir-tarefa" data-id="{{$projeto->id}}">Excluir</button></td>                               
-            </tr>
+        <div id="passo2" class="tab-pane fade">
+            <a class="btn btn-success adicionar-arquivo-projeto">Adicionar arquivo</a>
+            <div class="board-tarefas">
+                <table class="table tabela-arquivos">
+                    <thead class="text-center">
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Data</th>
+                            <th scope="col">Acões</th>                        
+                        </tr>
+                    </thead>
+                    <tbody class="tabela-arquivos-lista">
+                        <tr class="text-center tarefa-arquivada">
+                            <td><button class="btn btn-danger excluir-tarefa" data-id="{{$projeto->id}}">Excluir</button></td>                               
+                        </tr>
 
-        </tbody>
-    </table>
-</div>
-</div>
-<div id="passo3" class="tab-pane fade">
-    <h1>Anotações</h1>
-    <div class="anotacoes-projeto">
-        <div class="box-btn">
-            <button class="btn btn-success nova-anotacao">Inserir nota</button>   
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="box-anotacao">
-            <form id="form-anotacao">
-                @csrf
-                <label>Anotação</label>
-                <input type="hidden" name="projeto_id" id="projeto_id" value="{{$projeto->id}}">
-                <textarea class="form-control" rows="3" name="anotacao" id="anotacao"></textarea>
-                <button type="submit" class="btn btn-primary">Enviar</button>
-                <button type ="button" class="btn btn-primary cancelar-anotacao">Cancelar</button>
-            </form>
-        </div>              
-        <ol class="activity-feed timeline-anotacoes">                 
-        </ol>
+        <div id="passo3" class="tab-pane fade">
+            <h1>Anotações</h1>
+            <div class="anotacoes-projeto">
+                <div class="box-btn">
+                    <button class="btn btn-success nova-anotacao">Inserir nota</button>   
+                </div>
+                <div class="box-anotacao">
+                    <form id="form-anotacao">
+                        @csrf
+                        <label>Anotação</label>
+                        <input type="hidden" name="projeto_id" id="projeto_id" value="{{$projeto->id}}">
+                        <textarea class="form-control" rows="3" name="anotacao" id="anotacao"></textarea>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <button type ="button" class="btn btn-primary cancelar-anotacao">Cancelar</button>
+                    </form>
+                </div>              
+                <ol class="activity-feed timeline-anotacoes">                 
+                </ol>
+            </div>
+        </div>
+        <div id="passo4" class="tab-pane fade">
+            <h1>Passo 4</h1>
+        </div>
     </div>
-</div>
-<div id="passo4" class="tab-pane fade">
-    <h1>Passo 4</h1>
-</div>
-</div>
 </div>
 </div>
 

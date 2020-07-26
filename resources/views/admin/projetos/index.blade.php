@@ -26,7 +26,7 @@
 				</thead>
 				<tbody>
 					@foreach ($projetos as $projeto)
-					<tr class="text-center ver-detalhes-projeto" data-id="{{$projeto->id}}">
+					<tr class="text-center ver-detalhes-projeto cursor" data-id="{{$projeto->id}}">
 						<th scope="row">{{$projeto->id}}</th>
 						<td>{{$projeto->nome}}</td>
 						<td>{{$projeto->cliente}}</td>

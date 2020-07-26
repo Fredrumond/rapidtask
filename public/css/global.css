@@ -85,3 +85,48 @@
   padding: 3px;
 }
 
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.board .item {
+  display: flex;
+  flex-direction: column;
+  background-color: #37394c;
+  padding: 20px;
+}
+
+.board .item .title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.board .item .news {
+  border-bottom: 1px solid #626ed4;
+}
+
+.board .item .inProgress {
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.board .item .waiting {
+  border-bottom: 1px solid #f8b425;
+}
+
+.board .item .done {
+  border-bottom: 1px solid #02a499;
+}
+
+.board .item .card-board {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 10px 9px 10px -6px rgba(0, 0, 0, 0.59);
+  padding: 5px;
+  background: #fff;
+  color: #000;
+  margin-bottom: 10px;
+}
+
