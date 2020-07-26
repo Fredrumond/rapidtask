@@ -1,15 +1,20 @@
 @extends('layouts.admin')
 @section('content')
+
+@php
+	$newProject = new StdClass;
+	$newProject->class = 'success';
+	$newProject->route = 'admin.novo-projeto';
+	$newProject->title = 'Novo Projeto';
+@endphp
+
 <div class="row ">
 	<div class="col-12 projetos">
-		<div class="panel-header">
-			<div class="panel-title">
-				<h4>Projetos</h4>
-			</div>
-			<div class="panel-action">
-				<a class="btn btn-success" href="{{ route('admin.novo-projeto') }}">Novo Projeto</a>
-			</div>
-		</div>
+		@panelHeader([
+			'title' => 'Projetos',
+			'actions' => [$newProject]
+			])
+		@endpanelHeader
 		<div class="board-projetos">
 			<table class="table">
 				<thead class="text-center">

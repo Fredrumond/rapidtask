@@ -1,29 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-<!-- <div class="row">
-    <div class="col-md-6 projeto-nome">
-        <h1><i class="fas fa-book"></i>{{$projeto->nome}} - {{$projeto->sigla}} / {{$projeto->cliente->nome}}</h1>
-    </div>
-    <div class="col-md-6 projeto-dados">
-        <ul>
-            <li>
-                <i class="far fa-calendar-alt"></i>
-                @if(isset($projeto->dt_inicio) && isset($projeto->dt_prevista))
-                {{date('d/m/Y', strtotime($projeto->dt_inicio))}} - {{date('d/m/Y', strtotime($projeto->dt_prevista))}}
-                @else
-                <span>Sem data programada</span>
-                @endif
-            </li>
-            @if($atraso > 0)
-            <li><i class="far fa-clock"></i>
-                <span style="background: red; color: #fff;padding: 0px 3px;">{{$atraso}} dias atrasado</span>
-            </li>
-            @endif
-            <li><i class="fas fa-chart-line"></i>{{$progressoProjeto}}%</li>
-            <li><i class="fas fa-cog config-projeto" data-id="{{$projeto->id}}"></i></li>
-        </ul>
-    </div>
-</div> -->
 <div class="row">
     <div class="col-12">
         <div class="panel-header">

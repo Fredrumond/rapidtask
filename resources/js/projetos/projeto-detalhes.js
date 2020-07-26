@@ -1,7 +1,5 @@
  $(document).ready(function() {
-    console.log("DETALHES")
     $(".ver-detalhes-tarefa").click(function() {
-        console.log("oi")
         let id = $(this).data("id");
         
         window.location = '/admin/tarefa/ver/'+id;

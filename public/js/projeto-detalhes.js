@@ -94,9 +94,7 @@
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  console.log("DETALHES");
   $(".ver-detalhes-tarefa").click(function () {
-    console.log("oi");
     var id = $(this).data("id");
     window.location = '/admin/tarefa/ver/' + id;
   });

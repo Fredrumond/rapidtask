@@ -1,17 +1,29 @@
 @extends('layouts.admin')
 @section('content')
+
+@php
+	$newTask = new StdClass;
+	$newTask->class = 'success';
+	$newTask->route = 'admin.nova-tarefa';
+	$newTask->title = 'Nova Tarefa';
+
+	$archived = new StdClass;
+	$archived->class = 'info';
+	$archived->route = 'admin.arquivadas-tarefa';
+	$archived->title = 'Arquivadas';
+
+	$report = new StdClass;
+	$report->class = 'secondary';
+	$report->route = 'admin.relatorio-tarefa';
+	$report->title = 'Relatório';
+@endphp
 <div class="row">
 	<div class="col-12 tarefas">
-		<div class="panel-header">
-			<div class="panel-title">
-				<h4>Tarefas</h4>
-			</div>
-			<div class="panel-action">
-				<a class="btn btn-success" href="{{ route('admin.nova-tarefa') }}">Nova Tarefa</a>
-				<a class="btn btn-info" href="{{ route('admin.arquivadas-tarefa') }}">Arquivadas</a></td>
-				<a class="btn btn-secondary" href="{{ route('admin.relatorio-tarefa') }}">Relatorio</a></td>
-			</div>
-		</div>
+		@panelHeader([
+			'title' => 'Tarefas',
+			'actions' => [$newTask, $archived, $report]
+			])
+		@endpanelHeader
 		<div class="board-tarefas">
 			<table class="table">
 				<thead class="text-center">
