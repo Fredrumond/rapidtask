@@ -149,6 +149,7 @@ class ProjetosController extends Controller
 
 	public function excluirArquivoProjeto(Request $request)
 	{
+		// dd($request->all());
 		$retornaArquivo = ProjetosArquivos::find($request->arquivo_id);
 		File::delete('projetos/arquivos/'.$retornaArquivo->src);
 		ProjetosArquivos::find($request->arquivo_id)->delete();

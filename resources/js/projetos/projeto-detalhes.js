@@ -129,9 +129,7 @@
                 data: {'arquivo_id':arquivo_id},
             })
             .done(function(response) {
-                if (response.status == '200') {
-                    retornaArquivos();
-                }
+                retornaArquivos();
             })
             .fail(function(error) {
                console.log('Foi encontrado um erro durante a execução. Entre em contato com a equipe de desenvolvimento!');
