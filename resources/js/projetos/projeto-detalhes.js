@@ -165,7 +165,7 @@
                     $('.box-anotacao').hide();
                     $('.nova-anotacao').show();
 
-                    $('#comentario').val('');
+                    $('#anotacao').val('');
                     retornaAnotacoes();
                 }
             })

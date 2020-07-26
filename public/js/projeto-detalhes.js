@@ -238,7 +238,7 @@ $(document).ready(function () {
           var id = $('#anotacao_id').val();
           $('.box-anotacao').hide();
           $('.nova-anotacao').show();
-          $('#comentario').val('');
+          $('#anotacao').val('');
           retornaAnotacoes();
         }
       }).fail(function (error) {
