@@ -46,6 +46,18 @@ class ProjetosController extends Controller
 
 	public function salvaProjeto(Request $request)
 	{
+		$rules = [
+			'nome' => 'required',
+			'sigla' => 'required|min:3',
+		];
+
+		$messages = [
+			'nome.required' => 'O nome é obrigatório.',
+			'sigla.required' => 'A sigla é obrigatório.',
+		];
+
+		$validatedData = $request->validate($rules,$messages);
+		
 		$projeto = new Projetos();
 		$projeto->nome = $request->nome;
 		$projeto->sigla =  $request->sigla;
