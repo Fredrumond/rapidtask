@@ -116,20 +116,14 @@ $(document).ready(function () {
     e.preventDefault();
     var form = $(this);
     var dados = form.serialize();
-    $.ajax({
-      url: '/admin/projeto/salvar',
-      type: 'POST',
+    httpRequest({
+      method: 'POST',
+      endPoint: '/admin/projeto/salvar',
       dataType: 'json',
-      data: dados
-    }).done(function (response) {
-      window.location = '/admin/projeto/detalhe/' + response.id;
-    }).fail(function (error) {
-      if (error.status == 422) {
-        validateForm(error.responseJSON.errors); // const obj = error.responseJSON.errors;
-        // Object.keys(obj).forEach(function(item){
-        // 	$(`#${item}`).addClass("invalid");
-        // 	$(`#${item}`).next().css({ "display": "block" }).append(obj[item])
-        // });
+      data: dados,
+      redirect: {
+        url: '/admin/projeto/detalhe',
+        param: 'id'
       }
     });
   });

@@ -265,21 +265,16 @@
 
             let form = $(this);
             let dados = form.serialize()
-                $.ajax({
-                    url: '/admin/tarefa/salvar',
-                    type: 'POST',
-                    dataType: 'json',
-                    data: dados,
-                })
-                .done(function(response) {                  
-                    window.location.replace("/admin/tarefas");
-                })
-                .fail(function(error) {
-                    if(error.status == 422){
-                        validateForm(error.responseJSON.errors)
-                        
-                    }
-                })
+            
+            httpRequest({
+                method: 'POST',
+                endPoint: '/admin/tarefa/salvar',
+                dataType: 'json', 
+                data: dados, 
+                redirect: {
+                    url: '/admin/tarefas'
+                }
+            });
         });
 
         $('.excluir-tarefa').click(function(e) {

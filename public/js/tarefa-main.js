@@ -323,16 +323,13 @@ $(document).ready(function () {
     e.preventDefault();
     var form = $(this);
     var dados = form.serialize();
-    $.ajax({
-      url: '/admin/tarefa/salvar',
-      type: 'POST',
+    httpRequest({
+      method: 'POST',
+      endPoint: '/admin/tarefa/salvar',
       dataType: 'json',
-      data: dados
-    }).done(function (response) {
-      window.location.replace("/admin/tarefas");
-    }).fail(function (error) {
-      if (error.status == 422) {
-        validateForm(error.responseJSON.errors);
+      data: dados,
+      redirect: {
+        url: '/admin/tarefas'
       }
     });
   });

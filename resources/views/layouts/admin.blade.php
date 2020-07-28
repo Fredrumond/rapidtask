@@ -127,11 +127,38 @@
             }
         });
 
+        //VALIDAÇAO DE FORMULARIOS
         function validateForm (errors) {
             Object.keys(errors).forEach(function(item){
                 $(`#${item}`).addClass("invalid");
                 $(`#${item}`).next().css({ "display": "block" }).append(errors[item])
             });
+        }
+
+        //CHAMADA AJAX
+        
+        function httpRequest(params){
+            const { method, endPoint, dataType, data, redirect } = params
+            
+            $.ajax({
+			url: endPoint,
+			type: method,
+			dataType: dataType,
+			data: data,
+            })
+            .done(function(response) {  
+                if(redirect.param){
+                    urlRedirect = `${redirect.url}/${response.id}`
+                    window.location.replace(urlRedirect);
+                } else {
+                    window.location.replace(redirect.url);
+                }                      
+            })
+            .fail(function(error) {
+                if(error.status == 422){
+                    validateForm(error.responseJSON.errors)
+                }
+            })
         }
     </script>
 
