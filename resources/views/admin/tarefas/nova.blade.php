@@ -9,6 +9,7 @@
 				<div class="form-group col-md-3">
 					<label for="inputEmail4">Titulo</label>
 					<input type="text" class="form-control" name="titulo" id="titulo">
+					<div class="feedback"></div>
 				</div>
 				<div class="form-group col-md-3">
 					<label for="inputState">Projeto</label>

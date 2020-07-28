@@ -33,11 +33,12 @@ $(document).ready(function() {
 		})
 		.fail(function(error) {
 			if(error.status == 422){
-				const obj = error.responseJSON.errors;
-				Object.keys(obj).forEach(function(item){
-					$(`#${item}`).addClass("invalid");
-					$(`#${item}`).next().css({ "display": "block" }).append(obj[item])
-				});
+				validateForm(error.responseJSON.errors)
+				// const obj = error.responseJSON.errors;
+				// Object.keys(obj).forEach(function(item){
+				// 	$(`#${item}`).addClass("invalid");
+				// 	$(`#${item}`).next().css({ "display": "block" }).append(obj[item])
+				// });
 			}
 		})
 	});
