@@ -47,7 +47,17 @@ class TarefasController extends Controller
 	}
 
 	public function salvaTarefa(Request $request)
-	{		
+	{
+		$rules = [
+			'titulo' => 'required'
+		];
+
+		$messages = [
+			'titulo.required' => 'O titulo é obrigatório.'
+		];
+
+		$validatedData = $request->validate($rules,$messages);
+		
 		$tarefa = new Tarefas();
 		$tarefa->titulo = $request->titulo;
 		$tarefa->projeto_id =  $request->projeto_id;

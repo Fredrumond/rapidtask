@@ -8,11 +8,13 @@
 			<div class="form-row">
 				<div class="form-group col-md-3">
 					<label for="inputEmail4">Nome</label>
-					<input type="text" class="form-control" name="nome" id="nome">
+                    <input type="text" class="form-control" name="nome" id="nome">
+                    <div class="feedback"></div>
 				</div>
 				<div class="form-group col-md-1">
 					<label for="inputEmail4">Sigla</label>
-					<input type="text" class="form-control" name="sigla" id="sigla">
+                    <input type="text" class="form-control" name="sigla" id="sigla">
+                    <div class="feedback"></div>
 				</div>
                 <div class="form-group col-md-4">
                     <label for="inputState">Time</label>

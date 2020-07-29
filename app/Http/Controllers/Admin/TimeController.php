@@ -38,6 +38,16 @@ class TimeController extends Controller
 
 	public function salvaTime(Request $request)
 	{	
+		$rules = [
+			'nome' => 'required'
+		];
+
+		$messages = [
+			'nome.required' => 'O nome é obrigatório.'
+		];
+
+		$validatedData = $request->validate($rules,$messages);
+
 		$time = Time::create([
 			'nome' =>$request->nome,
 			'logo' =>'',

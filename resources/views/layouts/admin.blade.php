@@ -116,6 +116,7 @@
        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+       <!-- <script type="text/javascript" src="{{ asset('js/main.js') }}"></script> -->
        <script src="{{ asset('alertfy/alertify.min.js') }}"></script>
 
        <script>
@@ -125,6 +126,40 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        //VALIDAÇAO DE FORMULARIOS
+        function validateForm (errors) {
+            Object.keys(errors).forEach(function(item){
+                $(`#${item}`).addClass("invalid");
+                $(`#${item}`).next().css({ "display": "block" }).append(errors[item])
+            });
+        }
+
+        //CHAMADA AJAX
+        
+        function httpRequest(params){
+            const { method, endPoint, dataType, data, redirect } = params
+            
+            $.ajax({
+			url: endPoint,
+			type: method,
+			dataType: dataType,
+			data: data,
+            })
+            .done(function(response) {  
+                if(redirect.param){
+                    urlRedirect = `${redirect.url}/${response.id}`
+                    window.location.replace(urlRedirect);
+                } else {
+                    window.location.replace(redirect.url);
+                }                      
+            })
+            .fail(function(error) {
+                if(error.status == 422){
+                    validateForm(error.responseJSON.errors)
+                }
+            })
+        }
     </script>
 
 

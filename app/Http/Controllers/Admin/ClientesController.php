@@ -44,6 +44,18 @@ class ClientesController extends Controller
 
 	public function salvaCliente(Request $request)
 	{
+		$rules = [
+			'nome' => 'required',
+			'time_id' => 'required'
+		];
+
+		$messages = [
+			'nome.required' => 'O nome é obrigatório.',
+			'time_id.required' => 'O time é obrigatório.',
+		];
+
+		$validatedData = $request->validate($rules,$messages);
+		
 		$cliente = Clientes::create([
 			'nome' => $request->nome,
 			'email' => $request->email,

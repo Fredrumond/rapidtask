@@ -9,6 +9,7 @@
 				<div class="form-group col-md-3">
 					<label for="nome">Nome</label>
 					<input type="text" class="form-control" name="nome" id="nome">
+					<div class="feedback"></div>
 				</div>
 				<div class="form-group col-md-3">
 					<label for="nome">E-mail</label>
@@ -24,7 +25,8 @@
                         @foreach($timeMembro as $tm)
                         <option value="{{ $tm->time_id }}">{{ $tm->time[0]->nome }}</option>
                         @endforeach                                         
-                    </select>
+					</select>
+					<div class="feedback"></div>
                 </div>			
             </div>					
             <button type="submit" class="btn btn-primary">Salvar</button>
