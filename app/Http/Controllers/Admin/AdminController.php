@@ -31,8 +31,15 @@ class AdminController extends Controller
 		$tarefasTotal =  $this->tarefas->totalTarefas(Auth::user()->id);
 		$projetosTotal =  $this->projetos->totalProjetos(Auth::user()->id);
 		$clientesTotal = $this->clientes->totalClientes(Auth::user()->id);
-		$logs = $this->log->listaLogs(Auth::user()->id);
+		$logs = $this->log->listaLogs(Auth::user()->id,5);
 
 		return view('admin.dashboard.index',compact('tarefas','tarefasTotal','projetosTotal','clientesTotal','logs'));
+	}
+
+	public function logs()
+	{
+		$logs = $this->log->listaLogs(Auth::user()->id);
+
+		return view('admin.dashboard.logs',compact('logs'));
 	}
 }
