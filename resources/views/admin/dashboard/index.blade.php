@@ -154,7 +154,7 @@
 					@endforeach
 					
 				</ol>
-				<div class="text-center"><a href="#" class="btn btn-primary">Ver mais</a></div>
+				<div class="text-center"><a href="{{ route('admin.atividades') }}" class="btn btn-primary">Ver mais</a></div>
 			</div>
 		</div>
 	</div>    
