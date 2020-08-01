@@ -1,0 +1,117 @@
+@import 'variables';
+
+.login {
+    display: flex;
+    flex-wrap: nowrap;
+    min-height: 100vh;
+    background-color: $background-general;
+
+    .left {
+        flex-basis: 60%;
+        border-right: 2px solid $color-orange;
+        background: $login-left-background;
+        background-color: $background-primary;
+        padding: 30px 0;
+        background-size: 60%;
+    }
+
+    .right {
+        flex-basis: 40%;
+        background-color: $background-secondary;
+        flex-basis: 40%;
+        color: $color-white;
+        background-size: cover;
+        padding: 30px 0;
+        display: flex;
+        flex-wrap: nowrap;
+
+        .header {
+            h1 {
+                font-size: $font-large;
+                text-align: center;
+            }
+        }
+
+        .box {
+            background-color: $background-secondary;
+            width: 500px;
+            max-width: 90%;
+            margin: auto;
+            padding: 30px;
+            align-items: center;
+
+            form {
+                display: block;
+                margin: 30px 0;
+
+                label {
+                    display: block;
+                    margin-bottom: 30px;
+
+                    span {
+                        font-size: $font-general-primary;
+                        display: block;
+                        font-weight: bold;
+                    }
+                }
+
+                input {
+                    border: none;
+                    border-bottom: 1px solid $color-orange;
+                    font-size: $font-general-secondary;
+                    background-color: $background-secondary;
+                    color: $color-white;
+                    outline: none;
+                    display: block;
+                    width: 100%;
+                    padding: 10px 0;
+                    margin-top: 4px;
+                    font-weight: 300;
+                }
+
+                input::placeholder {
+                    color: $color-white;
+                }
+
+                button {
+                    background-color: $color-orange;
+                    font-size: $font-general-primary;
+                    display: block;
+                    cursor: pointer;
+                    width: 100%;
+                    padding: 15px;
+                    border: none;
+                    color: $color-white;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+                }
+            }
+        }
+    }
+}
+
+/** RESPONSIVE */
+
+@media(max-width: 1056px ) {
+
+    .login {
+        .left {
+            display: none;
+        }
+        .right {
+            flex-basis: 100%;
+        }
+    }
+}
+
+@media(max-width: 640px ){
+
+    .login {
+        .right{
+            .box {
+                width: 100%;
+            }
+        }
+    }
+}

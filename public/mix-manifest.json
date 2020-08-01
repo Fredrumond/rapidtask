@@ -2,6 +2,8 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/css/global.css": "/css/global.css",
+    "/site/css/login.css": "/site/css/login.css",
+    "/site/css/reset.css": "/site/css/reset.css",
     "/js/cliente-main.js": "/js/cliente-main.js",
     "/js/cliente-ver.js": "/js/cliente-ver.js",
     "/js/projeto-detalhes.js": "/js/projeto-detalhes.js",
