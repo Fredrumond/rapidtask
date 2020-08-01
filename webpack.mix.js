@@ -21,4 +21,8 @@ const mix = require('laravel-mix');
  .js('resources/js/projetos/projeto-ver.js', 'public/js')
  .js('resources/js/projetos/projeto-detalhes.js', 'public/js')
  .sass('resources/sass/app.scss', 'public/css')
- .sass('resources/sass/global.scss', 'public/css');
+ .sass('resources/sass/global.scss', 'public/css')
+ .sass('resources/sass/site/login.scss', 'public/site/css')
+ .sass('resources/sass/site/reset.scss', 'public/site/css');
+
+ mix.copyDirectory('resources/images/site', 'public/site/images');

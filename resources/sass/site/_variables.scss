@@ -1,0 +1,36 @@
+//COLORS
+
+$color-primary: #1a1f26;
+$color-secondary: #282f3a;
+
+$color-white: #FFFFFF;
+$color-gray-light: #CCCCCC;
+$color-gray-medium: #555555;
+$color-gray: #999999;
+$color-gray-dark: #333333;
+$color-black: #000000;
+
+$color-green: #36BA9B;
+$color-blue: #39AED9;
+$color-yellow: #F5B946;
+$color-red: #D94352;
+$color-orange: #F4645F;
+
+// BACKGROUND COLORS
+
+$background-general: $color-gray-medium;
+$background-primary: $color-primary;
+$background-secondary: $color-secondary;
+
+//BACKGROUND IMAGES
+
+$login-left-background: url('../../images/site/undraw_prioritise.svg') center/cover no-repeat;
+
+//FONT SIZES
+
+$font-small: 14px;
+$font-medium: 16px;
+$font-large: 32px;
+
+$font-general-primary: $font-small;
+$font-general-secondary: $font-medium;

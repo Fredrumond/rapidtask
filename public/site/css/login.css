@@ -1,0 +1,119 @@
+.login {
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 100vh;
+  background-color: #555555;
+}
+
+.login .left {
+  flex-basis: 60%;
+  border-right: 2px solid #F4645F;
+  background: url(/images/undraw_prioritise.svg?14fed9c04a11e9a8470b745ec5fdbd9e) center/cover no-repeat;
+  background-color: #1a1f26;
+  padding: 30px 0;
+  background-size: 60%;
+}
+
+.login .right {
+  flex-basis: 40%;
+  background-color: #282f3a;
+  flex-basis: 40%;
+  color: #FFFFFF;
+  background-size: cover;
+  padding: 30px 0;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.login .right .header h1 {
+  font-size: 32px;
+  text-align: center;
+}
+
+.login .right .box {
+  background-color: #282f3a;
+  width: 500px;
+  max-width: 90%;
+  margin: auto;
+  padding: 30px;
+  align-items: center;
+}
+
+.login .right .box form {
+  display: block;
+  margin: 30px 0;
+}
+
+.login .right .box form label {
+  display: block;
+  margin-bottom: 30px;
+}
+
+.login .right .box form label span {
+  font-size: 14px;
+  display: block;
+  font-weight: bold;
+}
+
+.login .right .box form input {
+  border: none;
+  border-bottom: 1px solid #F4645F;
+  font-size: 16px;
+  background-color: #282f3a;
+  color: #FFFFFF;
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  margin-top: 4px;
+  font-weight: 300;
+}
+
+.login .right .box form input::-webkit-input-placeholder {
+  color: #FFFFFF;
+}
+
+.login .right .box form input:-ms-input-placeholder {
+  color: #FFFFFF;
+}
+
+.login .right .box form input::-ms-input-placeholder {
+  color: #FFFFFF;
+}
+
+.login .right .box form input::placeholder {
+  color: #FFFFFF;
+}
+
+.login .right .box form button {
+  background-color: #F4645F;
+  font-size: 14px;
+  display: block;
+  cursor: pointer;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  color: #FFFFFF;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+/** RESPONSIVE */
+
+@media (max-width: 1056px) {
+  .login .left {
+    display: none;
+  }
+
+  .login .right {
+    flex-basis: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .login .right .box {
+    width: 100%;
+  }
+}
+
