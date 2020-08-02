@@ -1,5 +1,31 @@
 @extends('layouts.admin')
 @section('content')
+
+<div class="perfil">
+    @panelHeader([
+        'title' => 'Meu Perfil'
+        ])
+    @endpanelHeader
+    <div class="left">
+        <div class="form-box">
+            <form id="form-atualiza-perfil" action="{{ route('admin.perfil-salvar')}}" method="POST">
+                @csrf
+                <label>
+                    <span class="field">Nome</span>
+                    <input type="hidden" name="usuario_id" id="usuario_id" value="{{$perfil->id}}">
+                    <input type="text" class="form-control" name="name" id="name" value="{{$perfil->name}}">
+                </label>
+                <button class="button button-green">Atualizar</button>
+            </form>
+        </div>
+    </div>
+    <div class="right">
+    <div class="box"></div>
+    </div>
+</div>
+
+
+
 <div class="row">
 	<div class="col-12 times">
 		<h4>Meu Perfil</h4>

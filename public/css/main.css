@@ -1,0 +1,160 @@
+.form-box {
+  background-color: #282f3a;
+  width: 500px;
+  max-width: 90%;
+  padding: 30px;
+  align-items: center;
+}
+
+.form-box form {
+  display: block;
+}
+
+.form-box form label {
+  display: block;
+  margin-bottom: 30px;
+}
+
+.form-box form label span {
+  font-size: 14px;
+  display: block;
+  font-weight: bold;
+}
+
+.form-box form input {
+  border: none;
+  border-bottom: 1px solid #F4645F;
+  font-size: 16px;
+  background-color: #282f3a;
+  color: #FFFFFF;
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  margin-top: 4px;
+  font-weight: 300;
+}
+
+.form-box form input::-webkit-input-placeholder {
+  color: #FFFFFF;
+}
+
+.form-box form input:-ms-input-placeholder {
+  color: #FFFFFF;
+}
+
+.form-box form input::-ms-input-placeholder {
+  color: #FFFFFF;
+}
+
+.form-box form input::placeholder {
+  color: #FFFFFF;
+}
+
+.button {
+  display: inline-block;
+  padding: 6px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  background: #FFFFFF;
+  transition-duration: 0.3s;
+  font-size: 14px;
+}
+
+.button:hover {
+  background-color: #ebebeb;
+}
+
+.button-small {
+  padding: 2px 4px;
+}
+
+.button-large {
+  padding: 10px 20px;
+}
+
+.button-large-ext {
+  padding: 20px 40px;
+}
+
+.button-block {
+  display: block;
+  width: 100%;
+}
+
+.button-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button-green {
+  background-color: #36BA9B;
+  color: #ffffff;
+}
+
+.button-green:hover {
+  background-color: #2d9a81;
+}
+
+.button-green:disabled {
+  background-color: #7dd9c4;
+  cursor: not-allowed;
+}
+
+.button-blue {
+  background-color: #39AED9;
+  color: #ffffff;
+}
+
+.button-blue:hover {
+  background-color: #2699c4;
+}
+
+.button-blue:disabled {
+  background-color: #8fd1e9;
+  cursor: not-allowed;
+}
+
+.button-yellow {
+  background-color: #F5B946;
+  color: #ffffff;
+}
+
+.button-yellow:hover {
+  background-color: #f3aa1f;
+}
+
+.button-yellow:disabled {
+  background-color: #fadea7;
+  cursor: not-allowed;
+}
+
+.button-red {
+  background-color: #D94352;
+  color: #ffffff;
+}
+
+.button-red:hover {
+  background-color: #ca2939;
+}
+
+.button-red:disabled {
+  background-color: #ea98a0;
+  cursor: not-allowed;
+}
+
+.button-orange {
+  background-color: #F4645F;
+  color: #ffffff;
+}
+
+.button-orange:hover {
+  background-color: #f13f39;
+}
+
+.button-orange:disabled {
+  background-color: #fbc0be;
+  cursor: not-allowed;
+}
+

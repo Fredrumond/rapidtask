@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/tema.css">
     <!-- <link rel="stylesheet" href="/css/style.css"> -->
     <link rel="stylesheet" href="/css/global.css">   
+    <link rel="stylesheet" href="/css/main.css">   
 </head>
 <body>
 

@@ -49173,10 +49173,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/sass/backend/perfil.scss":
+/*!********************************************!*\
+  !*** ./resources/sass/backend/perfil.scss ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./resources/sass/global.scss":
 /*!************************************!*\
   !*** ./resources/sass/global.scss ***!
   \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./resources/sass/main.scss":
+/*!**********************************!*\
+  !*** ./resources/sass/main.scss ***!
+  \**********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -49207,9 +49229,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 0:
-/*!************************************************************************************************************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/sass/global.scss ./resources/sass/site/login.scss ./resources/sass/site/reset.scss ***!
-  \************************************************************************************************************************************************************/
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/sass/global.scss ./resources/sass/site/login.scss ./resources/sass/site/reset.scss ./resources/sass/backend/perfil.scss ./resources/sass/main.scss ***!
+  \****************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -49217,7 +49239,9 @@ __webpack_require__(/*! /Users/fredericodrumond/Documents/Projetos/rapidtask/res
 __webpack_require__(/*! /Users/fredericodrumond/Documents/Projetos/rapidtask/resources/sass/app.scss */"./resources/sass/app.scss");
 __webpack_require__(/*! /Users/fredericodrumond/Documents/Projetos/rapidtask/resources/sass/global.scss */"./resources/sass/global.scss");
 __webpack_require__(/*! /Users/fredericodrumond/Documents/Projetos/rapidtask/resources/sass/site/login.scss */"./resources/sass/site/login.scss");
-module.exports = __webpack_require__(/*! /Users/fredericodrumond/Documents/Projetos/rapidtask/resources/sass/site/reset.scss */"./resources/sass/site/reset.scss");
+__webpack_require__(/*! /Users/fredericodrumond/Documents/Projetos/rapidtask/resources/sass/site/reset.scss */"./resources/sass/site/reset.scss");
+__webpack_require__(/*! /Users/fredericodrumond/Documents/Projetos/rapidtask/resources/sass/backend/perfil.scss */"./resources/sass/backend/perfil.scss");
+module.exports = __webpack_require__(/*! /Users/fredericodrumond/Documents/Projetos/rapidtask/resources/sass/main.scss */"./resources/sass/main.scss");
 
 
 /***/ })

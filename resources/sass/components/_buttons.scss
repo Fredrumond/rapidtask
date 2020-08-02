@@ -1,0 +1,64 @@
+.button {
+    display: inline-block;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: $radius-normal;
+    background: $color-white;
+    transition-duration: $hover-duration;
+    font-size: $font-general-primary;
+
+    &:hover {
+        @if $button-hover-type == "darken" {
+            background-color: darken($color-white, $button-hover-amount);
+        } @else {
+            background-color: lighten($color-white, $button-hover-amount);
+        }
+    }
+}
+
+.button-small {
+    padding: 2px 4px;
+}
+  
+.button-large {
+    padding: 10px 20px;
+}
+
+.button-large-ext {
+    padding: 20px 40px;
+}
+
+.button-block {
+    display: block;
+    width: 100%;
+}
+
+.button-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+@mixin button($class, $color) {
+    background-color: #{$color};
+    color: #ffffff;
+  
+    &:hover {
+      @if $button-hover-type == "darken" {
+        background-color: darken($color, $button-hover-amount);
+      } @else {
+        background-color: lighten($color, $button-hover-amount);
+      }
+    }
+  
+    &:disabled {
+      background-color: lighten($color, 20%);
+      cursor: not-allowed;
+    }
+  }
+  
+@each $color, $value in $theme-colors {
+    .button-#{$color} {
+        @include button($color, $value);
+    }
+}
