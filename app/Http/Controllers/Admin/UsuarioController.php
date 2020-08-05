@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Admin\UserRequest;
 
 
 
@@ -20,6 +21,25 @@ class UsuarioController extends Controller
 		$perfil = User::find(Auth::user()->id);
 
 		return view('admin.usuario.ver',compact('perfil'));
+	}
+
+	public function update(UserRequest $request)
+	{
+		// if($request->usuario_id == Auth::user()->id){
+		// 	$user = User::find($request->usuario_id)->first();
+
+		// 	if($user){
+
+		// 		if($request->name != $user->name){
+		// 			$user->name = $request->name;
+		// 			$user->save();
+		// 		}
+				
+		// 	}
+			
+			
+		// }
+		dd($request->all());
 	}
 
 	public function salvarPerfil(Request $request)

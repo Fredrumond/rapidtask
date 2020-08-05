@@ -1,7 +1,7 @@
 .form-box {
     background-color: $background-secondary;
     width: 500px;
-    max-width: 90%;
+    max-width: 100%;
     // margin: auto;
     padding: 30px;
     align-items: center;
@@ -38,5 +38,16 @@
         input::placeholder {
             color: $color-white;
         }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        
     }
+
+    
+    
+    
 }

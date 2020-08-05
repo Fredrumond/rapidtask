@@ -6,21 +6,40 @@
         'title' => 'Meu Perfil'
         ])
     @endpanelHeader
+    @if($errors->all())
+        @foreach($errors->all() as $error)
+            @message(['color' => 'red'])
+                <p>{{ $error }}</p>
+            @endmessage
+        @endforeach
+    @endif
     <div class="left">
         <div class="form-box">
-            <form id="form-atualiza-perfil" action="{{ route('admin.perfil-salvar')}}" method="POST">
+            <form id="form-atualiza-perfil" action="{{ route('admin.perfil-atualizar')}}" method="POST">
                 @csrf
                 <label>
                     <span class="field">Nome</span>
                     <input type="hidden" name="usuario_id" id="usuario_id" value="{{$perfil->id}}">
-                    <input type="text" class="form-control" name="name" id="name" value="{{$perfil->name}}">
+                    <input type="text" name="name" id="name" value="{{$perfil->name}}">
                 </label>
-                <button class="button button-green">Atualizar</button>
+                <label>
+                    <span class="field">Avatar</span>
+                    <input type="file" name="avatar">
+                </label>
+                <label>
+                    <span class="field">Senha</span>
+                    <input type="text" name="senha" id="senha">
+                </label>
+                <label>
+                    <span class="field">Repetir senha</span>
+                    <input type="text" name="repita_senha" id="repita-senha">
+                </label>
+                <div class="actions">
+                    <button class="button button-orange">Atualizar</button>
+                </div>
+                
             </form>
         </div>
-    </div>
-    <div class="right">
-    <div class="box"></div>
     </div>
 </div>
 

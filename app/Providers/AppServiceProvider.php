@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::component('components.panel-header','panelHeader');
+        Blade::component('components.message','message');
     }
 
     /**
