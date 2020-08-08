@@ -1,19 +1,15 @@
 .message {
-    border-radius: $radius-normal;
-    width: 100%;
-    flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
     padding: 10px;
-    background: #555555;
-    color: #ffffff;
-    font-size: 0.875em;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
-    transition-duration: $hover-duration;
     margin-bottom: 20px;
+    font-size: $font-small;
+    transition-duration: $hover-duration;
+    border-radius: $radius-normal;
     border: 1px solid #333333;
   
-    p {
+    span {
       flex-basis: 100%;
       width: 100%;
       display: block;

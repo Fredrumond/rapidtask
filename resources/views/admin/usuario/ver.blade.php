@@ -8,9 +8,7 @@
     @endpanelHeader
     @if($errors->all())
         @foreach($errors->all() as $error)
-            @message(['color' => 'red'])
-                <p>{{ $error }}</p>
-            @endmessage
+            @message(['color' => 'red','msg' => $error])@endmessage
         @endforeach
     @endif
     <div class="left">

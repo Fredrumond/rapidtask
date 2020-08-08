@@ -1,3 +1,3 @@
 <div class="message message-{{ $color }}">
-    {{ $slot }}
+    {{ $msg }}
 </div>
