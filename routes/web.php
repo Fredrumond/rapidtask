@@ -84,13 +84,7 @@ $this->group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 
 	/*USUARIO*/
 	$this->get('/perfil', 'UsuarioController@perfil')->name('perfil');
-	$this->post('/perfil/salvar', 'UsuarioController@salvarPerfil')->name('perfil-salvar');
-	$this->post('/perfil/avatar', 'UsuarioController@salvarAvatar')->name('perfil-avatar');
-	$this->post('/perfil/senha', 'UsuarioController@salvarSenha')->name('perfil-senha');
 	$this->post('/perfil/atualiza', 'UsuarioController@update')->name('perfil-atualizar');
-
-
-
 });
 
 
