@@ -4,6 +4,8 @@
     "/css/global.css": "/css/global.css",
     "/site/css/login.css": "/site/css/login.css",
     "/site/css/reset.css": "/site/css/reset.css",
+    "/backend/css/perfil.css": "/backend/css/perfil.css",
+    "/css/main.css": "/css/main.css",
     "/js/cliente-main.js": "/js/cliente-main.js",
     "/js/cliente-ver.js": "/js/cliente-ver.js",
     "/js/projeto-detalhes.js": "/js/projeto-detalhes.js",

@@ -2,6 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RAPIDTASK</title>
 
     <!-- BOOTSTRAP -->
@@ -15,6 +16,7 @@
     <link rel="stylesheet" href="/css/tema.css">
     <!-- <link rel="stylesheet" href="/css/style.css"> -->
     <link rel="stylesheet" href="/css/global.css">   
+    <link rel="stylesheet" href="/css/main.css">   
 </head>
 <body>
 

@@ -1,7 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500|Sarabun:400,600,700);
 body {
     background-repeat: repeat;
-    background: #252735;
+    /* background: #252735; */
+    background: #1a1f26;
     font-family: Roboto, sans-serif;
     color: #e9ecef;
     font-size: 14px

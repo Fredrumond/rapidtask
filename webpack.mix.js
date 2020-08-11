@@ -23,6 +23,8 @@ const mix = require('laravel-mix');
  .sass('resources/sass/app.scss', 'public/css')
  .sass('resources/sass/global.scss', 'public/css')
  .sass('resources/sass/site/login.scss', 'public/site/css')
- .sass('resources/sass/site/reset.scss', 'public/site/css');
+ .sass('resources/sass/site/reset.scss', 'public/site/css')
+ .sass('resources/sass/backend/perfil.scss', 'public/backend/css')
+ .sass('resources/sass/main.scss', 'public/css');
 
  mix.copyDirectory('resources/images/site', 'public/site/images');
