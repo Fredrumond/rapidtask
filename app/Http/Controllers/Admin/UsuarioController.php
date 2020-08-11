@@ -53,7 +53,9 @@ class UsuarioController extends Controller
 				}
 			}
 
-			return view('admin.usuario.ver',compact('user'));
+			// return view('admin.usuario.ver',compact('user'));
+
+			return redirect()->route('admin.perfil')->with(['message' => 'Perfil atualizado!', 'color' => 'green']);
 		}
 	}
 }

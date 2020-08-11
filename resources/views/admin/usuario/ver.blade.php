@@ -11,6 +11,9 @@
             @message(['color' => 'red','msg' => $error])@endmessage
         @endforeach
     @endif
+    @if(session()->exists('message'))
+        @message(['color' => session()->get('color'),'msg' => session()->get('message')])@endmessage
+    @endif
     <div class="left">
         <div class="form-box">
             <form id="form-atualiza-perfil" action="{{ route('admin.perfil-atualizar')}}" method="POST" enctype="multipart/form-data">
