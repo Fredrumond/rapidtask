@@ -1,162 +1,58 @@
-# RapidTask
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-Plataforma web de **gerenciamento de projetos e tarefas** para equipes que precisam organizar trabalho, clientes e colaboradores em um só lugar.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## Sobre o projeto
+## About Laravel
 
-O RapidTask é um painel administrativo com autenticação obrigatória, organizado em torno de **times**. Usuários participam de equipes, gerenciam clientes e projetos, acompanham tarefas com prazos e prioridades, colaboram via comentários e recebem notificações por e-mail.
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-Em resumo: um sistema de gestão de projetos estilo mini-Jira/Trello, com tarefas, clientes, projetos, colaboração e auditoria de atividades.
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-## Stack tecnológica
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-| Camada | Tecnologias |
-|--------|-------------|
-| Backend | Laravel 5.7, PHP 7.1+ |
-| Frontend | Blade, Vue 2, Bootstrap 4, Sass |
-| Build | Laravel Mix, Webpack |
-| Banco de dados | MySQL |
-| Autenticação | Sistema padrão do Laravel |
+## Learning Laravel
 
-## Funcionalidades
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-| Módulo | Descrição |
-|--------|-----------|
-| **Dashboard** | Visão geral de tarefas, projetos, clientes e últimas atividades |
-| **Tarefas** | CRUD, arquivar, recuperar, relatórios, comentários e histórico de alterações |
-| **Projetos** | CRUD, anotações, upload de arquivos, datas de início e fim |
-| **Clientes** | Cadastro e gestão de clientes vinculados a projetos |
-| **Times** | Criação de equipes, convite de membros (aceitar/recusar por e-mail), níveis de permissão |
-| **Perfil** | Atualização de dados do usuário (inclui avatar) |
-| **Logs** | Registro de ações do sistema e visualizador de logs do Laravel |
+In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Fluxo principal
+You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
-1. Usuário se cadastra ou faz login.
-2. Participa de um ou mais **times**.
-3. Dentro do time, gerencia **clientes** → **projetos** → **tarefas** (prioridade, situação, tipo, prazos e tempo estimado).
-4. Colabora via **comentários** nas tarefas e acompanha o **histórico** de mudanças.
-5. Recebe **e-mails** (boas-vindas, convites para time, etc.).
+## Agentic Development
 
-## Rotas principais
-
-| Rota | Descrição |
-|------|-----------|
-| `/` | Página inicial |
-| `/login` | Autenticação |
-| `/admin/dashboard` | Painel principal (requer login) |
-| `/admin/tarefas` | Gestão de tarefas |
-| `/admin/projetos` | Gestão de projetos |
-| `/admin/clientes` | Gestão de clientes |
-| `/admin/times` | Gestão de times |
-| `/logs` | Visualizador de logs do Laravel |
-
-## Requisitos
-
-### Instalação local
-
-- PHP >= 7.1.3
-- Composer
-- Node.js e npm
-- MySQL
-
-### Docker
-
-- Docker
-- Docker Compose
-
-## Instalação com Docker (recomendado)
+Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
 
 ```bash
-# Clonar o repositório e entrar na pasta
-cd rapidtask
+composer require laravel/boost --dev
 
-# Subir os containers (app, nginx e mysql)
-docker compose up -d --build
-
-# Popular tabelas auxiliares (situações, tipos, prioridades, etc.)
-docker compose exec app php artisan db:seed
+php artisan boost:install
 ```
 
-Acesse `http://localhost:8080` e faça login para entrar no painel em `/admin/dashboard`.
+Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
-### Serviços Docker
+## Contributing
 
-| Serviço | Descrição | Porta |
-|---------|-----------|-------|
-| `nginx` | Servidor web | `8080` |
-| `app` | PHP-FPM (Laravel) | — |
-| `mysql` | Banco de dados | `3307` |
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-### Comandos úteis
+## Code of Conduct
 
-```bash
-# Ver logs
-docker compose logs -f
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-# Parar containers
-docker compose down
+## Security Vulnerabilities
 
-# Parar e remover volumes (apaga o banco)
-docker compose down -v
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-# Executar comandos Artisan
-docker compose exec app php artisan migrate
-docker compose exec app php artisan tinker
+## License
 
-# Recompilar assets frontend
-docker compose --profile assets run --rm node sh -c "npm install && npm run dev"
-```
-
-As variáveis de ambiente do banco são definidas no `docker-compose.yml` e sobrescrevem o `.env` dentro dos containers.
-
-## Instalação local
-
-```bash
-# Clonar o repositório e entrar na pasta
-cd rapidtask
-
-# Instalar dependências PHP
-composer install
-
-# Instalar dependências frontend
-npm install
-
-# Configurar ambiente
-cp .env.example .env
-php artisan key:generate
-
-# Configurar banco de dados no .env e rodar migrations
-php artisan migrate
-
-# Compilar assets
-npm run dev
-
-# Subir o servidor
-php artisan serve
-```
-
-Acesse `http://localhost:8000` e faça login para entrar no painel em `/admin/dashboard`.
-
-## CSS API — Botões
-
-### Classes
-
-| Classe | Descrição | Variáveis |
-|--------|-----------|-----------|
-| `button` | Estilo padrão do botão | — |
-| `button-{cor}` | Cor do botão | `green`, `blue`, `yellow`, `red`, `orange` |
-| `button-{tamanho}` | Tamanho do botão | `small`, `large`, `large-ext`, `block`, `disabled` |
-
-### Exemplos
-
-```html
-<button class="button">Texto</button>
-<button class="button button-orange">Texto</button>
-<button class="button button-small">Texto</button>
-<button class="button button-orange button-small">Texto</button>
-```
-
-## Licença
-
-MIT
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
