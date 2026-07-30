@@ -75,6 +75,39 @@ services:
     networks:
       - rapidtask
 
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rapidtask-queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: php artisan queue:work --sleep=1 --tries=3 --timeout=90
+    volumes:
+      - .:/var/www/html
+      - vendor_data:/var/www/html/vendor
+    environment:
+      APP_NAME: RapidTask
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8080
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: rapidtask
+      DB_USERNAME: rapidtask
+      DB_PASSWORD: secret
+      QUEUE_CONNECTION: database
+      CACHE_STORE: database
+      SESSION_DRIVER: database
+    depends_on:
+      mysql:
+        condition: service_healthy
+      app:
+        condition: service_started
+    networks:
+      - rapidtask
+
 networks:
   rapidtask:
     driver: bridge

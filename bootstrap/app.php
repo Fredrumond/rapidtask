@@ -12,7 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'team' => \App\Http\Middleware\SetCurrentTeam::class,
+        ]);
+
+        $middleware->appendToGroup('web', \App\Http\Middleware\SetCurrentTeam::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
