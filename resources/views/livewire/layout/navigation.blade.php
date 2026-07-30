@@ -77,6 +77,10 @@ new class extends Component
                             <div class="px-4 py-2 text-xs text-gray-400">Time: {{ $currentTime->nome }}</div>
                         @endif
                         <x-dropdown-link :href="route('profile')" wire:navigate>Perfil</x-dropdown-link>
+                        <x-dropdown-link :href="route('versoes.index')" wire:navigate>
+                            Versões
+                            <span class="ms-1 text-xs text-gray-400">{{ \App\Support\Versoes::numeroAtual() }}</span>
+                        </x-dropdown-link>
                         <button wire:click="logout" class="w-full text-start">
                             <x-dropdown-link>Sair</x-dropdown-link>
                         </button>
@@ -111,6 +115,10 @@ new class extends Component
             </div>
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile')" wire:navigate>Perfil</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('versoes.index')" :active="request()->routeIs('versoes.*')" wire:navigate>
+                    Versões
+                    <span class="ms-1 text-xs text-gray-400">{{ \App\Support\Versoes::numeroAtual() }}</span>
+                </x-responsive-nav-link>
                 <button wire:click="logout" class="w-full text-start">
                     <x-responsive-nav-link>Sair</x-responsive-nav-link>
                 </button>

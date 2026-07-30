@@ -30,6 +30,12 @@ Acesse http://localhost:8080 — registre-se, crie um time e use o painel.
 | mysql | 3307 |
 | queue | worker interno |
 
+## Histórico de versões
+
+A rota autenticada `/versoes` (com redirect da antiga `/versions`) mostra a linha do tempo de
+releases, com filtro por maturidade e busca. Para registrar uma entrega, edite `config/versoes.php`
+— o primeiro release do array é considerado a versão atual.
+
 ## Testes
 
 ```bash

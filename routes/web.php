@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ConviteController;
 use App\Http\Controllers\ArquivoDownloadController;
+use App\Http\Controllers\ConviteController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -34,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
 
     Volt::route('times', 'pages.times.index')->name('times.index');
     Volt::route('times/{time}', 'pages.times.show')->name('times.show');
+
+    Volt::route('versoes', 'pages.versoes.index')->name('versoes.index');
+    Route::redirect('versions', 'versoes');
 
     Route::view('profile', 'profile')->name('profile');
 
