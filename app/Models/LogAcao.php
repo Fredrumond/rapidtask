@@ -2,25 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LogAcao extends Model
 {
-	protected $table = 'log_acao';
-	protected $fillable = ['nome'];
+    use HasFactory;
 
-	public function getCreatedAtAttribute($value)
-	{
-		$data = Carbon::createFromFormat('Y-m-d H:i:s', $value);
+    protected $table = 'log_acao';
 
-		return $data->format('d/m/Y H:i');
-	}
+    protected $fillable = [
+        'nome',
+    ];
 
-	public function getUpdatedAtAttribute($value)
-	{
-		$data = Carbon::createFromFormat('Y-m-d H:i:s', $value);
-
-		return $data->format('d/m/Y H:i');
-	}
+    public function logs(): HasMany
+    {
+        return $this->hasMany(Log::class, 'log_acao_id');
+    }
 }

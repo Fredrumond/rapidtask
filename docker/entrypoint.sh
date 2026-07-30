@@ -7,44 +7,34 @@ if [ ! -f .env ]; then
     cp .env.example .env
 fi
 
-echo "Aguardando MySQL..."
-until php -r "
-    try {
-        new PDO(
-            'mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT'),
-            getenv('DB_USERNAME'),
-            getenv('DB_PASSWORD')
-        );
-        exit(0);
-    } catch (Exception \$e) {
-        exit(1);
-    }
-" 2>/dev/null; do
+# Ensure MySQL settings for Docker (compose env overrides at runtime for PHP-FPM children)
+if [ ! -d vendor ] || [ ! -f vendor/autoload.php ]; then
+    composer install --no-interaction --prefer-dist
+fi
+
+# Only generate when missing — --force on every start rotates APP_KEY and
+# breaks Livewire checksums / encrypted cookies for open browser sessions.
+if ! grep -qE '^APP_KEY=.+' .env 2>/dev/null; then
+    php artisan key:generate --force --ansi 2>/dev/null || true
+fi
+
+chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
+chmod -R ug+rwx storage bootstrap/cache 2>/dev/null || true
+
+# Wait for MySQL then migrate default Laravel tables (sessions/cache/jobs)
+ATTEMPTS=0
+until php -r "new PDO('mysql:host=mysql;port=3306;dbname=rapidtask', 'rapidtask', 'secret');" 2>/dev/null; do
+    ATTEMPTS=$((ATTEMPTS + 1))
+    if [ "$ATTEMPTS" -ge 30 ]; then
+        echo "MySQL not ready after 30 attempts; continuing without migrate"
+        break
+    fi
+    echo "Waiting for MySQL... ($ATTEMPTS)"
     sleep 2
 done
 
-rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
-
-if [ ! -f vendor/autoload.php ] || [ ! -d vendor/laravel/framework ]; then
-    echo "Instalando dependências PHP..."
-    composer install --no-interaction --prefer-dist --optimize-autoloader
+if [ "$ATTEMPTS" -lt 30 ]; then
+    php artisan migrate --force --ansi || true
 fi
-
-if ! grep -q '^APP_KEY=base64:' .env 2>/dev/null; then
-    php artisan key:generate --force
-fi
-
-mkdir -p storage/framework/cache/data \
-    storage/framework/sessions \
-    storage/framework/views \
-    storage/logs \
-    bootstrap/cache \
-    public/avatar \
-    public/projetos/arquivos
-
-chown -R www-data:www-data storage bootstrap/cache public/avatar public/projetos
-chmod -R 775 storage bootstrap/cache public/avatar public/projetos
-
-php artisan migrate --force
 
 exec "$@"

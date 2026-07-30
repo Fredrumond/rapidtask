@@ -2,30 +2,54 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\ScopedToMemberTeams;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use DB;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Time extends Model
 {
-	protected $table = 'time';
-	protected $fillable = ['nome','logo','usuario_id'];
+    use HasFactory, ScopedToMemberTeams, SoftDeletes;
 
+    protected $table = 'time';
 
-	public function listaTodosTimes($id)
-	{
-		$select = "SELECT
-		t.id,
-		t.nome,
-		t.logo
-		FROM
-		time t
-		INNER JOIN time_membro tm ON
-		tm.time_id = t.id
-		WHERE
-		tm.usuario_id = '" . $id . "'";
+    protected $fillable = [
+        'nome',
+        'logo',
+        'usuario_id',
+    ];
 
-		return $times = collect(DB::select($select))->all();
-	}
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
-	
+    public function usuario(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'usuario_id');
+    }
+
+    public function clientes(): HasMany
+    {
+        return $this->hasMany(Cliente::class, 'time_id');
+    }
+
+    public function projetos(): HasMany
+    {
+        return $this->hasMany(Projeto::class, 'time_id');
+    }
+
+    public function membros(): HasMany
+    {
+        return $this->hasMany(TimeMembro::class, 'time_id');
+    }
+
+    public function convites(): HasMany
+    {
+        return $this->hasMany(TimeMembroConvite::class, 'time_id');
+    }
 }

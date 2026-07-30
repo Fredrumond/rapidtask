@@ -2,25 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LogTipo extends Model
 {
-	protected $table = 'log_tipo';
-	protected $fillable = ['nome'];
+    use HasFactory;
 
-	public function getCreatedAtAttribute($value)
-	{
-		$data = Carbon::createFromFormat('Y-m-d H:i:s', $value);
+    protected $table = 'log_tipo';
 
-		return $data->format('d/m/Y H:i');
-	}
+    protected $fillable = [
+        'nome',
+    ];
 
-	public function getUpdatedAtAttribute($value)
-	{
-		$data = Carbon::createFromFormat('Y-m-d H:i:s', $value);
-
-		return $data->format('d/m/Y H:i');
-	}
+    public function logs(): HasMany
+    {
+        return $this->hasMany(Log::class, 'log_tipo_id');
+    }
 }

@@ -2,54 +2,42 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
-use DB;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Log extends Model
 {
-	protected $table = 'log';
-	protected $fillable = ['log_acao_id','log_tipo_id','usuario_id','identficacao'];
+    use HasFactory;
 
-	public function getCreatedAtAttribute($value)
-	{
-		$data = Carbon::createFromFormat('Y-m-d H:i:s', $value);
+    protected $table = 'log';
 
-		return $data->format('d/m/Y H:i');
-	}
+    protected $fillable = [
+        'log_acao_id',
+        'log_tipo_id',
+        'usuario_id',
+        'identificacao',
+    ];
 
-	public function getUpdatedAtAttribute($value)
-	{
-		$data = Carbon::createFromFormat('Y-m-d H:i:s', $value);
+    protected function casts(): array
+    {
+        return [
+            'identificacao' => 'integer',
+        ];
+    }
 
-		return $data->format('d/m/Y H:i');
-	}
+    public function acao(): BelongsTo
+    {
+        return $this->belongsTo(LogAcao::class, 'log_acao_id');
+    }
 
-	public function listaLogs($id, $limit = null)
-	{
-		DB::statement("SET lc_time_names = 'pt_BR'");
-		$logs = DB::table('log')
-						->selectRaw('
-						CASE 
-							WHEN log_acao_id = 1 THEN "Registrou"
-							WHEN log_acao_id = 2 THEN "Atualizou"
-							WHEN log_acao_id = 3 THEN "Excluiu"
-							WHEN log_acao_id = 4 THEN "Arquivou"
-						END acao,
-						CASE 
-							WHEN log_tipo_id = 1 THEN "Cliente"
-							WHEN log_tipo_id = 2 THEN "Projeto"
-							WHEN log_tipo_id = 3 THEN "Atividade"
-							WHEN log_tipo_id = 4 THEN "Tarefa"
-							WHEN log_tipo_id = 5 THEN "Time"
-						END tipo,
-						DATE_FORMAT(created_at, "%d %M, %Y às %Hh%i") data
-						')
-						->where('usuario_id', '=', $id)
-						->orderBy('created_at', 'DESC')
-						->limit($limit)
-						->get();
+    public function tipo(): BelongsTo
+    {
+        return $this->belongsTo(LogTipo::class, 'log_tipo_id');
+    }
 
-		return $logs;
-	}
+    public function usuario(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'usuario_id');
+    }
 }

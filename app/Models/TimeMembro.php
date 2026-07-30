@@ -2,28 +2,42 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TimeMembro extends Model
 {
-	protected $table = 'time_membro';
-	protected $fillable = ['usuario_id','time_id','nivel_id'];
+    use HasFactory, SoftDeletes;
 
+    protected $table = 'time_membro';
 
-	public function membro()
-	{
-		return $this->hasMany('App\User', 'id', 'usuario_id');
-	}
+    protected $fillable = [
+        'time_id',
+        'usuario_id',
+        'nivel_id',
+    ];
 
-	public function nivel()
-	{
-		return $this->hasMany(TimeNivel::class, 'id', 'nivel_id');
-	}
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
-	public function time()
-	{
-		return $this->hasMany(Time::class, 'id', 'time_id');
-	}
+    public function time(): BelongsTo
+    {
+        return $this->belongsTo(Time::class, 'time_id');
+    }
 
-	
+    public function usuario(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'usuario_id');
+    }
+
+    public function nivel(): BelongsTo
+    {
+        return $this->belongsTo(TimeNivel::class, 'nivel_id');
+    }
 }

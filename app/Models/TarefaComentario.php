@@ -2,25 +2,38 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToTeamViaTarefa;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TarefaComentario extends Model
 {
-	protected $table = 'tarefa_comentario';
-	protected $fillable = ['id','tarefa_id','usuario_id','comentario'];
+    use BelongsToTeamViaTarefa, HasFactory, SoftDeletes;
 
-	public function getCreatedAtAttribute($value)
-	{
-		$data = Carbon::createFromFormat('Y-m-d H:i:s', $value);
+    protected $table = 'tarefa_comentario';
 
-		return $data->format('d/m/Y H:i');
-	}
+    protected $fillable = [
+        'tarefa_id',
+        'usuario_id',
+        'comentario',
+    ];
 
-	public function getUpdatedAtAttribute($value)
-	{
-		$data = Carbon::createFromFormat('Y-m-d H:i:s', $value);
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
-		return $data->format('d/m/Y H:i');
-	}
+    public function tarefa(): BelongsTo
+    {
+        return $this->belongsTo(Tarefa::class, 'tarefa_id');
+    }
+
+    public function usuario(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'usuario_id');
+    }
 }
