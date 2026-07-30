@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TimeNivelTableSeeder::class,
             LogAcaoTableSeeder::class,
             LogTipoTableSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }
