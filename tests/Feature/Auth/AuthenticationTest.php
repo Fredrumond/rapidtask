@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Time;
 use App\Models\User;
+use Database\Seeders\TimeNivelTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
@@ -56,7 +58,11 @@ class AuthenticationTest extends TestCase
 
     public function test_navigation_menu_can_be_rendered(): void
     {
+        $this->seed(TimeNivelTableSeeder::class);
+
         $user = User::factory()->create();
+        $time = Time::factory()->create(['usuario_id' => $user->id]);
+        $user->times()->attach($time->id, ['nivel_id' => 1]);
 
         $this->actingAs($user);
 
