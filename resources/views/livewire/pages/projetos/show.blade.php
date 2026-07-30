@@ -28,18 +28,23 @@ new #[Layout('layouts.app')] class extends Component
 
 <div>
     <x-slot name="header">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $projeto->sigla }} — {{ $projeto->nome }}</h2>
-                <p class="text-sm text-gray-500">Cliente: {{ $projeto->cliente?->nome }}</p>
-            </div>
-            <a href="{{ route('projetos.edit', $projeto) }}" wire:navigate class="text-indigo-600 text-sm hover:underline">Editar</a>
+        <div>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $projeto->sigla }} — {{ $projeto->nome }}</h2>
+            <p class="text-sm text-gray-500">Cliente: {{ $projeto->cliente?->nome }}</p>
         </div>
     </x-slot>
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
-            <p class="text-gray-700">{{ $projeto->descricao }}</p>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <p class="text-gray-700">{{ $projeto->descricao }}</p>
+                <div class="flex items-center gap-3 shrink-0">
+                    <a href="{{ route('projetos.edit', $projeto) }}" wire:navigate class="text-sm text-gray-600 hover:underline">Editar</a>
+                    <a href="{{ route('tarefas.create', ['projeto_id' => $projeto->id]) }}" wire:navigate class="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500">
+                        Nova tarefa
+                    </a>
+                </div>
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 @foreach ($situacoes as $situacao)

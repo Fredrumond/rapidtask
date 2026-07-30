@@ -23,6 +23,12 @@ new #[Layout('layouts.app')] class extends Component
     public function mount(): void
     {
         $this->authorize('create', Tarefa::class);
+
+        $projetoId = request()->integer('projeto_id') ?: null;
+
+        if ($projetoId && Projeto::query()->whereKey($projetoId)->exists()) {
+            $this->projeto_id = $projetoId;
+        }
     }
 
     public function save(): void

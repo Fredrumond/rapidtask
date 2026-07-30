@@ -42,13 +42,7 @@ new #[Layout('layouts.app')] class extends Component
 
 <div>
     <x-slot name="header">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tarefas</h2>
-            <div class="flex gap-2">
-                <a href="{{ route('tarefas.arquivadas') }}" wire:navigate class="text-sm text-gray-600 hover:underline">Arquivadas</a>
-                <a href="{{ route('tarefas.create') }}" wire:navigate class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md">Nova tarefa</a>
-            </div>
-        </div>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tarefas</h2>
     </x-slot>
 
     <div class="py-8">
@@ -56,8 +50,14 @@ new #[Layout('layouts.app')] class extends Component
             @if (session('status'))
                 <div class="bg-green-50 text-green-800 px-4 py-3 rounded-md text-sm">{{ session('status') }}</div>
             @endif
-            <div class="bg-white shadow-sm sm:rounded-lg p-4">
+            <div class="bg-white shadow-sm sm:rounded-lg p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
                 <input type="search" wire:model.live.debounce.300ms="busca" placeholder="Buscar..." class="w-full sm:w-80 rounded-md border-gray-300 shadow-sm" />
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('tarefas.arquivadas') }}" wire:navigate class="text-sm text-gray-600 hover:underline">Arquivadas</a>
+                    <a href="{{ route('tarefas.create') }}" wire:navigate class="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500">
+                        Nova tarefa
+                    </a>
+                </div>
             </div>
             <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden">
                 <div class="overflow-x-auto">
@@ -84,7 +84,12 @@ new #[Layout('layouts.app')] class extends Component
                                     </td>
                                 </tr>
                             @empty
-                                <tr><td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">Nenhuma tarefa.</td></tr>
+                                <tr>
+                                    <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
+                                        Nenhuma tarefa.
+                                        <a href="{{ route('tarefas.create') }}" wire:navigate class="block mt-2 text-indigo-600 hover:underline">Criar a primeira tarefa</a>
+                                    </td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>

@@ -36,10 +36,7 @@ new #[Layout('layouts.app')] class extends Component
 
 <div>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Clientes</h2>
-            <a href="{{ route('clientes.create') }}" wire:navigate class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-500">Novo cliente</a>
-        </div>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Clientes</h2>
     </x-slot>
 
     <div class="py-8">
@@ -48,8 +45,11 @@ new #[Layout('layouts.app')] class extends Component
                 <div class="bg-green-50 text-green-800 px-4 py-3 rounded-md text-sm">{{ session('status') }}</div>
             @endif
 
-            <div class="bg-white shadow-sm sm:rounded-lg p-4">
+            <div class="bg-white shadow-sm sm:rounded-lg p-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
                 <input type="search" wire:model.live.debounce.300ms="busca" placeholder="Buscar por nome..." class="w-full sm:w-80 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+                <a href="{{ route('clientes.create') }}" wire:navigate class="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-500">
+                    Novo cliente
+                </a>
             </div>
 
             <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden">
@@ -76,7 +76,10 @@ new #[Layout('layouts.app')] class extends Component
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="px-4 py-8 text-center text-sm text-gray-500">Nenhum cliente encontrado.</td>
+                                    <td colspan="4" class="px-4 py-8 text-center text-sm text-gray-500">
+                                        Nenhum cliente encontrado.
+                                        <a href="{{ route('clientes.create') }}" wire:navigate class="block mt-2 text-indigo-600 hover:underline">Criar o primeiro cliente</a>
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
