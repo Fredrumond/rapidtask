@@ -12,7 +12,11 @@ if [ ! -d vendor ] || [ ! -f vendor/autoload.php ]; then
     composer install --no-interaction --prefer-dist
 fi
 
-php artisan key:generate --force --ansi 2>/dev/null || true
+# Only generate when missing — --force on every start rotates APP_KEY and
+# breaks Livewire checksums / encrypted cookies for open browser sessions.
+if ! grep -qE '^APP_KEY=.+' .env 2>/dev/null; then
+    php artisan key:generate --force --ansi 2>/dev/null || true
+fi
 
 chown -R www-data:www-data storage bootstrap/cache 2>/dev/null || true
 chmod -R ug+rwx storage bootstrap/cache 2>/dev/null || true
