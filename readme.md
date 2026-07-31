@@ -12,6 +12,10 @@ Plataforma web de gerenciamento de projetos e tarefas (estudo / refatoração La
 | Auth | Laravel Breeze (Livewire) |
 | Testes | Pest 4 |
 
+## Arquitetura
+
+Padrões do projeto e checklist para criar uma entidade nova: [`docs/arquitetura.md`](docs/arquitetura.md).
+
 ## Docker (recomendado)
 
 ```bash
