@@ -25,6 +25,32 @@ return [
     'releases' => [
 
         [
+            'versao' => '1.0.0-alpha.3',
+            'data' => '2026-08-03',
+            'estado' => 'development',
+            'titulo' => 'Autenticação da API',
+            'resumo' => 'Primeira camada de API com Laravel Sanctum: geração e revogação de token pessoal (um por usuário), endpoints Bearer e gestão pelo perfil no painel web.',
+            'nota' => 'Token vitalício até revogação explícita ou geração de um novo. Escopos granulares e múltiplos tokens ficam fora desta entrega.',
+            'modulos' => [
+                [
+                    'nome' => 'API',
+                    'itens' => [
+                        ['titulo' => 'Laravel Sanctum', 'estado' => 'stable'],
+                        ['titulo' => 'Gerar token (POST /api/tokens)', 'estado' => 'stable', 'nota' => 'Gera novo e revoga o anterior automaticamente'],
+                        ['titulo' => 'Revogar token (DELETE /api/tokens)', 'estado' => 'stable'],
+                        ['titulo' => 'Middleware auth:sanctum', 'estado' => 'stable'],
+                    ],
+                ],
+                [
+                    'nome' => 'Meu Perfil',
+                    'itens' => [
+                        ['titulo' => 'Gerenciar token de API', 'estado' => 'stable', 'nota' => 'Gerar e revogar pelo painel'],
+                    ],
+                ],
+            ],
+        ],
+
+        [
             'versao' => '1.0.0-alpha.2',
             'data' => '2026-07-30',
             'estado' => 'development',
