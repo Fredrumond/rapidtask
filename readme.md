@@ -16,6 +16,12 @@ Plataforma web de gerenciamento de projetos e tarefas (estudo / refatoração La
 
 Padrões do projeto e checklist para criar uma entidade nova: [`docs/arquitetura.md`](docs/arquitetura.md).
 
+## API
+
+CRUD de tarefas, header `X-Time-Id` e Swagger: [`docs/references/api-tarefas.md`](docs/references/api-tarefas.md).
+
+Documentação interativa (com stack Docker no ar): http://localhost:8080/api/documentation
+
 ## Docker (recomendado)
 
 ```bash

@@ -20,6 +20,7 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/storage/api-docs
 /vendor
 /_legacy_ref
 _ide_helper.php

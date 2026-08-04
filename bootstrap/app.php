@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\EnsureApiTeam;
+use App\Http\Middleware\SetCurrentTeam;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -14,10 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'team' => \App\Http\Middleware\SetCurrentTeam::class,
+            'team' => SetCurrentTeam::class,
+            'api.team' => EnsureApiTeam::class,
         ]);
 
-        $middleware->appendToGroup('web', \App\Http\Middleware\SetCurrentTeam::class);
+        $middleware->appendToGroup('web', SetCurrentTeam::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
