@@ -14,7 +14,10 @@ test('applyTimeIdFilter restringe ao current_time_id quando definido', function 
     extract($this->cenario);
 
     $this->actingAs($userA)
-        ->withSession(['current_time_id' => $timeA->id]);
+        ->withSession([
+            'current_time_id' => $timeA->id,
+            'current_conta_id' => $contaA->id,
+        ]);
 
     expect(Cliente::count())->toBe(1)
         ->and(Cliente::query()->toSql())->toContain('time_id');
@@ -45,11 +48,28 @@ test('applyMemberFilter limita times ao usuario autenticado', function () {
         ->and(Time::first()->id)->toBe($timeA->id);
 });
 
+test('applyMemberFilter combina membership e current_conta_id', function () {
+    extract($this->cenario);
+
+    $this->actingAs($userA)
+        ->withSession([
+            'current_time_id' => $timeA->id,
+            'current_conta_id' => $contaA->id,
+        ]);
+
+    expect(Time::count())->toBe(1)
+        ->and(Time::first()->id)->toBe($timeA->id)
+        ->and(Time::query()->toSql())->toContain('conta_id');
+});
+
 test('applyProjetoTimeFilter isola tarefas por time do projeto', function () {
     extract($this->cenario);
 
     $this->actingAs($userA)
-        ->withSession(['current_time_id' => $timeA->id]);
+        ->withSession([
+            'current_time_id' => $timeA->id,
+            'current_conta_id' => $contaA->id,
+        ]);
 
     expect(Tarefa::count())->toBe(1)
         ->and(Tarefa::first()->id)->toBe($tarefaA->id);

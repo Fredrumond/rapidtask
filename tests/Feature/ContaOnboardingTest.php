@@ -87,6 +87,7 @@ test('convidar bloqueia email vinculado a outra conta', function () {
     Conta::factory()->create(['usuario_id' => $ownerB->id]);
 
     $this->actingAs($ownerA);
+    CurrentTeam::set($timeA->id);
 
     Volt::test('pages.times.show', ['time' => $timeA])
         ->set('nome', 'Convidado')
@@ -110,6 +111,7 @@ test('convidar permite email sem usuario na plataforma', function () {
     ]);
 
     $this->actingAs($owner);
+    CurrentTeam::set($time->id);
 
     Volt::test('pages.times.show', ['time' => $time])
         ->set('nome', 'Novo')
@@ -149,6 +151,7 @@ test('convidar permite email da mesma conta', function () {
     ]);
 
     $this->actingAs($owner);
+    CurrentTeam::set($timeB->id);
 
     Volt::test('pages.times.show', ['time' => $timeB])
         ->set('nome', 'Membro')

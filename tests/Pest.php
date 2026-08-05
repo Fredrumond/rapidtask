@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cliente;
+use App\Models\Conta;
 use App\Models\Projeto;
 use App\Models\Tarefa;
 use App\Models\Time;
@@ -36,6 +37,8 @@ function seedLookups(): void
  * @return array{
  *     userA: User,
  *     userB: User,
+ *     contaA: Conta,
+ *     contaB: Conta,
  *     timeA: Time,
  *     timeB: Time,
  *     clienteA: Cliente,
@@ -56,6 +59,7 @@ function criarCenarioDoisTimes(): array
         'time_id' => $timeA->id,
         'usuario_id' => $userA->id,
     ]);
+    $contaA = Conta::query()->findOrFail($timeA->conta_id);
 
     $userB = User::factory()->create();
     $timeB = Time::factory()->create(['usuario_id' => $userB->id]);
@@ -63,6 +67,7 @@ function criarCenarioDoisTimes(): array
         'time_id' => $timeB->id,
         'usuario_id' => $userB->id,
     ]);
+    $contaB = Conta::query()->findOrFail($timeB->conta_id);
 
     $clienteA = Cliente::factory()->create([
         'time_id' => $timeA->id,
@@ -99,6 +104,8 @@ function criarCenarioDoisTimes(): array
     return compact(
         'userA',
         'userB',
+        'contaA',
+        'contaB',
         'timeA',
         'timeB',
         'clienteA',

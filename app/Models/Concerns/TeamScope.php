@@ -102,6 +102,10 @@ class TeamScope
             $query->where('usuario_id', $user->id);
         });
 
+        if ($currentContaId = current_conta_id()) {
+            $builder->where("{$table}.conta_id", $currentContaId);
+        }
+
         if ($currentTeamId = current_time_id()) {
             $builder->where("{$table}.id", $currentTeamId);
         }
