@@ -190,6 +190,75 @@ test('aceitar convite bloqueia usuario de outra conta', function () {
         ->assertForbidden();
 });
 
+test('aceitar convite sem assinatura e rejeitado', function () {
+    $user = User::factory()->create(['email' => 'convidado@example.com']);
+    $conta = Conta::factory()->create(['usuario_id' => $user->id]);
+    $time = Time::factory()->create([
+        'usuario_id' => $user->id,
+        'conta_id' => $conta->id,
+    ]);
+
+    $convite = TimeMembroConvite::factory()->create([
+        'email' => 'convidado@example.com',
+        'time_id' => $time->id,
+        'status' => 0,
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('convites.aceitar', $convite))
+        ->assertForbidden();
+});
+
+test('aceitar convite redireciona guest para login', function () {
+    $owner = User::factory()->create();
+    $conta = Conta::factory()->create(['usuario_id' => $owner->id]);
+    $time = Time::factory()->create([
+        'usuario_id' => $owner->id,
+        'conta_id' => $conta->id,
+    ]);
+
+    $convite = TimeMembroConvite::factory()->create([
+        'email' => 'novo@example.com',
+        'time_id' => $time->id,
+        'status' => 0,
+    ]);
+
+    $url = URL::temporarySignedRoute(
+        'convites.aceitar',
+        now()->addDay(),
+        ['convite' => $convite->id]
+    );
+
+    $this->get($url)->assertRedirect(route('login'));
+});
+
+test('aceitar convite com email divergente retorna 403', function () {
+    $owner = User::factory()->create();
+    $conta = Conta::factory()->create(['usuario_id' => $owner->id]);
+    $time = Time::factory()->create([
+        'usuario_id' => $owner->id,
+        'conta_id' => $conta->id,
+    ]);
+
+    $outro = User::factory()->create(['email' => 'outro@example.com']);
+
+    $convite = TimeMembroConvite::factory()->create([
+        'email' => 'destinatario@example.com',
+        'time_id' => $time->id,
+        'status' => 0,
+    ]);
+
+    $url = URL::temporarySignedRoute(
+        'convites.aceitar',
+        now()->addDay(),
+        ['convite' => $convite->id]
+    );
+
+    $this->actingAs($outro)
+        ->get($url)
+        ->assertForbidden();
+});
+
 test('owner pode editar nome da conta', function () {
     $owner = User::factory()->create();
     $conta = Conta::factory()->create([

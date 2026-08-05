@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\ContaFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Conta extends Model
 {
-    /** @use HasFactory<\Database\Factories\ContaFactory> */
+    /** @use HasFactory<ContaFactory> */
     use HasFactory, SoftDeletes;
 
     protected $table = 'conta';

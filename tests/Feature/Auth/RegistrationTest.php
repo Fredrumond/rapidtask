@@ -1,13 +1,7 @@
 <?php
 
 use App\Models\Conta;
-use App\Models\Time;
-use App\Models\TimeMembroConvite;
 use App\Models\User;
-use App\Support\CurrentTeam;
-use Database\Factories\TimeMembroFactory;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 use Livewire\Volt\Volt;
 
 test('guests can register new users', function () {

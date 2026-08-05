@@ -36,7 +36,8 @@ trait HandlesTeamAuthorization
 
     protected function isTeamAdmin(?User $user, int $timeId): bool
     {
-        return $user !== null && $user->isAdminOf($timeId);
+        return $this->canAccessTeam($user, $timeId)
+            && $user->isAdminOf($timeId);
     }
 
     protected function canAccessCurrentTeam(?User $user): bool

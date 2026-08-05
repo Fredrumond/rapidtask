@@ -4,6 +4,7 @@ use App\Mail\ConviteTimeMail;
 use App\Models\Time;
 use App\Models\TimeMembroConvite;
 use App\Models\User;
+use App\Support\CurrentTeam;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -21,6 +22,22 @@ new #[Layout('layouts.app')] class extends Component
     {
         $this->authorize('view', $time);
         $this->time = $time->load(['membros.usuario', 'membros.nivel']);
+    }
+
+    public function delete(): void
+    {
+        $this->authorize('delete', $this->time);
+
+        $timeId = $this->time->id;
+        $this->time->delete();
+
+        if (CurrentTeam::id() === $timeId) {
+            $proximo = auth()->user()->times()->orderBy('nome')->first();
+            CurrentTeam::set($proximo?->id);
+        }
+
+        session()->flash('status', 'Time excluído.');
+        $this->redirect(route('times.index'), navigate: true);
     }
 
     public function convidar(): void
@@ -83,6 +100,23 @@ new #[Layout('layouts.app')] class extends Component
             @if (session('status'))
                 <div class="bg-green-50 text-green-800 px-4 py-3 rounded-md text-sm">{{ session('status') }}</div>
             @endif
+
+            @can('delete', $time)
+                <div class="bg-white shadow-sm sm:rounded-lg p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                        <h3 class="font-medium text-gray-900">Excluir time</h3>
+                        <p class="text-sm text-gray-500 mt-1">Remove o time da conta. Esta ação pode ser revertida apenas no banco.</p>
+                    </div>
+                    <button
+                        type="button"
+                        wire:click="delete"
+                        wire:confirm="Excluir este time? Membros e vínculos deixam de aparecer na interface."
+                        class="inline-flex items-center justify-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-500"
+                    >
+                        Excluir time
+                    </button>
+                </div>
+            @endcan
 
             <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden">
                 <div class="px-6 py-4 border-b"><h3 class="font-medium">Membros</h3></div>

@@ -16,6 +16,8 @@ Plataforma web de gerenciamento de projetos e tarefas (estudo / refatoração La
 
 Padrões do projeto e checklist para criar uma entidade nova: [`docs/arquitetura.md`](docs/arquitetura.md).
 
+Isolamento web por conta (sessão, scopes, policies e nav): [`docs/references/isolamento-conta-web.md`](docs/references/isolamento-conta-web.md).
+
 ## API
 
 CRUD de tarefas, header `X-Time-Id` e Swagger: [`docs/references/api-tarefas.md`](docs/references/api-tarefas.md).
