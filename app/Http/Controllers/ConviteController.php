@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\TimeMembro;
 use App\Models\TimeMembroConvite;
-use App\Models\User;
+use App\Models\Time;
+use App\Support\CurrentTeam;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class ConviteController extends Controller
 {
@@ -28,6 +27,16 @@ class ConviteController extends Controller
             'Este convite é para outro e-mail.'
         );
 
+        $contaId = Time::withoutGlobalScopes()
+            ->whereKey($convite->time_id)
+            ->value('conta_id');
+
+        abort_if(
+            $contaId !== null && $user->belongsToOtherConta((int) $contaId),
+            403,
+            'Você já pertence a outra conta na plataforma.'
+        );
+
         TimeMembro::query()->firstOrCreate(
             [
                 'time_id' => $convite->time_id,
@@ -40,7 +49,7 @@ class ConviteController extends Controller
 
         $convite->update(['status' => 1]);
 
-        \App\Support\CurrentTeam::set($convite->time_id);
+        CurrentTeam::set($convite->time_id);
 
         return redirect()
             ->route('times.show', $convite->time_id)

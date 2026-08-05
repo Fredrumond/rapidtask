@@ -35,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('times', 'pages.times.index')->name('times.index');
     Volt::route('times/{time}', 'pages.times.show')->name('times.show');
 
+    Volt::route('contas/{conta}/editar', 'pages.contas.edit')->name('contas.edit');
+
     Volt::route('versoes', 'pages.versoes.index')->name('versoes.index');
     Route::redirect('versions', 'versoes');
 

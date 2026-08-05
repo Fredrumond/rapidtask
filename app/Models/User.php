@@ -74,4 +74,44 @@ class User extends Authenticatable
 
         return $this->timeMembros()->where('time_id', $teamId)->first();
     }
+
+    public function contas(): HasMany
+    {
+        return $this->hasMany(Conta::class, 'usuario_id');
+    }
+
+    /**
+     * IDs de contas às quais o usuário está vinculado (owner ou membro de time).
+     *
+     * @return list<int>
+     */
+    public function linkedContaIds(): array
+    {
+        $owned = Conta::query()
+            ->where('usuario_id', $this->id)
+            ->pluck('id');
+
+        $viaTeams = Time::query()
+            ->whereIn('id', $this->timeMembros()->select('time_id'))
+            ->whereNotNull('conta_id')
+            ->pluck('conta_id');
+
+        return $owned
+            ->merge($viaTeams)
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    public function belongsToOtherConta(int $contaId): bool
+    {
+        foreach ($this->linkedContaIds() as $linkedId) {
+            if ($linkedId !== $contaId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

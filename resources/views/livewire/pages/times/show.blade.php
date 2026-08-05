@@ -3,9 +3,11 @@
 use App\Mail\ConviteTimeMail;
 use App\Models\Time;
 use App\Models\TimeMembroConvite;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -29,6 +31,15 @@ new #[Layout('layouts.app')] class extends Component
             'nome' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
         ]);
+
+        $contaId = $this->time->conta_id;
+        $convidado = User::query()->where('email', $data['email'])->first();
+
+        if ($convidado !== null && $contaId !== null && $convidado->belongsToOtherConta((int) $contaId)) {
+            throw ValidationException::withMessages([
+                'email' => 'Este e-mail já pertence a outra conta na plataforma.',
+            ]);
+        }
 
         $convite = TimeMembroConvite::query()->create([
             'nome' => $data['nome'],
@@ -108,6 +119,7 @@ new #[Layout('layouts.app')] class extends Component
                         <div>
                             <x-input-label for="email" value="E-mail" />
                             <x-text-input wire:model="email" id="email" type="email" class="mt-1 block w-full" required />
+                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
                     </div>
                     <x-primary-button>Enviar convite</x-primary-button>

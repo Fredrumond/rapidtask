@@ -77,6 +77,12 @@ new class extends Component
                             <div class="px-4 py-2 text-xs text-gray-400">Time: {{ $currentTime->nome }}</div>
                         @endif
                         <x-dropdown-link :href="route('profile')" wire:navigate>Perfil</x-dropdown-link>
+                        @php
+                            $contaOwner = auth()->user()->contas()->orderBy('id')->first();
+                        @endphp
+                        @if ($contaOwner)
+                            <x-dropdown-link :href="route('contas.edit', $contaOwner)" wire:navigate>Conta</x-dropdown-link>
+                        @endif
                         <x-dropdown-link :href="route('versoes.index')" wire:navigate>
                             Versões
                             <span class="ms-1 text-xs text-gray-400">{{ \App\Support\Versoes::numeroAtual() }}</span>
@@ -115,6 +121,12 @@ new class extends Component
             </div>
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile')" wire:navigate>Perfil</x-responsive-nav-link>
+                @php
+                    $contaOwnerMobile = auth()->user()->contas()->orderBy('id')->first();
+                @endphp
+                @if ($contaOwnerMobile)
+                    <x-responsive-nav-link :href="route('contas.edit', $contaOwnerMobile)" :active="request()->routeIs('contas.*')" wire:navigate>Conta</x-responsive-nav-link>
+                @endif
                 <x-responsive-nav-link :href="route('versoes.index')" :active="request()->routeIs('versoes.*')" wire:navigate>
                     Versões
                     <span class="ms-1 text-xs text-gray-400">{{ \App\Support\Versoes::numeroAtual() }}</span>
