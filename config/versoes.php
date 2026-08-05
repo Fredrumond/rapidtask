@@ -100,7 +100,7 @@ return [
                         ['titulo' => 'Visualizar time e membros', 'estado' => 'stable'],
                         ['titulo' => 'Convidar membro (e-mail na fila)', 'estado' => 'stable'],
                         ['titulo' => 'Editar time', 'estado' => 'development'],
-                        ['titulo' => 'Excluir time', 'estado' => 'development', 'nota' => 'Cascata de exclusão ainda em revisão'],
+                        ['titulo' => 'Excluir time', 'estado' => 'stable', 'nota' => 'Soft delete; apenas admin do time'],
                     ],
                 ],
                 [

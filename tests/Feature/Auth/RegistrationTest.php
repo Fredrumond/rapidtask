@@ -1,13 +1,8 @@
 <?php
 
+use App\Models\Conta;
 use App\Models\User;
 use Livewire\Volt\Volt;
-
-test('registration screen can be rendered for guests', function () {
-    $response = $this->get('/register');
-
-    $response->assertOk();
-});
 
 test('guests can register new users', function () {
     $component = Volt::test('pages.auth.register')
@@ -21,5 +16,16 @@ test('guests can register new users', function () {
     $component->assertRedirect(route('dashboard', absolute: false));
 
     $this->assertAuthenticated();
-    expect(User::where('email', 'test@example.com')->exists())->toBeTrue();
+
+    $user = User::where('email', 'test@example.com')->first();
+
+    expect($user)->not->toBeNull()
+        ->and(Conta::query()->where('usuario_id', $user->id)->exists())->toBeTrue()
+        ->and(Conta::query()->where('usuario_id', $user->id)->value('nome'))->toBe('Conta de Test User');
+});
+
+test('registration screen can be rendered for guests', function () {
+    $response = $this->get('/register');
+
+    $response->assertOk();
 });

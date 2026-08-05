@@ -19,6 +19,7 @@ class Time extends Model
         'nome',
         'logo',
         'usuario_id',
+        'conta_id',
     ];
 
     protected function casts(): array
@@ -26,6 +27,11 @@ class Time extends Model
         return [
             'deleted_at' => 'datetime',
         ];
+    }
+
+    public function conta(): BelongsTo
+    {
+        return $this->belongsTo(Conta::class, 'conta_id');
     }
 
     public function usuario(): BelongsTo

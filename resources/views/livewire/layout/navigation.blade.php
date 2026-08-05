@@ -1,7 +1,7 @@
 <?php
 
 use App\Livewire\Actions\Logout;
-use App\Models\Time;
+use App\Models\Conta;
 use App\Support\CurrentTeam;
 use Livewire\Volt\Component;
 
@@ -25,6 +25,14 @@ new class extends Component
     }
 }; ?>
 
+@php
+    $times = auth()->user()->times;
+    $currentTime = $times->firstWhere('id', current_time_id());
+    $contaAtiva = current_conta_id()
+        ? Conta::query()->find(current_conta_id())
+        : null;
+@endphp
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -45,10 +53,9 @@ new class extends Component
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-3">
-                @php
-                    $times = auth()->user()->times;
-                    $currentTime = $times->firstWhere('id', current_time_id());
-                @endphp
+                @if ($contaAtiva)
+                    <span class="text-sm font-medium text-gray-700" title="Conta ativa">{{ $contaAtiva->nome }}</span>
+                @endif
                 @if ($times->isNotEmpty())
                     <select
                         wire:change="switchTeam($event.target.value)"
@@ -73,10 +80,19 @@ new class extends Component
                     </x-slot>
 
                     <x-slot name="content">
+                        @if ($contaAtiva)
+                            <div class="px-4 py-2 text-xs text-gray-400">Conta: {{ $contaAtiva->nome }}</div>
+                        @endif
                         @if ($currentTime)
                             <div class="px-4 py-2 text-xs text-gray-400">Time: {{ $currentTime->nome }}</div>
                         @endif
                         <x-dropdown-link :href="route('profile')" wire:navigate>Perfil</x-dropdown-link>
+                        @php
+                            $contaOwner = auth()->user()->contas()->orderBy('id')->first();
+                        @endphp
+                        @if ($contaOwner)
+                            <x-dropdown-link :href="route('contas.edit', $contaOwner)" wire:navigate>Conta</x-dropdown-link>
+                        @endif
                         <x-dropdown-link :href="route('versoes.index')" wire:navigate>
                             Versões
                             <span class="ms-1 text-xs text-gray-400">{{ \App\Support\Versoes::numeroAtual() }}</span>
@@ -112,9 +128,18 @@ new class extends Component
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800" x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name"></div>
                 <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
+                @if ($contaAtiva)
+                    <div class="font-medium text-sm text-gray-500 mt-1">Conta: {{ $contaAtiva->nome }}</div>
+                @endif
             </div>
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile')" wire:navigate>Perfil</x-responsive-nav-link>
+                @php
+                    $contaOwnerMobile = auth()->user()->contas()->orderBy('id')->first();
+                @endphp
+                @if ($contaOwnerMobile)
+                    <x-responsive-nav-link :href="route('contas.edit', $contaOwnerMobile)" :active="request()->routeIs('contas.*')" wire:navigate>Conta</x-responsive-nav-link>
+                @endif
                 <x-responsive-nav-link :href="route('versoes.index')" :active="request()->routeIs('versoes.*')" wire:navigate>
                     Versões
                     <span class="ms-1 text-xs text-gray-400">{{ \App\Support\Versoes::numeroAtual() }}</span>

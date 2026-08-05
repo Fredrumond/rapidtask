@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\Conta;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
@@ -28,7 +30,18 @@ new #[Layout('layouts.guest')] class extends Component
 
         $validated['password'] = Hash::make($validated['password']);
 
-        event(new Registered($user = User::create($validated)));
+        $user = DB::transaction(function () use ($validated) {
+            $user = User::create($validated);
+
+            Conta::query()->create([
+                'nome' => 'Conta de '.$user->name,
+                'usuario_id' => $user->id,
+            ]);
+
+            return $user;
+        });
+
+        event(new Registered($user));
 
         Auth::login($user);
 

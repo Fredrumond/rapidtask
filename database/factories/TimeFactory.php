@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Conta;
 use App\Models\Time;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,6 +24,19 @@ class TimeFactory extends Factory
             'logo' => null,
             'usuario_id' => User::factory(),
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (Time $time) {
+            if ($time->conta_id !== null) {
+                return;
+            }
+
+            $time->conta_id = Conta::factory()->create([
+                'usuario_id' => $time->usuario_id,
+            ])->id;
+        });
     }
 
     /**

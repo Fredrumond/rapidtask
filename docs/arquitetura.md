@@ -23,13 +23,14 @@ Referência canônica de CRUD: **Cliente** (`app/Models/Cliente.php` + `resource
 
 ```
 Usuário autenticado
-  → time ativo (sessão)
-    → clientes
-      → projetos
-        → tarefas (+ comentários, arquivos, anotações)
+  → conta ativa (sessão, derivada do time)
+    → time ativo (sessão)
+      → clientes
+        → projetos
+          → tarefas (+ comentários, arquivos, anotações)
 ```
 
-O **time ativo** define o tenant de quase toda query e autorização.
+A **conta** é a fronteira externa de isolamento; o **time ativo** continua como unidade operacional de query e UI. Detalhe: [`docs/references/isolamento-conta-web.md`](references/isolamento-conta-web.md).
 Changelog do produto: rota `/versoes` + dados em `config/versoes.php` (não é entidade de negócio).
 
 ---
@@ -57,16 +58,16 @@ tests/Pest.php                 # seedLookups(), criarCenarioDoisTimes()
 
 ---
 
-## Multi-tenant (time)
+## Multi-tenant (conta + time)
 
 | Peça | Path | Papel |
 |------|------|--------|
-| Sessão | `App\Support\CurrentTeam` | Chave `current_time_id` |
-| Helper | `current_time_id()` em `app/Support/helpers.php` | Atalho para o time ativo |
-| Middleware | `SetCurrentTeam` | Se logado sem time na sessão → primeiro time do usuário |
-| Scope | `BelongsToTeam` / `TeamScope` | Filtra queries pelo time |
-| Policy | `HandlesTeamAuthorization` | `canAccessTeam` / `canAccessCurrentTeam` |
-| UI | `navigation.blade.php` → `switchTeam()` | Troca o time na sessão |
+| Sessão | `App\Support\CurrentTeam` | `current_time_id` + `current_conta_id` (conta derivada do time) |
+| Helpers | `current_time_id()`, `current_conta_id()` em `app/Support/helpers.php` | Atalhos do contexto ativo |
+| Middleware | `SetCurrentTeam` | Se logado sem time na sessão → primeiro time (e conta) do usuário |
+| Scope | `BelongsToTeam` / `TeamScope` | Folhas por `time_id`; `Time` por membership **e** `conta_id` |
+| Policy | `HandlesTeamAuthorization` | `canAccessTeam` exige membership + match de `current_conta_id` |
+| UI | `navigation.blade.php` | Nome da conta + `switchTeam()` (atualiza time e conta) |
 
 Traits de escopo no model:
 
@@ -75,9 +76,9 @@ Traits de escopo no model:
 | `BelongsToTeam` | Tabela tem `time_id` | Cliente, Projeto |
 | `BelongsToTeamViaProjeto` | Tenant via `projeto.time_id` | Tarefa, ProjetoArquivo |
 | `BelongsToTeamViaTarefa` | Tenant via tarefa → projeto | TarefaComentario |
-| `ScopedToMemberTeams` | O próprio Time | Time |
+| `ScopedToMemberTeams` | O próprio Time (membership AND conta ativa) | Time |
 
-Route model binding (`{cliente}`, `{projeto}`, …) respeita o global scope → recurso de outro time vira **404**.
+Route model binding (`{cliente}`, `{projeto}`, …) respeita o global scope → recurso de outro time/conta vira **404**.
 
 ---
 
@@ -156,11 +157,11 @@ Filho sem `time_id` (ex.: Tarefa): gravar a FK do pai (`projeto_id`) e usar o tr
 ## Testes
 
 - Pest em `tests/Feature/`.
-- Helpers em `tests/Pest.php`: `seedLookups()`, `criarCenarioDoisTimes()`.
-- Isolamento tenant: `TeamScopeTest`, `TenantIsolationTest` (sessão com `current_time_id`).
-- Páginas Volt: `Volt::test('pages.…')` + `actingAs` (ver `VersoesTest`, Auth).
+- Helpers em `tests/Pest.php`: `seedLookups()`, `criarCenarioDoisTimes()` (expõe `contaA`/`contaB`).
+- Isolamento tenant: `TeamScopeTest`, `TenantIsolationTest` (sessão com `current_time_id` **e** `current_conta_id`).
+- Páginas Volt: `Volt::test('pages.…')` + `actingAs` (e `CurrentTeam::set` quando a policy exige conta; ver `ContaOnboardingTest`).
 
-Para entidade nova: estender o cenário de dois times e garantir que o time B não vê/altera recurso do time A.
+Para entidade nova: estender o cenário de dois times/contas e garantir que a conta B não vê/altera recurso da conta A.
 
 ```bash
 docker compose exec app php artisan test
@@ -221,7 +222,8 @@ Migration
 | Policy | `app/Policies/ClientePolicy.php` |
 | Create Volt | `resources/views/livewire/pages/clientes/create.blade.php` |
 | Filho via projeto | `app/Models/Tarefa.php`, `app/Policies/TarefaPolicy.php` |
-| Time ativo | `app/Support/CurrentTeam.php` |
+| Time / conta ativos | `app/Support/CurrentTeam.php` |
+| Isolamento conta (doc) | `docs/references/isolamento-conta-web.md` |
 | Rotas | `routes/web.php` |
 | Menu | `resources/views/livewire/layout/navigation.blade.php` |
 | Cenário de teste | `tests/Pest.php` → `criarCenarioDoisTimes()` |

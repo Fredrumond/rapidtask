@@ -31,7 +31,7 @@ Na API não há sessão de time como na UI. O header informa qual time o cliente
 2. `EnsureApiTeam` lê o header `X-Time-Id`.
 3. Ausência ou valor inválido → `400` com mensagem JSON.
 4. Usuário sem membership no time → `403`.
-5. Caso válido → `CurrentTeam::setForRequest($timeId)` para `current_time_id()` e `TeamScope`.
+5. Caso válido → `CurrentTeam::setForRequest($timeId)` hidrata `current_time_id()` e `current_conta_id()` (conta do time) para `TeamScope` e policies.
 6. Ao fim da request, o override é limpo no `finally` do middleware.
 
 **Rodar na mão**
