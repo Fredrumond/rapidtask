@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Database\Factories\ContaFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Conta extends Model
+class Conta extends Authenticatable
 {
     /** @use HasFactory<ContaFactory> */
-    use HasFactory, SoftDeletes;
+    use HasApiTokens, HasFactory, SoftDeletes;
 
     protected $table = 'conta';
 
@@ -36,5 +37,14 @@ class Conta extends Model
     public function times(): HasMany
     {
         return $this->hasMany(Time::class, 'conta_id');
+    }
+
+    public function ownsTime(int $timeId): bool
+    {
+        return Time::query()
+            ->withoutGlobalScopes()
+            ->whereKey($timeId)
+            ->where('conta_id', $this->id)
+            ->exists();
     }
 }

@@ -4,7 +4,7 @@
 
 ## Contexto
 
-O RapidTask isolava dados só por `time_id`. Para multi-empresa no mesmo deploy, é preciso um tenant SaaS acima dos times, sem reescrever toda a cadeia Cliente → Projeto → Tarefa. A API já resolve contexto via header `X-Time-Id` ([ADR 0001](0001-contexto-de-time-na-api-via-header.md)); a web passa a carregar também `current_conta_id` na sessão.
+O RapidTask isolava dados só por `time_id`. Para multi-empresa no mesmo deploy, é preciso um tenant SaaS acima dos times, sem reescrever toda a cadeia Cliente → Projeto → Tarefa. A API autentica a Conta via Bearer e resolve o time operacional via `time_id` na query (GET) ou body (mutações) em `/api/tarefas` ([ADR 0003](0003-token-api-por-conta-e-time-id.md); supersede [ADR 0001](0001-contexto-de-time-na-api-via-header.md)); a web passa a carregar também `current_conta_id` na sessão.
 
 ## Opções consideradas
 

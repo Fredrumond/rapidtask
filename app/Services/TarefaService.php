@@ -7,8 +7,8 @@ use App\DTO\Tarefa\NestedLookupDTO;
 use App\DTO\Tarefa\NestedUsuarioDTO;
 use App\DTO\Tarefa\TarefaResponseDTO;
 use App\Exceptions\TarefaException;
+use App\Models\Conta;
 use App\Models\Tarefa;
-use App\Models\User;
 use App\Repositories\TarefaEloquentRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +32,7 @@ class TarefaService
         }
 
         Log::info('api_tarefa_listed', [
-            'user_id' => auth()->id(),
+            'conta_id' => auth()->id(),
             'time_id' => current_time_id(),
             'action' => 'list',
             'count' => count($items),
@@ -50,7 +50,7 @@ class TarefaService
         }
 
         Log::info('api_tarefa_shown', [
-            'user_id' => auth()->id(),
+            'conta_id' => auth()->id(),
             'time_id' => current_time_id(),
             'tarefa_id' => $tarefa->id,
             'action' => 'show',
@@ -62,13 +62,13 @@ class TarefaService
     /**
      * @param  array<string, mixed>  $data
      */
-    public function create(User $user, array $data): TarefaResponseDTO
+    public function create(Conta $conta, array $data): TarefaResponseDTO
     {
         try {
-            $result = DB::transaction(function () use ($user, $data): TarefaResponseDTO {
+            $result = DB::transaction(function () use ($conta, $data): TarefaResponseDTO {
                 $tarefa = $this->repository->create([
                     ...$data,
-                    'usuario_id' => $user->id,
+                    'usuario_id' => $conta->usuario_id,
                     'status' => 0,
                 ]);
 
@@ -76,7 +76,8 @@ class TarefaService
             });
 
             Log::info('api_tarefa_created', [
-                'user_id' => $user->id,
+                'conta_id' => $conta->id,
+                'usuario_id' => $conta->usuario_id,
                 'time_id' => current_time_id(),
                 'tarefa_id' => $result->id,
                 'action' => 'create',
@@ -87,7 +88,7 @@ class TarefaService
             throw $exception;
         } catch (Throwable $exception) {
             Log::error('api_tarefa_create_failed', [
-                'user_id' => $user->id,
+                'conta_id' => $conta->id,
                 'time_id' => current_time_id(),
                 'action' => 'create',
                 'error' => $exception->getMessage(),
@@ -116,7 +117,7 @@ class TarefaService
             });
 
             Log::info('api_tarefa_updated', [
-                'user_id' => auth()->id(),
+                'conta_id' => auth()->id(),
                 'time_id' => current_time_id(),
                 'tarefa_id' => $result->id,
                 'action' => 'update',
@@ -127,7 +128,7 @@ class TarefaService
             throw $exception;
         } catch (Throwable $exception) {
             Log::error('api_tarefa_update_failed', [
-                'user_id' => auth()->id(),
+                'conta_id' => auth()->id(),
                 'time_id' => current_time_id(),
                 'tarefa_id' => $id,
                 'action' => 'update',
@@ -152,7 +153,7 @@ class TarefaService
             });
 
             Log::info('api_tarefa_deleted', [
-                'user_id' => auth()->id(),
+                'conta_id' => auth()->id(),
                 'time_id' => current_time_id(),
                 'tarefa_id' => $id,
                 'action' => 'delete',
@@ -161,7 +162,7 @@ class TarefaService
             throw $exception;
         } catch (Throwable $exception) {
             Log::error('api_tarefa_delete_failed', [
-                'user_id' => auth()->id(),
+                'conta_id' => auth()->id(),
                 'time_id' => current_time_id(),
                 'tarefa_id' => $id,
                 'action' => 'delete',

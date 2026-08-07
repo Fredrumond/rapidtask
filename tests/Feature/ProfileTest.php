@@ -21,7 +21,6 @@ class ProfileTest extends TestCase
             ->assertOk()
             ->assertSeeVolt('profile.update-profile-information-form')
             ->assertSeeVolt('profile.update-password-form')
-            ->assertSeeVolt('profile.manage-api-token-form')
             ->assertSeeVolt('profile.delete-user-form');
     }
 
@@ -98,58 +97,5 @@ class ProfileTest extends TestCase
             ->assertNoRedirect();
 
         $this->assertNotNull($user->fresh());
-    }
-
-    public function test_user_can_generate_api_token_from_profile(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user);
-
-        $component = Volt::test('profile.manage-api-token-form')
-            ->call('generateToken');
-
-        $component
-            ->assertHasNoErrors()
-            ->assertSet('hasActiveToken', true)
-            ->assertSet('plainTextToken', fn (?string $token): bool => is_string($token) && $token !== '');
-
-        $this->assertSame(1, $user->tokens()->count());
-    }
-
-    public function test_user_can_revoke_api_token_from_profile(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user);
-
-        Volt::test('profile.manage-api-token-form')
-            ->call('generateToken');
-
-        $component = Volt::test('profile.manage-api-token-form')
-            ->call('revokeToken');
-
-        $component
-            ->assertHasNoErrors()
-            ->assertSet('hasActiveToken', false)
-            ->assertSet('plainTextToken', null);
-
-        $this->assertSame(0, $user->tokens()->count());
-    }
-
-    public function test_plain_text_token_is_not_persisted_after_component_reload(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user);
-
-        Volt::test('profile.manage-api-token-form')
-            ->call('generateToken');
-
-        $component = Volt::test('profile.manage-api-token-form');
-
-        $component
-            ->assertSet('hasActiveToken', true)
-            ->assertSet('plainTextToken', null);
     }
 }

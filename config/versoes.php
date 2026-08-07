@@ -25,18 +25,72 @@ return [
     'releases' => [
 
         [
+            'versao' => '1.0.0-alpha.4',
+            'data' => '2026-08-06',
+            'estado' => 'development',
+            'titulo' => 'Conta SaaS e API por tenant',
+            'resumo' => 'Conta como tenant externo acima dos times, CRUD de tarefas via API alinhado à conta, e token Sanctum gerenciado nas configurações da conta (owner).',
+            'nota' => 'Cutover direto: tokens pessoais por usuário deixam de valer. Escopos granulares, múltiplos tokens e multi-conta por usuário ficam fora desta entrega.',
+            'modulos' => [
+                [
+                    'nome' => 'Conta SaaS',
+                    'itens' => [
+                        ['titulo' => 'Modelo conta + time.conta_id', 'estado' => 'stable', 'nota' => 'Backfill de times existentes'],
+                        ['titulo' => 'Registro cria conta do owner', 'estado' => 'stable'],
+                        ['titulo' => 'Sessão com current_conta_id', 'estado' => 'stable'],
+                        ['titulo' => 'Editar nome da conta', 'estado' => 'stable', 'nota' => 'Apenas owner'],
+                        ['titulo' => 'Convite bloqueia e-mail de outra conta', 'estado' => 'stable'],
+                        ['titulo' => 'Isolamento cross-conta (scopes + policies)', 'estado' => 'stable'],
+                        ['titulo' => 'Nav com nome da conta', 'estado' => 'stable'],
+                    ],
+                ],
+                [
+                    'nome' => 'API',
+                    'itens' => [
+                        ['titulo' => 'Token por Conta (Sanctum)', 'estado' => 'stable', 'nota' => 'Um ativo por conta; gerar novo revoga o anterior'],
+                        ['titulo' => 'Gerar/revogar token (POST/DELETE /api/tokens)', 'estado' => 'stable', 'nota' => 'Bearer da Conta'],
+                        ['titulo' => 'CRUD /api/tarefas', 'estado' => 'stable', 'nota' => 'time_id na query (GET) e no body (POST/PUT/DELETE)'],
+                        ['titulo' => 'Middleware api.team', 'estado' => 'stable', 'nota' => 'Valida time pertencente à conta autenticada'],
+                        ['titulo' => 'Isolamento cross-conta na API', 'estado' => 'stable'],
+                        ['titulo' => 'Swagger / OpenAPI', 'estado' => 'stable', 'nota' => 'UI em /api/documentation'],
+                    ],
+                ],
+                [
+                    'nome' => 'Configuração da conta',
+                    'itens' => [
+                        ['titulo' => 'Gerenciar token de API', 'estado' => 'stable', 'nota' => 'Plain text só na emissão; owner apenas'],
+                    ],
+                ],
+                [
+                    'nome' => 'Meu Perfil',
+                    'itens' => [
+                        ['titulo' => 'Token de API removido do perfil', 'estado' => 'stable', 'nota' => 'Migrado para configurações da conta'],
+                    ],
+                ],
+                [
+                    'nome' => 'Ajustes',
+                    'itens' => [
+                        ['titulo' => 'Fim do header X-Time-Id', 'estado' => 'stable', 'nota' => 'ADR 0003 supersede ADR 0001'],
+                        ['titulo' => 'Editar time marcado estável', 'estado' => 'stable'],
+                        ['titulo' => 'Excluir projeto marcado estável', 'estado' => 'stable'],
+                    ],
+                ],
+            ],
+        ],
+
+        [
             'versao' => '1.0.0-alpha.3',
             'data' => '2026-08-03',
             'estado' => 'development',
             'titulo' => 'Autenticação da API',
             'resumo' => 'Primeira camada de API com Laravel Sanctum: geração e revogação de token pessoal (um por usuário), endpoints Bearer e gestão pelo perfil no painel web.',
-            'nota' => 'Token vitalício até revogação explícita ou geração de um novo. Escopos granulares e múltiplos tokens ficam fora desta entrega.',
+            'nota' => 'Superseded em parte pela 1.0.0-alpha.4 (token passa a ser da Conta). Token vitalício até revogação explícita ou geração de um novo.',
             'modulos' => [
                 [
                     'nome' => 'API',
                     'itens' => [
                         ['titulo' => 'Laravel Sanctum', 'estado' => 'stable'],
-                        ['titulo' => 'Gerar token (POST /api/tokens)', 'estado' => 'stable', 'nota' => 'Gera novo e revoga o anterior automaticamente'],
+                        ['titulo' => 'Gerar token (POST /api/tokens)', 'estado' => 'stable', 'nota' => 'Modelo inicial por usuário; ver alpha.4'],
                         ['titulo' => 'Revogar token (DELETE /api/tokens)', 'estado' => 'stable'],
                         ['titulo' => 'Middleware auth:sanctum', 'estado' => 'stable'],
                     ],
@@ -44,7 +98,7 @@ return [
                 [
                     'nome' => 'Meu Perfil',
                     'itens' => [
-                        ['titulo' => 'Gerenciar token de API', 'estado' => 'stable', 'nota' => 'Gerar e revogar pelo painel'],
+                        ['titulo' => 'Gerenciar token de API', 'estado' => 'stable', 'nota' => 'Removido na alpha.4; gestão na conta'],
                     ],
                 ],
             ],
@@ -99,7 +153,7 @@ return [
                         ['titulo' => 'Seletor de time ativo', 'estado' => 'stable'],
                         ['titulo' => 'Visualizar time e membros', 'estado' => 'stable'],
                         ['titulo' => 'Convidar membro (e-mail na fila)', 'estado' => 'stable'],
-                        ['titulo' => 'Editar time', 'estado' => 'development'],
+                        ['titulo' => 'Editar time', 'estado' => 'stable'],
                         ['titulo' => 'Excluir time', 'estado' => 'stable', 'nota' => 'Soft delete; apenas admin do time'],
                     ],
                 ],
@@ -122,7 +176,7 @@ return [
                         ['titulo' => 'Arquivos', 'estado' => 'development', 'nota' => 'Model, policy e download prontos; tela pendente'],
                         ['titulo' => 'Anotações', 'estado' => 'development', 'nota' => 'Model e policy prontos; tela pendente'],
                         ['titulo' => 'Histórico', 'estado' => 'development'],
-                        ['titulo' => 'Excluir projeto', 'estado' => 'development'],
+                        ['titulo' => 'Excluir projeto', 'estado' => 'stable'],
                     ],
                 ],
                 [

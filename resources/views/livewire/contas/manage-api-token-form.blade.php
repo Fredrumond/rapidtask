@@ -1,23 +1,30 @@
 <?php
 
+use App\Models\Conta;
 use App\Services\TokenService;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 
 new class extends Component
 {
+    public Conta $conta;
+
     public bool $hasActiveToken = false;
 
     public ?string $plainTextToken = null;
 
-    public function mount(TokenService $tokenService): void
+    public function mount(Conta $conta, TokenService $tokenService): void
     {
-        $this->hasActiveToken = $tokenService->hasActiveToken(Auth::user());
+        abort_unless(auth()->id() === $conta->usuario_id, 403);
+
+        $this->conta = $conta;
+        $this->hasActiveToken = $tokenService->hasActiveToken($conta);
     }
 
     public function generateToken(TokenService $tokenService): void
     {
-        $token = $tokenService->issue(Auth::user());
+        abort_unless(auth()->id() === $this->conta->usuario_id, 403);
+
+        $token = $tokenService->issue($this->conta);
 
         $this->plainTextToken = $token->plainTextToken;
         $this->hasActiveToken = true;
@@ -27,7 +34,9 @@ new class extends Component
 
     public function revokeToken(TokenService $tokenService): void
     {
-        $tokenService->revoke(Auth::user());
+        abort_unless(auth()->id() === $this->conta->usuario_id, 403);
+
+        $tokenService->revoke($this->conta);
 
         $this->plainTextToken = null;
         $this->hasActiveToken = false;
@@ -43,7 +52,7 @@ new class extends Component
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __('Generate a personal access token to authenticate API requests. Generating a new token revokes the previous one.') }}
+            {{ __('Generate an API token for this account. Generating a new token revokes the previous one.') }}
         </p>
     </header>
 
@@ -59,11 +68,11 @@ new class extends Component
             </div>
         @elseif ($hasActiveToken)
             <p class="text-sm text-gray-600">
-                {{ __('You have an active API token.') }}
+                {{ __('This account has an active API token.') }}
             </p>
         @else
             <p class="text-sm text-gray-600">
-                {{ __('You do not have an active API token.') }}
+                {{ __('This account does not have an active API token.') }}
             </p>
         @endif
 

@@ -20,7 +20,7 @@ Isolamento web por conta (sessão, scopes, policies e nav): [`docs/references/is
 
 ## API
 
-CRUD de tarefas, header `X-Time-Id` e Swagger: [`docs/references/api-tarefas.md`](docs/references/api-tarefas.md).
+CRUD de tarefas, token por conta e Swagger: [`docs/references/api-tarefas.md`](docs/references/api-tarefas.md).
 
 Documentação interativa (com stack Docker no ar): http://localhost:8080/api/documentation
 

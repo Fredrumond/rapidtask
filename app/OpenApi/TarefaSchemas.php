@@ -43,8 +43,9 @@ use OpenApi\Attributes as OA;
 )]
 #[OA\Schema(
     schema: 'TarefaRequest',
-    required: ['titulo', 'projeto_id', 'tipo_id', 'situacao_id', 'prioridade_id'],
+    required: ['time_id', 'titulo', 'projeto_id', 'tipo_id', 'situacao_id', 'prioridade_id'],
     properties: [
+        new OA\Property(property: 'time_id', type: 'integer', description: 'ID do time operacional (obrigatório no body das mutações)'),
         new OA\Property(property: 'titulo', type: 'string', maxLength: 255),
         new OA\Property(property: 'descricao', type: 'string', nullable: true),
         new OA\Property(property: 'projeto_id', type: 'integer'),

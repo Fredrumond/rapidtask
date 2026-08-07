@@ -10,8 +10,6 @@ class CurrentTeam
 
     public const CONTA_SESSION_KEY = 'current_conta_id';
 
-    public const HEADER_NAME = 'X-Time-Id';
-
     private static bool $hasRequestOverride = false;
 
     private static ?int $requestTimeId = null;

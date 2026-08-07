@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
 #[OA\SecurityScheme(
     securityScheme: 'sanctum',
     type: 'http',
-    description: 'Bearer token Sanctum (Authorization: Bearer {token})',
+    description: 'Bearer token Sanctum da Conta (Authorization: Bearer {token})',
     scheme: 'bearer',
     bearerFormat: 'JWT',
 )]

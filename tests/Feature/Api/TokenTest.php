@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Conta;
 use Laravel\Sanctum\Sanctum;
 
 test('post tokens returns unauthorized without bearer token', function (): void {
@@ -14,9 +14,9 @@ test('delete tokens returns unauthorized without bearer token', function (): voi
 });
 
 test('post tokens creates token and returns plain text', function (): void {
-    $user = User::factory()->create();
+    $conta = Conta::factory()->create();
 
-    Sanctum::actingAs($user);
+    Sanctum::actingAs($conta);
 
     $response = $this->postJson('/api/tokens');
 
@@ -34,13 +34,13 @@ test('post tokens creates token and returns plain text', function (): void {
         ->assertJsonPath('data.active', true)
         ->assertJsonPath('data.name', 'api');
 
-    expect($user->tokens()->count())->toBe(1);
+    expect($conta->tokens()->count())->toBe(1);
 });
 
 test('posting a second token revokes the previous one', function (): void {
-    $user = User::factory()->create();
+    $conta = Conta::factory()->create();
 
-    Sanctum::actingAs($user);
+    Sanctum::actingAs($conta);
 
     $firstToken = $this->postJson('/api/tokens')->json('data.plain_text_token');
 
@@ -52,7 +52,7 @@ test('posting a second token revokes the previous one', function (): void {
         ->json('data.plain_text_token');
 
     expect($firstToken)->not->toBe($secondToken);
-    expect($user->tokens()->count())->toBe(1);
+    expect($conta->tokens()->count())->toBe(1);
 
     auth()->forgetGuards();
 
@@ -68,9 +68,9 @@ test('posting a second token revokes the previous one', function (): void {
 });
 
 test('delete tokens revokes current token', function (): void {
-    $user = User::factory()->create();
+    $conta = Conta::factory()->create();
 
-    Sanctum::actingAs($user);
+    Sanctum::actingAs($conta);
 
     $plainTextToken = $this->postJson('/api/tokens')->json('data.plain_text_token');
 
@@ -81,7 +81,7 @@ test('delete tokens revokes current token', function (): void {
         ->assertOk()
         ->assertJsonPath('message', 'Token revogado com sucesso.');
 
-    expect($user->tokens()->count())->toBe(0);
+    expect($conta->tokens()->count())->toBe(0);
 
     auth()->forgetGuards();
 
@@ -90,14 +90,14 @@ test('delete tokens revokes current token', function (): void {
         ->assertUnauthorized();
 });
 
-test('user can have at most one active token after issue', function (): void {
-    $user = User::factory()->create();
+test('conta can have at most one active token after issue', function (): void {
+    $conta = Conta::factory()->create();
 
-    Sanctum::actingAs($user);
+    Sanctum::actingAs($conta);
 
     $this->postJson('/api/tokens')->assertCreated();
     $this->postJson('/api/tokens')->assertCreated();
     $this->postJson('/api/tokens')->assertCreated();
 
-    expect($user->tokens()->count())->toBe(1);
+    expect($conta->tokens()->count())->toBe(1);
 });

@@ -1,5 +1,7 @@
 # ADR 0001 — Contexto de time na API via header
 
+**Status:** Superseded by [ADR 0003](0003-token-api-por-conta-e-time-id.md)
+
 **Data:** 04/08/2026
 
 ## Contexto
@@ -16,6 +18,8 @@ A UI web resolve o tenant com sessão (`CurrentTeam` + middleware `SetCurrentTea
 ## Decisão
 
 Usar o header **`X-Time-Id`** como contrato de tenant da API, validado pelo middleware **`EnsureApiTeam`** (membership via `belongsToTime`), e hidratar o contexto com **`CurrentTeam::setForRequest()`** (override request-scoped, prioridade sobre a sessão). Rotas de domínio API ficam atrás de `auth:sanctum` + `api.team`.
+
+> **Nota:** Esta decisão foi substituída pelo ADR 0003 (token por Conta; recurso `/tarefas` com `time_id` na query/body).
 
 ## Justificativa
 
