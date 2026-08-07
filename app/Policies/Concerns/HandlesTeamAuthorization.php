@@ -2,6 +2,7 @@
 
 namespace App\Policies\Concerns;
 
+use App\Models\Conta;
 use App\Models\Projeto;
 use App\Models\Tarefa;
 use App\Models\Time;
@@ -14,9 +15,19 @@ trait HandlesTeamAuthorization
         return $user !== null && $user->times()->exists();
     }
 
-    protected function canAccessTeam(?User $user, int $timeId): bool
+    protected function canAccessTeam(Conta|User|null $actor, int $timeId): bool
     {
-        if ($user === null || ! $user->belongsToTime($timeId)) {
+        if ($actor instanceof Conta) {
+            $currentContaId = current_conta_id();
+
+            if ($currentContaId === null || (int) $actor->id !== $currentContaId) {
+                return false;
+            }
+
+            return $actor->ownsTime($timeId);
+        }
+
+        if ($actor === null || ! $actor->belongsToTime($timeId)) {
             return false;
         }
 
@@ -40,13 +51,13 @@ trait HandlesTeamAuthorization
             && $user->isAdminOf($timeId);
     }
 
-    protected function canAccessCurrentTeam(?User $user): bool
+    protected function canAccessCurrentTeam(Conta|User|null $actor): bool
     {
         $teamId = current_time_id();
 
         return $teamId !== null
             && current_conta_id() !== null
-            && $this->canAccessTeam($user, $teamId);
+            && $this->canAccessTeam($actor, $teamId);
     }
 
     protected function teamIdFromProjetoId(int $projetoId): int

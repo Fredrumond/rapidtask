@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\HttpCode;
+use App\Models\Conta;
 use App\Services\TokenService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,10 @@ class TokenController extends ApiController
     public function store(Request $request): JsonResponse
     {
         try {
-            $result = $this->tokenService->issue($request->user());
+            /** @var Conta $conta */
+            $conta = $request->user();
+
+            $result = $this->tokenService->issue($conta);
 
             return $this->sendResponse(
                 $result,
@@ -36,7 +40,10 @@ class TokenController extends ApiController
     public function destroy(Request $request): JsonResponse
     {
         try {
-            $this->tokenService->revoke($request->user());
+            /** @var Conta $conta */
+            $conta = $request->user();
+
+            $this->tokenService->revoke($conta);
 
             return $this->sendResponse(
                 [],

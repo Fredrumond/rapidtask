@@ -1,16 +1,21 @@
 <?php
 
-use App\Support\CurrentTeam;
 use Laravel\Sanctum\Sanctum;
 
-function apiTarefaHeaders(int $timeId): array
+function tarefasListUrl(int $timeId): string
 {
-    return [CurrentTeam::HEADER_NAME => (string) $timeId];
+    return '/api/tarefas?time_id='.$timeId;
 }
 
-function payloadTarefa(int $projetoId, array $overrides = []): array
+function tarefaShowUrl(int $timeId, int $tarefaId): string
+{
+    return '/api/tarefas/'.$tarefaId.'?time_id='.$timeId;
+}
+
+function payloadTarefa(int $timeId, int $projetoId, array $overrides = []): array
 {
     return array_merge([
+        'time_id' => $timeId,
         'titulo' => 'Tarefa via API',
         'descricao' => 'Descrição de teste',
         'projeto_id' => $projetoId,
@@ -26,50 +31,46 @@ function payloadTarefa(int $projetoId, array $overrides = []): array
 test('get tarefas returns unauthorized without bearer token', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->getJson('/api/tarefas')
+    $this->getJson(tarefasListUrl($cenario['timeA']->id))
         ->assertUnauthorized();
 });
 
-test('get tarefas returns bad request without X-Time-Id header', function (): void {
+test('get tarefas returns bad request without time_id query param', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
     $this->getJson('/api/tarefas')
         ->assertStatus(400)
-        ->assertJsonPath('message', 'O header X-Time-Id é obrigatório.');
+        ->assertJsonPath('message', 'O time_id é obrigatório.');
 });
 
-test('get tarefas returns bad request with invalid X-Time-Id header', function (): void {
+test('get tarefas returns bad request with invalid time_id query param', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $this->withHeaders([CurrentTeam::HEADER_NAME => 'abc'])
-        ->getJson('/api/tarefas')
+    $this->getJson('/api/tarefas?time_id=abc')
         ->assertStatus(400)
-        ->assertJsonPath('message', 'O header X-Time-Id é inválido.');
+        ->assertJsonPath('message', 'O time_id é inválido.');
 });
 
-test('get tarefas returns forbidden when user does not belong to time', function (): void {
+test('get tarefas returns forbidden when time belongs to another conta', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeB']->id))
-        ->getJson('/api/tarefas')
+    $this->getJson(tarefasListUrl($cenario['timeB']->id))
         ->assertForbidden()
-        ->assertJsonPath('message', 'Você não pertence ao time informado.');
+        ->assertJsonPath('message', 'O time informado não pertence à conta autenticada.');
 });
 
 test('get tarefas lists only tasks from the informed team with nested relations', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $response = $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->getJson('/api/tarefas')
+    $response = $this->getJson(tarefasListUrl($cenario['timeA']->id))
         ->assertOk()
         ->assertJsonStructure([
             'message',
@@ -103,10 +104,9 @@ test('get tarefas lists only tasks from the informed team with nested relations'
 test('get tarefa show returns task detail with nested relations', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->getJson('/api/tarefas/'.$cenario['tarefaA']->id)
+    $this->getJson(tarefaShowUrl($cenario['timeA']->id, $cenario['tarefaA']->id))
         ->assertOk()
         ->assertJsonPath('data.id', $cenario['tarefaA']->id)
         ->assertJsonPath('data.titulo', $cenario['tarefaA']->titulo)
@@ -124,22 +124,20 @@ test('get tarefa show returns task detail with nested relations', function (): v
 test('get tarefa show returns not found for task from another team', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->getJson('/api/tarefas/'.$cenario['tarefaB']->id)
+    $this->getJson(tarefaShowUrl($cenario['timeA']->id, $cenario['tarefaB']->id))
         ->assertNotFound();
 });
 
-test('post tarefas creates task for authenticated user', function (): void {
+test('post tarefas creates task attributed to conta owner', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $payload = payloadTarefa($cenario['projetoA']->id);
+    $payload = payloadTarefa($cenario['timeA']->id, $cenario['projetoA']->id);
 
-    $response = $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->postJson('/api/tarefas', $payload)
+    $response = $this->postJson('/api/tarefas', $payload)
         ->assertCreated()
         ->assertJsonPath('data.titulo', 'Tarefa via API')
         ->assertJsonPath('data.status', 0)
@@ -162,23 +160,45 @@ test('post tarefas creates task for authenticated user', function (): void {
     ]);
 });
 
+test('post tarefas returns bad request without time_id in body', function (): void {
+    $cenario = criarCenarioDoisTimes();
+
+    Sanctum::actingAs($cenario['contaA']);
+
+    $payload = payloadTarefa($cenario['timeA']->id, $cenario['projetoA']->id);
+    unset($payload['time_id']);
+
+    $this->postJson('/api/tarefas', $payload)
+        ->assertStatus(400)
+        ->assertJsonPath('message', 'O time_id é obrigatório.');
+});
+
 test('post tarefas rejects projeto from another team', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->postJson('/api/tarefas', payloadTarefa($cenario['projetoB']->id))
+    $this->postJson('/api/tarefas', payloadTarefa($cenario['timeA']->id, $cenario['projetoB']->id))
         ->assertStatus(422)
         ->assertJsonValidationErrors(['projeto_id']);
+});
+
+test('post tarefas returns forbidden when time_id belongs to another conta', function (): void {
+    $cenario = criarCenarioDoisTimes();
+
+    Sanctum::actingAs($cenario['contaA']);
+
+    $this->postJson('/api/tarefas', payloadTarefa($cenario['timeB']->id, $cenario['projetoB']->id))
+        ->assertForbidden()
+        ->assertJsonPath('message', 'O time informado não pertence à conta autenticada.');
 });
 
 test('put tarefas updates task completely', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $payload = payloadTarefa($cenario['projetoA']->id, [
+    $payload = payloadTarefa($cenario['timeA']->id, $cenario['projetoA']->id, [
         'titulo' => 'Título atualizado',
         'descricao' => 'Nova descrição',
         'situacao_id' => 2,
@@ -186,8 +206,7 @@ test('put tarefas updates task completely', function (): void {
         'status' => 0,
     ]);
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->putJson('/api/tarefas/'.$cenario['tarefaA']->id, $payload)
+    $this->putJson('/api/tarefas/'.$cenario['tarefaA']->id, $payload)
         ->assertOk()
         ->assertJsonPath('data.titulo', 'Título atualizado')
         ->assertJsonPath('data.descricao', 'Nova descrição')
@@ -205,20 +224,22 @@ test('put tarefas updates task completely', function (): void {
 test('put tarefas returns not found for task from another team', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->putJson('/api/tarefas/'.$cenario['tarefaB']->id, payloadTarefa($cenario['projetoA']->id))
-        ->assertNotFound();
+    $this->putJson(
+        '/api/tarefas/'.$cenario['tarefaB']->id,
+        payloadTarefa($cenario['timeA']->id, $cenario['projetoA']->id),
+    )->assertNotFound();
 });
 
 test('delete tarefas soft deletes task', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->deleteJson('/api/tarefas/'.$cenario['tarefaA']->id)
+    $this->deleteJson('/api/tarefas/'.$cenario['tarefaA']->id, [
+        'time_id' => $cenario['timeA']->id,
+    ])
         ->assertOk()
         ->assertJsonPath('message', 'Tarefa excluída com sucesso.');
 
@@ -226,22 +247,45 @@ test('delete tarefas soft deletes task', function (): void {
         'id' => $cenario['tarefaA']->id,
     ]);
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->getJson('/api/tarefas/'.$cenario['tarefaA']->id)
+    $this->getJson(tarefaShowUrl($cenario['timeA']->id, $cenario['tarefaA']->id))
         ->assertNotFound();
 });
 
 test('delete tarefas returns not found for task from another team', function (): void {
     $cenario = criarCenarioDoisTimes();
 
-    Sanctum::actingAs($cenario['userA']);
+    Sanctum::actingAs($cenario['contaA']);
 
-    $this->withHeaders(apiTarefaHeaders($cenario['timeA']->id))
-        ->deleteJson('/api/tarefas/'.$cenario['tarefaB']->id)
-        ->assertNotFound();
+    $this->deleteJson('/api/tarefas/'.$cenario['tarefaB']->id, [
+        'time_id' => $cenario['timeA']->id,
+    ])->assertNotFound();
 
     $this->assertDatabaseHas('tarefas', [
         'id' => $cenario['tarefaB']->id,
         'deleted_at' => null,
     ]);
+});
+
+test('token of conta A cannot list or mutate resources of conta B', function (): void {
+    $cenario = criarCenarioDoisTimes();
+
+    Sanctum::actingAs($cenario['contaA']);
+
+    $this->getJson(tarefasListUrl($cenario['timeB']->id))
+        ->assertForbidden();
+
+    $this->getJson(tarefaShowUrl($cenario['timeB']->id, $cenario['tarefaB']->id))
+        ->assertForbidden();
+
+    $this->postJson('/api/tarefas', payloadTarefa($cenario['timeB']->id, $cenario['projetoB']->id))
+        ->assertForbidden();
+
+    $this->putJson(
+        '/api/tarefas/'.$cenario['tarefaB']->id,
+        payloadTarefa($cenario['timeB']->id, $cenario['projetoB']->id),
+    )->assertForbidden();
+
+    $this->deleteJson('/api/tarefas/'.$cenario['tarefaB']->id, [
+        'time_id' => $cenario['timeB']->id,
+    ])->assertForbidden();
 });

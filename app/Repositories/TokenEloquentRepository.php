@@ -3,32 +3,32 @@
 namespace App\Repositories;
 
 use App\Domain\TokenDomain;
-use App\Models\User;
+use App\Models\Conta;
 use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class TokenEloquentRepository
 {
-    public function revokeAll(User $user): void
+    public function revokeAll(Conta $conta): void
     {
-        $user->tokens()->delete();
+        $conta->tokens()->delete();
     }
 
-    public function create(User $user): NewAccessToken
+    public function create(Conta $conta): NewAccessToken
     {
-        return $user->createToken(TokenDomain::TOKEN_NAME);
+        return $conta->createToken(TokenDomain::TOKEN_NAME);
     }
 
-    public function hasActive(User $user): bool
+    public function hasActive(Conta $conta): bool
     {
-        return $user->tokens()
+        return $conta->tokens()
             ->where('name', TokenDomain::TOKEN_NAME)
             ->exists();
     }
 
-    public function getActive(User $user): ?PersonalAccessToken
+    public function getActive(Conta $conta): ?PersonalAccessToken
     {
-        return $user->tokens()
+        return $conta->tokens()
             ->where('name', TokenDomain::TOKEN_NAME)
             ->latest('id')
             ->first();

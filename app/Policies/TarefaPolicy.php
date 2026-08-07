@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Conta;
 use App\Models\Tarefa;
 use App\Models\User;
 use App\Policies\Concerns\HandlesTeamAuthorization;
@@ -10,29 +11,33 @@ class TarefaPolicy
 {
     use HandlesTeamAuthorization;
 
-    public function viewAny(?User $user): bool
+    public function viewAny(Conta|User|null $actor): bool
     {
-        return $this->isAuthenticatedMember($user);
+        if ($actor instanceof Conta) {
+            return $this->canAccessCurrentTeam($actor);
+        }
+
+        return $this->isAuthenticatedMember($actor);
     }
 
-    public function view(?User $user, Tarefa $tarefa): bool
+    public function view(Conta|User|null $actor, Tarefa $tarefa): bool
     {
-        return $this->canAccessTeam($user, $this->teamId($tarefa));
+        return $this->canAccessTeam($actor, $this->teamId($tarefa));
     }
 
-    public function create(?User $user): bool
+    public function create(Conta|User|null $actor): bool
     {
-        return $this->canAccessCurrentTeam($user);
+        return $this->canAccessCurrentTeam($actor);
     }
 
-    public function update(?User $user, Tarefa $tarefa): bool
+    public function update(Conta|User|null $actor, Tarefa $tarefa): bool
     {
-        return $this->canAccessTeam($user, $this->teamId($tarefa));
+        return $this->canAccessTeam($actor, $this->teamId($tarefa));
     }
 
-    public function delete(?User $user, Tarefa $tarefa): bool
+    public function delete(Conta|User|null $actor, Tarefa $tarefa): bool
     {
-        return $this->canAccessTeam($user, $this->teamId($tarefa));
+        return $this->canAccessTeam($actor, $this->teamId($tarefa));
     }
 
     protected function teamId(Tarefa $tarefa): int

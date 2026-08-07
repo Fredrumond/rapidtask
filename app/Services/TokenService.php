@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Domain\TokenDomain;
 use App\DTO\Token\TokenResponseDTO;
 use App\Exceptions\TokenException;
-use App\Models\User;
+use App\Models\Conta;
 use App\Repositories\TokenEloquentRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,13 +18,13 @@ class TokenService
         private readonly TokenEloquentRepository $repository,
     ) {}
 
-    public function issue(User $user): TokenResponseDTO
+    public function issue(Conta $conta): TokenResponseDTO
     {
         try {
-            $result = DB::transaction(function () use ($user): TokenResponseDTO {
-                $this->repository->revokeAll($user);
+            $result = DB::transaction(function () use ($conta): TokenResponseDTO {
+                $this->repository->revokeAll($conta);
 
-                $accessToken = $this->repository->create($user);
+                $accessToken = $this->repository->create($conta);
                 $domain = $this->convertRecordToDomain($accessToken->accessToken)
                     ->withPlainTextToken($accessToken->plainTextToken);
 
@@ -32,14 +32,14 @@ class TokenService
             });
 
             Log::info('api_token_issued', [
-                'user_id' => $user->id,
+                'conta_id' => $conta->id,
                 'action' => 'issue',
             ]);
 
             return $result;
         } catch (Throwable $exception) {
             Log::error('api_token_issue_failed', [
-                'user_id' => $user->id,
+                'conta_id' => $conta->id,
                 'action' => 'issue',
                 'error' => $exception->getMessage(),
             ]);
@@ -48,20 +48,20 @@ class TokenService
         }
     }
 
-    public function revoke(User $user): void
+    public function revoke(Conta $conta): void
     {
         try {
-            DB::transaction(function () use ($user): void {
-                $this->repository->revokeAll($user);
+            DB::transaction(function () use ($conta): void {
+                $this->repository->revokeAll($conta);
             });
 
             Log::info('api_token_revoked', [
-                'user_id' => $user->id,
+                'conta_id' => $conta->id,
                 'action' => 'revoke',
             ]);
         } catch (Throwable $exception) {
             Log::error('api_token_revoke_failed', [
-                'user_id' => $user->id,
+                'conta_id' => $conta->id,
                 'action' => 'revoke',
                 'error' => $exception->getMessage(),
             ]);
@@ -70,14 +70,14 @@ class TokenService
         }
     }
 
-    public function hasActiveToken(User $user): bool
+    public function hasActiveToken(Conta $conta): bool
     {
-        return $this->repository->hasActive($user);
+        return $this->repository->hasActive($conta);
     }
 
-    public function status(User $user): TokenResponseDTO
+    public function status(Conta $conta): TokenResponseDTO
     {
-        $token = $this->repository->getActive($user);
+        $token = $this->repository->getActive($conta);
 
         if ($token === null) {
             return $this->convertToDTO(TokenDomain::inactive());

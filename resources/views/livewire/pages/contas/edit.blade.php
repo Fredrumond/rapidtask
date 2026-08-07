@@ -55,6 +55,10 @@ new #[Layout('layouts.app')] class extends Component
                     <x-primary-button>Salvar</x-primary-button>
                 </div>
             </form>
+
+            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                <livewire:contas.manage-api-token-form :conta="$conta" />
+            </div>
         </div>
     </div>
 </div>

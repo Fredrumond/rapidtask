@@ -2,6 +2,7 @@
 
 namespace App\Models\Concerns;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,11 +14,18 @@ class TeamScope
             return;
         }
 
-        $user = Auth::user();
         $currentTeamId = current_time_id();
 
         if ($currentTeamId !== null) {
             $builder->where($column, $currentTeamId);
+
+            return;
+        }
+
+        $user = Auth::user();
+
+        if (! $user instanceof User) {
+            $builder->whereRaw('1 = 0');
 
             return;
         }
@@ -45,6 +53,12 @@ class TeamScope
         $builder->whereHas('projeto', function (Builder $query) use ($user, $currentTeamId) {
             if ($currentTeamId !== null) {
                 $query->where('time_id', $currentTeamId);
+
+                return;
+            }
+
+            if (! $user instanceof User) {
+                $query->whereRaw('1 = 0');
 
                 return;
             }
@@ -77,6 +91,12 @@ class TeamScope
                 return;
             }
 
+            if (! $user instanceof User) {
+                $query->whereRaw('1 = 0');
+
+                return;
+            }
+
             $teamIds = $user->timeMembros()->pluck('time_id');
 
             if ($teamIds->isEmpty()) {
@@ -97,6 +117,18 @@ class TeamScope
 
         $user = Auth::user();
         $table = $builder->getModel()->getTable();
+
+        if (! $user instanceof User) {
+            if ($currentContaId = current_conta_id()) {
+                $builder->where("{$table}.conta_id", $currentContaId);
+
+                return;
+            }
+
+            $builder->whereRaw('1 = 0');
+
+            return;
+        }
 
         $builder->whereHas('membros', function (Builder $query) use ($user) {
             $query->where('usuario_id', $user->id);

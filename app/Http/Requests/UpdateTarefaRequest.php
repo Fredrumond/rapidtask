@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Conta;
 use App\Models\Tarefa;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -10,13 +11,17 @@ class UpdateTarefaRequest extends FormRequest
 {
     public function authorize(): bool
     {
+        if (! $this->user() instanceof Conta) {
+            return false;
+        }
+
         $tarefa = Tarefa::query()->find($this->route('tarefa_id'));
 
         if ($tarefa === null) {
             return true;
         }
 
-        return $this->user()?->can('update', $tarefa) ?? false;
+        return $this->user()->can('update', $tarefa) ?? false;
     }
 
     /**
@@ -27,6 +32,7 @@ class UpdateTarefaRequest extends FormRequest
         $timeId = current_time_id();
 
         return [
+            'time_id' => ['required', 'integer', 'min:1'],
             'titulo' => ['required', 'string', 'max:255'],
             'descricao' => ['nullable', 'string'],
             'projeto_id' => [
@@ -45,5 +51,13 @@ class UpdateTarefaRequest extends FormRequest
             'tempo_estimado' => ['nullable', 'integer', 'min:0'],
             'status' => ['nullable', 'integer', 'in:0,1'],
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function tarefaAttributes(): array
+    {
+        return $this->safe()->except(['time_id']);
     }
 }

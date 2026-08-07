@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Conta;
 use App\Models\Tarefa;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -10,7 +11,8 @@ class StoreTarefaRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->can('create', Tarefa::class) ?? false;
+        return $this->user() instanceof Conta
+            && ($this->user()->can('create', Tarefa::class) ?? false);
     }
 
     /**
@@ -21,6 +23,7 @@ class StoreTarefaRequest extends FormRequest
         $timeId = current_time_id();
 
         return [
+            'time_id' => ['required', 'integer', 'min:1'],
             'titulo' => ['required', 'string', 'max:255'],
             'descricao' => ['nullable', 'string'],
             'projeto_id' => [
@@ -38,5 +41,13 @@ class StoreTarefaRequest extends FormRequest
             'dt_fim' => ['nullable', 'date'],
             'tempo_estimado' => ['nullable', 'integer', 'min:0'],
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function tarefaAttributes(): array
+    {
+        return $this->safe()->except(['time_id']);
     }
 }

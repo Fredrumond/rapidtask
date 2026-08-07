@@ -6,10 +6,12 @@ use App\Enums\HttpCode;
 use App\Exceptions\TarefaException;
 use App\Http\Requests\StoreTarefaRequest;
 use App\Http\Requests\UpdateTarefaRequest;
+use App\Models\Conta;
 use App\Models\Tarefa;
 use App\Services\TarefaService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 use Throwable;
 
@@ -26,9 +28,9 @@ class TarefaController extends ApiController
         tags: ['Tarefas'],
         parameters: [
             new OA\Parameter(
-                name: 'X-Time-Id',
-                description: 'ID do time (tenant)',
-                in: 'header',
+                name: 'time_id',
+                description: 'ID do time operacional',
+                in: 'query',
                 required: true,
                 schema: new OA\Schema(type: 'integer'),
             ),
@@ -48,9 +50,9 @@ class TarefaController extends ApiController
                     ],
                 ),
             ),
-            new OA\Response(response: 400, description: 'Header X-Time-Id ausente ou inválido'),
+            new OA\Response(response: 400, description: 'time_id ausente ou inválido'),
             new OA\Response(response: 401, description: 'Não autenticado'),
-            new OA\Response(response: 403, description: 'Usuário não pertence ao time'),
+            new OA\Response(response: 403, description: 'Time não pertence à conta autenticada'),
         ],
     )]
     public function index(): JsonResponse
@@ -83,8 +85,9 @@ class TarefaController extends ApiController
         tags: ['Tarefas'],
         parameters: [
             new OA\Parameter(
-                name: 'X-Time-Id',
-                in: 'header',
+                name: 'time_id',
+                description: 'ID do time operacional',
+                in: 'query',
                 required: true,
                 schema: new OA\Schema(type: 'integer'),
             ),
@@ -155,14 +158,6 @@ class TarefaController extends ApiController
             content: new OA\JsonContent(ref: '#/components/schemas/TarefaRequest'),
         ),
         tags: ['Tarefas'],
-        parameters: [
-            new OA\Parameter(
-                name: 'X-Time-Id',
-                in: 'header',
-                required: true,
-                schema: new OA\Schema(type: 'integer'),
-            ),
-        ],
         responses: [
             new OA\Response(
                 response: 201,
@@ -183,9 +178,12 @@ class TarefaController extends ApiController
     public function store(StoreTarefaRequest $request): JsonResponse
     {
         try {
+            /** @var Conta $conta */
+            $conta = $request->user();
+
             $result = $this->tarefaService->create(
-                $request->user(),
-                $request->validated(),
+                $conta,
+                $request->tarefaAttributes(),
             );
 
             return $this->sendResponse(
@@ -214,12 +212,6 @@ class TarefaController extends ApiController
         ),
         tags: ['Tarefas'],
         parameters: [
-            new OA\Parameter(
-                name: 'X-Time-Id',
-                in: 'header',
-                required: true,
-                schema: new OA\Schema(type: 'integer'),
-            ),
             new OA\Parameter(
                 name: 'tarefa_id',
                 in: 'path',
@@ -256,7 +248,7 @@ class TarefaController extends ApiController
 
             $this->authorize('update', $tarefa);
 
-            $result = $this->tarefaService->update($tarefa_id, $request->validated());
+            $result = $this->tarefaService->update($tarefa_id, $request->tarefaAttributes());
 
             return $this->sendResponse(
                 $result,
@@ -284,14 +276,17 @@ class TarefaController extends ApiController
         path: '/tarefas/{tarefa_id}',
         summary: 'Excluir tarefa (soft delete)',
         security: [['sanctum' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['time_id'],
+                properties: [
+                    new OA\Property(property: 'time_id', type: 'integer'),
+                ],
+            ),
+        ),
         tags: ['Tarefas'],
         parameters: [
-            new OA\Parameter(
-                name: 'X-Time-Id',
-                in: 'header',
-                required: true,
-                schema: new OA\Schema(type: 'integer'),
-            ),
             new OA\Parameter(
                 name: 'tarefa_id',
                 in: 'path',
@@ -315,7 +310,7 @@ class TarefaController extends ApiController
             new OA\Response(response: 404, description: 'Tarefa não encontrada'),
         ],
     )]
-    public function destroy(int $tarefa_id): JsonResponse
+    public function destroy(Request $request, int $tarefa_id): JsonResponse
     {
         try {
             $tarefa = Tarefa::query()->find($tarefa_id);
