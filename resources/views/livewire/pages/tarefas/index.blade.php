@@ -79,7 +79,8 @@ new #[Layout('layouts.app')] class extends Component
                                     <td class="px-4 py-3 text-sm"><span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-blue-50 text-blue-700">{{ $tarefa->situacao?->nome }}</span></td>
                                     <td class="px-4 py-3 text-sm"><span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-amber-50 text-amber-700">{{ $tarefa->prioridade?->nome }}</span></td>
                                     <td class="px-4 py-3 text-sm text-right space-x-2">
-                                        <a href="{{ route('tarefas.edit', $tarefa) }}" wire:navigate class="text-indigo-600 hover:underline">Editar</a>
+                                        <a href="{{ route('tarefas.show', $tarefa) }}" wire:navigate class="text-indigo-600 hover:underline">Ver</a>
+                                        <a href="{{ route('tarefas.edit', $tarefa) }}" wire:navigate class="text-gray-600 hover:underline">Editar</a>
                                         <button wire:click="arquivar({{ $tarefa->id }})" class="text-gray-600 hover:underline">Arquivar</button>
                                     </td>
                                 </tr>
