@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Domain\TarefaComentarioDomain;
 use App\DTO\Tarefa\NestedUsuarioDTO;
 use App\DTO\TarefaComentario\TarefaComentarioResponseDTO;
+use App\Exceptions\TarefaComentarioDomainException;
 use App\Exceptions\TarefaComentarioException;
 use App\Models\TarefaComentario;
 use App\Repositories\TarefaComentarioEloquentRepository;
@@ -53,11 +54,13 @@ class TarefaComentarioService
 
         try {
             $result = DB::transaction(function () use ($usuarioId, $tarefaId, $data): TarefaComentarioResponseDTO {
-                $comentario = $this->repository->create([
-                    ...$data,
-                    'tarefa_id' => $tarefaId,
-                    'usuario_id' => $usuarioId,
-                ]);
+                $domain = TarefaComentarioDomain::criar(
+                    tarefaId: $tarefaId,
+                    usuarioId: $usuarioId,
+                    comentario: (string) $data['comentario'],
+                );
+
+                $comentario = $this->repository->create($domain->toPersistenceArray());
 
                 return $this->convertToDTO($this->convertRecordToDomain($comentario));
             });
@@ -72,6 +75,8 @@ class TarefaComentarioService
             ]);
 
             return $result;
+        } catch (TarefaComentarioDomainException $exception) {
+            throw $exception;
         } catch (TarefaComentarioException $exception) {
             throw $exception;
         } catch (Throwable $exception) {
@@ -102,7 +107,10 @@ class TarefaComentarioService
                     throw TarefaComentarioException::notFound();
                 }
 
-                $updated = $this->repository->update($comentario, $data);
+                $domain = $this->convertRecordToDomain($comentario);
+                $domain->editarTexto((string) $data['comentario']);
+
+                $updated = $this->repository->update($comentario, $domain->toPersistenceArray());
 
                 return $this->convertToDTO($this->convertRecordToDomain($updated));
             });
@@ -116,6 +124,8 @@ class TarefaComentarioService
             ]);
 
             return $result;
+        } catch (TarefaComentarioDomainException $exception) {
+            throw $exception;
         } catch (TarefaComentarioException $exception) {
             throw $exception;
         } catch (Throwable $exception) {
@@ -179,11 +189,12 @@ class TarefaComentarioService
 
     private function convertRecordToDomain(TarefaComentario $comentario): TarefaComentarioDomain
     {
-        return new TarefaComentarioDomain(
-            id: $comentario->id,
+        return TarefaComentarioDomain::reconstituir(
+            id: (int) $comentario->id,
             tarefaId: (int) $comentario->tarefa_id,
+            usuarioId: (int) $comentario->usuario_id,
             comentario: $comentario->comentario,
-            usuario: $comentario->usuario !== null
+            usuarioLookup: $comentario->usuario !== null
                 ? ['id' => $comentario->usuario->id, 'name' => $comentario->usuario->name]
                 : null,
             createdAt: $comentario->created_at?->toIso8601String(),

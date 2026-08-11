@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\TarefaComentarioDomainException;
 use App\Models\Tarefa;
 use App\Models\TarefaComentario;
 use App\Services\TarefaComentarioService;
@@ -30,9 +31,15 @@ new #[Layout('layouts.app')] class extends Component
             'novoComentario' => ['required', 'string'],
         ]);
 
-        $service->create((int) auth()->id(), (int) $this->tarefa->id, [
-            'comentario' => $data['novoComentario'],
-        ]);
+        try {
+            $service->create((int) auth()->id(), (int) $this->tarefa->id, [
+                'comentario' => $data['novoComentario'],
+            ]);
+        } catch (TarefaComentarioDomainException $exception) {
+            $this->addError('novoComentario', $exception->getMessage());
+
+            return;
+        }
 
         $this->reset('novoComentario');
         session()->flash('status', 'Comentário adicionado.');
@@ -67,9 +74,15 @@ new #[Layout('layouts.app')] class extends Component
             'editandoTexto' => ['required', 'string'],
         ]);
 
-        $service->update((int) $this->tarefa->id, (int) $comentario->id, [
-            'comentario' => $data['editandoTexto'],
-        ]);
+        try {
+            $service->update((int) $this->tarefa->id, (int) $comentario->id, [
+                'comentario' => $data['editandoTexto'],
+            ]);
+        } catch (TarefaComentarioDomainException $exception) {
+            $this->addError('editandoTexto', $exception->getMessage());
+
+            return;
+        }
 
         $this->reset('editandoId', 'editandoTexto');
         session()->flash('status', 'Comentário atualizado.');

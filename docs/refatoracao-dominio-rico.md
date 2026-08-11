@@ -240,19 +240,55 @@ public function save(EntidadeService $service): void
 
 ---
 
+## Escala de padronização (0–10)
+
+Pontuação única por entidade, cruzando **este guia** (domínio rico + Web) e o [`QUICK_START_GUIDE.md`](QUICK_START_GUIDE.md) (camadas da API). Use para priorizar backlog e declarar “finalizado”.
+
+| Faixa | Significado |
+|-------|-------------|
+| **0** | Só Model/migration/seed; mutação e regra espalhadas ou inexistentes |
+| **1–2** | Volt/Model (ou CRUD parcial); sem Service/Domain compartilhado |
+| **3–4** | Policy/Factory/alguma borda HTTP; ainda sem Domain+Service orquestrado |
+| **5–6** | Camadas API presentes (Service/Repo/DTO) **ou** Domain parcial/anêmico; mutações ainda furam o padrão |
+| **7–8** | Domain rico + Service nas mutações; falta fechar API completa, Web alinhada ou testes |
+| **9** | Quase canônico: Domain rico, API e Web pelo Service, testes unitários Domain; gaps menores |
+| **10** | **Finalizado** no padrão dos dois guias (referência: Tarefa) |
+
+### Como somar (checklist — ~1 ponto cada, arredonde)
+
+**Domínio rico (este guia)**
+
+1. Construtor privado + `criar()` / `reconstituir()`
+2. Comportamentos de negócio + `assertInvariantes()` (ou equivalente)
+3. `*DomainException` + `toPersistenceArray()`; Domain sem Illuminate/Eloquent
+4. Testes unitários em `tests/Unit/Domain/` (sem DB)
+5. Mutações Web (Volt) só via Service → Domain (sem `$model->update` com regra)
+
+**API / camadas ([`QUICK_START_GUIDE.md`](QUICK_START_GUIDE.md))**
+
+6. Repository + Service com `Model → Domain → DTO`
+7. Controller (`ApiController`) + FormRequest (`validated()` / attributes)
+8. Policy + isolamento tenant/time onde couber
+9. Feature tests API (e Feature Volt das mutações principais, se houver UI)
+10. OpenAPI / factory / rotas no padrão do projeto (quando a entidade tiver API)
+
+**Finalizado?** = nota **10** (todos os itens aplicáveis atendidos). Entidades só-web ou só-API: itens N/A não descontam — a nota espelha o escopo real do produto. Lookups de referência ficam fora da escala (**—**).
+
+---
+
 ## Ordem sugerida no RapidTask
 
 Priorize entidades com mutação de negócio clara e superfície web+API (ou web intensa).
 
-| Ordem | Entidade | Estado atual | Notas |
-|-------|----------|--------------|-------|
-| 1 | **Tarefa** | Rico (referência) | Status, situação, datas, arquivar/recuperar |
-| 2 | **TarefaComentario** | Domain anêmico + Service | Extrair invariante de texto; web `show` já usa Service |
-| 3 | **Token** | Parcialmente rico | Já tem `inactive()` / `withPlainTextToken()`; alinhar pastas/exception |
-| 4 | **Cliente** | Só Volt + Model | Introduzir Domain + Service do zero; depois API se houver |
-| 5 | **Projeto** | Só Volt + Model | Datas, vínculo com cliente; Service compartilhado |
-| 6 | **Conta / Time / Convite** | Fluxos SaaS | Cuidado: muito acoplado a auth/sessão — Domain fino, Application Service mais grosso |
-| — | Lookups (Tipo, Situação, Prioridade) | Seed | Em geral **não** precisam de Domain rico (dados de referência) |
+| Ordem | Entidade | Nota | Finalizado? | Notas |
+|-------|----------|------|-------------|-------|
+| 1 | **Tarefa** | 10 | Sim | Referência canônica (status, situação, datas, arquivar/recuperar) |
+| 2 | **TarefaComentario** | 10 | Sim | Texto obrigatório; `editarTexto`; web `show` + API via Service |
+| 3 | **Token** | 6 | Não | API com Domain parcial (`inactive` / `withPlainTextToken`); falta DomainException/invariantes/unit |
+| 4 | **Cliente** | 2 | Não | Volt + Model + Policy; introduzir Domain + Service; API se houver |
+| 5 | **Projeto** | 2 | Não | Volt + Model + Policy; datas, vínculo com cliente; Service compartilhado |
+| 6 | **Conta / Time / Convite** | 3 | Não | Fluxos SaaS; Domain fino, Application Service mais grosso |
+| — | Lookups (Tipo, Situação, Prioridade) | — | N/A | Seed / dados de referência — em geral sem Domain rico |
 
 ---
 
@@ -286,6 +322,6 @@ Ao criar entidade **nova**, já nasça rica (Passos 2–9) em vez de Model-first
 
 ---
 
-**Versão:** 1.0  
+**Versão:** 1.1  
 **Baseado em:** refatoração Tarefa (agosto 2026)  
 **Projeto:** RapidTask
