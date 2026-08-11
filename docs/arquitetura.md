@@ -3,6 +3,10 @@
 Guia do que o projeto usa hoje e do caminho a seguir ao criar uma entidade nova.
 Referência canônica de CRUD: **Cliente** (`app/Models/Cliente.php` + `resources/views/livewire/pages/clientes/`).
 
+Para padrões da API (Controller → Service → Repository → Domain/DTO): [`docs/QUICK_START_GUIDE.md`](QUICK_START_GUIDE.md).
+
+Para tornar Domain anêmico em **domínio rico** (API + Web): [`docs/refatoracao-dominio-rico.md`](refatoracao-dominio-rico.md).
+
 ---
 
 ## Stack
