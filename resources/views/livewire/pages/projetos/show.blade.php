@@ -52,7 +52,7 @@ new #[Layout('layouts.app')] class extends Component
                         <h3 class="font-medium text-sm text-gray-700 mb-3">{{ $situacao->nome }}</h3>
                         <div class="space-y-2">
                             @forelse (($tarefasPorSituacao[$situacao->id] ?? collect()) as $tarefa)
-                                <a href="{{ route('tarefas.edit', $tarefa) }}" wire:navigate
+                                <a href="{{ route('tarefas.show', $tarefa) }}" wire:navigate
                                    data-id="{{ $tarefa->id }}"
                                    class="block bg-white rounded-md p-3 shadow-sm border border-gray-100 hover:border-indigo-300">
                                     <p class="text-sm font-medium text-gray-900">{{ $tarefa->titulo }}</p>

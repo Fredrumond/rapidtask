@@ -25,6 +25,41 @@ return [
     'releases' => [
 
         [
+            'versao' => '1.0.0-alpha.5',
+            'data' => '2026-08-11',
+            'estado' => 'development',
+            'titulo' => 'Comentários de tarefa (UI + API)',
+            'resumo' => 'Restaura o CRUD de comentários na tela de visualização da tarefa e expõe os mesmos endpoints na API, com policy por autoria e isolamento cross-time/conta.',
+            'nota' => 'Discovery 0007. Sem @menções, anexos ou notificações. Arquivos e anotações de projeto seguem pendentes para o beta.',
+            'modulos' => [
+                [
+                    'nome' => 'Tarefas',
+                    'itens' => [
+                        ['titulo' => 'Página de visualização (show)', 'estado' => 'stable', 'nota' => 'Rota tarefas.show'],
+                        ['titulo' => 'Listar comentários', 'estado' => 'stable', 'nota' => 'Timeline; mais recentes no topo'],
+                        ['titulo' => 'Criar comentário', 'estado' => 'stable', 'nota' => 'Qualquer membro do time'],
+                        ['titulo' => 'Editar comentário', 'estado' => 'stable', 'nota' => 'Somente o autor'],
+                        ['titulo' => 'Excluir comentário', 'estado' => 'stable', 'nota' => 'Somente o autor; soft delete'],
+                    ],
+                ],
+                [
+                    'nome' => 'API',
+                    'itens' => [
+                        ['titulo' => 'CRUD /api/tarefas/{id}/comentarios', 'estado' => 'stable', 'nota' => 'GET/POST/PUT/DELETE com time_id'],
+                        ['titulo' => 'Schemas OpenAPI de comentário', 'estado' => 'stable'],
+                        ['titulo' => 'Isolamento cross-conta nos comentários', 'estado' => 'stable'],
+                    ],
+                ],
+                [
+                    'nome' => 'Segurança',
+                    'itens' => [
+                        ['titulo' => 'Policy update/delete por autoria', 'estado' => 'stable', 'nota' => 'Antes bastava acesso ao time'],
+                    ],
+                ],
+            ],
+        ],
+
+        [
             'versao' => '1.0.0-alpha.4',
             'data' => '2026-08-06',
             'estado' => 'development',

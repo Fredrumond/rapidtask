@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TarefaComentarioController;
 use App\Http\Controllers\TarefaController;
 use App\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Route;
@@ -14,5 +15,12 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/{tarefa_id}', [TarefaController::class, 'show'])->whereNumber('tarefa_id');
         Route::put('/{tarefa_id}', [TarefaController::class, 'update'])->whereNumber('tarefa_id');
         Route::delete('/{tarefa_id}', [TarefaController::class, 'destroy'])->whereNumber('tarefa_id');
+
+        Route::get('/{tarefa_id}/comentarios', [TarefaComentarioController::class, 'index'])->whereNumber('tarefa_id');
+        Route::post('/{tarefa_id}/comentarios', [TarefaComentarioController::class, 'store'])->whereNumber('tarefa_id');
+        Route::put('/{tarefa_id}/comentarios/{comentario_id}', [TarefaComentarioController::class, 'update'])
+            ->whereNumber(['tarefa_id', 'comentario_id']);
+        Route::delete('/{tarefa_id}/comentarios/{comentario_id}', [TarefaComentarioController::class, 'destroy'])
+            ->whereNumber(['tarefa_id', 'comentario_id']);
     });
 });

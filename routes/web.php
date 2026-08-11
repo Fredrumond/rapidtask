@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('tarefas', 'pages.tarefas.index')->name('tarefas.index');
     Volt::route('tarefas/criar', 'pages.tarefas.create')->name('tarefas.create');
     Volt::route('tarefas/arquivadas', 'pages.tarefas.arquivadas')->name('tarefas.arquivadas');
+    Volt::route('tarefas/{tarefa}', 'pages.tarefas.show')->name('tarefas.show');
     Volt::route('tarefas/{tarefa}/editar', 'pages.tarefas.edit')->name('tarefas.edit');
 
     Volt::route('times', 'pages.times.index')->name('times.index');
