@@ -6,10 +6,9 @@ use App\Domain\TarefaComentarioDomain;
 use App\DTO\Tarefa\NestedUsuarioDTO;
 use App\DTO\TarefaComentario\TarefaComentarioResponseDTO;
 use App\Exceptions\TarefaComentarioException;
-use App\Models\Conta;
-use App\Models\Tarefa;
 use App\Models\TarefaComentario;
 use App\Repositories\TarefaComentarioEloquentRepository;
+use App\Repositories\TarefaEloquentRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -18,6 +17,7 @@ class TarefaComentarioService
 {
     public function __construct(
         private readonly TarefaComentarioEloquentRepository $repository,
+        private readonly TarefaEloquentRepository $tarefaRepository,
     ) {}
 
     /**
@@ -47,24 +47,24 @@ class TarefaComentarioService
     /**
      * @param  array<string, mixed>  $data
      */
-    public function create(Conta $conta, int $tarefaId, array $data): TarefaComentarioResponseDTO
+    public function create(int $usuarioId, int $tarefaId, array $data, ?int $contaId = null): TarefaComentarioResponseDTO
     {
         $this->assertTarefaExists($tarefaId);
 
         try {
-            $result = DB::transaction(function () use ($conta, $tarefaId, $data): TarefaComentarioResponseDTO {
+            $result = DB::transaction(function () use ($usuarioId, $tarefaId, $data): TarefaComentarioResponseDTO {
                 $comentario = $this->repository->create([
                     ...$data,
                     'tarefa_id' => $tarefaId,
-                    'usuario_id' => $conta->usuario_id,
+                    'usuario_id' => $usuarioId,
                 ]);
 
                 return $this->convertToDTO($this->convertRecordToDomain($comentario));
             });
 
             Log::info('api_tarefa_comentario_created', [
-                'conta_id' => $conta->id,
-                'usuario_id' => $conta->usuario_id,
+                'conta_id' => $contaId ?? auth()->id(),
+                'usuario_id' => $usuarioId,
                 'time_id' => current_time_id(),
                 'tarefa_id' => $tarefaId,
                 'comentario_id' => $result->id,
@@ -76,7 +76,7 @@ class TarefaComentarioService
             throw $exception;
         } catch (Throwable $exception) {
             Log::error('api_tarefa_comentario_create_failed', [
-                'conta_id' => $conta->id,
+                'conta_id' => $contaId ?? auth()->id(),
                 'time_id' => current_time_id(),
                 'tarefa_id' => $tarefaId,
                 'action' => 'create',
@@ -172,7 +172,7 @@ class TarefaComentarioService
 
     private function assertTarefaExists(int $tarefaId): void
     {
-        if (Tarefa::query()->whereKey($tarefaId)->doesntExist()) {
+        if (! $this->tarefaRepository->exists($tarefaId)) {
             throw TarefaComentarioException::tarefaNotFound();
         }
     }

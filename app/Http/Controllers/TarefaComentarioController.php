@@ -149,9 +149,10 @@ class TarefaComentarioController extends ApiController
             $conta = $request->user();
 
             $result = $this->tarefaComentarioService->create(
-                $conta,
+                (int) $conta->usuario_id,
                 $tarefa_id,
                 $request->comentarioAttributes(),
+                (int) $conta->id,
             );
 
             return $this->sendResponse(

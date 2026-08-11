@@ -289,3 +289,42 @@ test('token of conta A cannot list or mutate resources of conta B', function ():
         'time_id' => $cenario['timeB']->id,
     ])->assertForbidden();
 });
+
+test('put tarefas rejects invalid situacao transition from Finalizado', function (): void {
+    $cenario = criarCenarioDoisTimes();
+
+    $cenario['tarefaA']->update([
+        'situacao_id' => 4,
+        'dt_fim' => '2026-08-01',
+    ]);
+
+    Sanctum::actingAs($cenario['contaA']);
+
+    $this->putJson(
+        '/api/tarefas/'.$cenario['tarefaA']->id,
+        payloadTarefa($cenario['timeA']->id, $cenario['projetoA']->id, [
+            'situacao_id' => 2,
+            'dt_fim' => '2026-08-01',
+        ]),
+    )
+        ->assertStatus(400)
+        ->assertJsonPath('message', 'Transição de situação não permitida.');
+});
+
+test('put tarefas rejects mutation when tarefa is arquivada', function (): void {
+    $cenario = criarCenarioDoisTimes();
+
+    $cenario['tarefaA']->update(['status' => 1]);
+
+    Sanctum::actingAs($cenario['contaA']);
+
+    $this->putJson(
+        '/api/tarefas/'.$cenario['tarefaA']->id,
+        payloadTarefa($cenario['timeA']->id, $cenario['projetoA']->id, [
+            'titulo' => 'Tentativa em arquivada',
+            'status' => 1,
+        ]),
+    )
+        ->assertStatus(400)
+        ->assertJsonPath('message', 'Não é possível renomear uma tarefa arquivada.');
+});
