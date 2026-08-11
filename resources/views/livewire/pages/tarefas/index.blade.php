@@ -1,10 +1,7 @@
 <?php
 
-use App\Models\Prioridade;
-use App\Models\Projeto;
-use App\Models\Situacao;
 use App\Models\Tarefa;
-use App\Models\Tipo;
+use App\Services\TarefaService;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Volt\Component;
@@ -17,11 +14,11 @@ new #[Layout('layouts.app')] class extends Component
     #[Url]
     public string $busca = '';
 
-    public function arquivar(int $id): void
+    public function arquivar(int $id, TarefaService $service): void
     {
         $tarefa = Tarefa::query()->findOrFail($id);
         $this->authorize('update', $tarefa);
-        $tarefa->update(['status' => 1]);
+        $service->arquivar($id);
         session()->flash('status', 'Tarefa arquivada.');
     }
 

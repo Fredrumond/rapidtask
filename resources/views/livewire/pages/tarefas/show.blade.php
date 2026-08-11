@@ -2,6 +2,7 @@
 
 use App\Models\Tarefa;
 use App\Models\TarefaComentario;
+use App\Services\TarefaComentarioService;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -21,7 +22,7 @@ new #[Layout('layouts.app')] class extends Component
         $this->tarefa = $tarefa->load(['projeto', 'situacao', 'prioridade', 'tipo', 'usuario']);
     }
 
-    public function criarComentario(): void
+    public function criarComentario(TarefaComentarioService $service): void
     {
         $this->authorize('create', TarefaComentario::class);
 
@@ -29,9 +30,7 @@ new #[Layout('layouts.app')] class extends Component
             'novoComentario' => ['required', 'string'],
         ]);
 
-        TarefaComentario::query()->create([
-            'tarefa_id' => $this->tarefa->id,
-            'usuario_id' => auth()->id(),
+        $service->create((int) auth()->id(), (int) $this->tarefa->id, [
             'comentario' => $data['novoComentario'],
         ]);
 
@@ -56,7 +55,7 @@ new #[Layout('layouts.app')] class extends Component
         $this->reset('editandoId', 'editandoTexto');
     }
 
-    public function salvarEdicao(): void
+    public function salvarEdicao(TarefaComentarioService $service): void
     {
         $comentario = TarefaComentario::query()
             ->where('tarefa_id', $this->tarefa->id)
@@ -68,7 +67,7 @@ new #[Layout('layouts.app')] class extends Component
             'editandoTexto' => ['required', 'string'],
         ]);
 
-        $comentario->update([
+        $service->update((int) $this->tarefa->id, (int) $comentario->id, [
             'comentario' => $data['editandoTexto'],
         ]);
 
@@ -76,7 +75,7 @@ new #[Layout('layouts.app')] class extends Component
         session()->flash('status', 'Comentário atualizado.');
     }
 
-    public function excluirComentario(int $comentarioId): void
+    public function excluirComentario(int $comentarioId, TarefaComentarioService $service): void
     {
         $comentario = TarefaComentario::query()
             ->where('tarefa_id', $this->tarefa->id)
@@ -84,7 +83,7 @@ new #[Layout('layouts.app')] class extends Component
 
         $this->authorize('delete', $comentario);
 
-        $comentario->delete();
+        $service->delete((int) $this->tarefa->id, $comentarioId);
 
         if ($this->editandoId === $comentarioId) {
             $this->reset('editandoId', 'editandoTexto');
