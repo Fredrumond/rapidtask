@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Domain\TokenDomain;
 use App\DTO\Token\TokenResponseDTO;
+use App\Enums\TokenStatus;
+use App\Exceptions\TokenDomainException;
 use App\Exceptions\TokenException;
 use App\Models\Conta;
 use App\Repositories\TokenEloquentRepository;
@@ -22,11 +24,18 @@ class TokenService
     {
         try {
             $result = DB::transaction(function () use ($conta): TokenResponseDTO {
+                $existing = $this->repository->getActive($conta);
+
+                if ($existing !== null) {
+                    $this->convertRecordToDomain($existing)->revogar();
+                }
+
                 $this->repository->revokeAll($conta);
 
-                $accessToken = $this->repository->create($conta);
-                $domain = $this->convertRecordToDomain($accessToken->accessToken)
-                    ->withPlainTextToken($accessToken->plainTextToken);
+                $domain = TokenDomain::criar();
+                $accessToken = $this->repository->create($conta, $domain->toPersistenceArray());
+                $domain = $this->convertRecordToDomain($accessToken->accessToken);
+                $domain->anexarTextoPlano($accessToken->plainTextToken);
 
                 return $this->convertToDTO($domain);
             });
@@ -37,6 +46,8 @@ class TokenService
             ]);
 
             return $result;
+        } catch (TokenDomainException $exception) {
+            throw $exception;
         } catch (Throwable $exception) {
             Log::error('api_token_issue_failed', [
                 'conta_id' => $conta->id,
@@ -52,6 +63,12 @@ class TokenService
     {
         try {
             DB::transaction(function () use ($conta): void {
+                $token = $this->repository->getActive($conta);
+
+                if ($token !== null) {
+                    $this->convertRecordToDomain($token)->revogar();
+                }
+
                 $this->repository->revokeAll($conta);
             });
 
@@ -59,6 +76,8 @@ class TokenService
                 'conta_id' => $conta->id,
                 'action' => 'revoke',
             ]);
+        } catch (TokenDomainException $exception) {
+            throw $exception;
         } catch (Throwable $exception) {
             Log::error('api_token_revoke_failed', [
                 'conta_id' => $conta->id,
@@ -88,7 +107,10 @@ class TokenService
 
     private function convertRecordToDomain(PersonalAccessToken $token): TokenDomain
     {
-        return TokenDomain::active($token->created_at?->toIso8601String());
+        return TokenDomain::reconstituir(
+            status: TokenStatus::Ativo,
+            createdAt: $token->created_at?->toIso8601String(),
+        );
     }
 
     private function convertToDTO(TokenDomain $domain): TokenResponseDTO
