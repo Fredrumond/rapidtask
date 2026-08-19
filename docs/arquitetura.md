@@ -3,6 +3,10 @@
 Guia do que o projeto usa hoje e do caminho a seguir ao criar uma entidade nova.
 Referência canônica de CRUD: **Cliente** (`app/Models/Cliente.php` + `resources/views/livewire/pages/clientes/`).
 
+Para padrões da API (Controller → Service → Repository → Domain/DTO): [`docs/QUICK_START_GUIDE.md`](QUICK_START_GUIDE.md).
+
+Para tornar Domain anêmico em **domínio rico** (API + Web): [`docs/refatoracao-dominio-rico.md`](refatoracao-dominio-rico.md).
+
 ---
 
 ## Stack
@@ -93,7 +97,7 @@ Padrão da página:
 1. `new #[Layout('layouts.app')] class extends Component`
 2. `mount()` / ações chamam `$this->authorize(...)`
 3. Validação com `$this->validate([...])` na própria página
-4. Persistência no model; flash + `$this->redirect(..., navigate: true)`
+4. Mutação via `*Service` → Domain; flash + `$this->redirect(..., navigate: true)` (listagem pode continuar Eloquent)
 5. Título via `<x-slot name="header">` (não usar `#[Title]`)
 6. Form com componentes Breeze (`x-text-input`, `x-primary-button`, …)
 7. Listagens: `WithPagination`, `#[Url]` para busca, `wire:confirm` na exclusão

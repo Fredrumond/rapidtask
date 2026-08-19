@@ -33,6 +33,11 @@ class TarefaEloquentRepository
             ->find($id);
     }
 
+    public function exists(int $id): bool
+    {
+        return Tarefa::query()->whereKey($id)->exists();
+    }
+
     /**
      * @param  array<string, mixed>  $data
      */

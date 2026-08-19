@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\HttpCode;
+use App\Exceptions\TarefaComentarioDomainException;
 use App\Exceptions\TarefaComentarioException;
 use App\Http\Requests\StoreTarefaComentarioRequest;
 use App\Http\Requests\UpdateTarefaComentarioRequest;
@@ -149,9 +150,10 @@ class TarefaComentarioController extends ApiController
             $conta = $request->user();
 
             $result = $this->tarefaComentarioService->create(
-                $conta,
+                (int) $conta->usuario_id,
                 $tarefa_id,
                 $request->comentarioAttributes(),
+                (int) $conta->id,
             );
 
             return $this->sendResponse(
@@ -161,6 +163,12 @@ class TarefaComentarioController extends ApiController
             );
         } catch (AuthorizationException $exception) {
             throw $exception;
+        } catch (TarefaComentarioDomainException $exception) {
+            return $this->sendResponse(
+                [],
+                $exception->getMessage(),
+                HttpCode::BAD_REQUEST->value,
+            );
         } catch (TarefaComentarioException $exception) {
             return $this->sendResponse(
                 [],
@@ -243,6 +251,12 @@ class TarefaComentarioController extends ApiController
             );
         } catch (AuthorizationException $exception) {
             throw $exception;
+        } catch (TarefaComentarioDomainException $exception) {
+            return $this->sendResponse(
+                [],
+                $exception->getMessage(),
+                HttpCode::BAD_REQUEST->value,
+            );
         } catch (TarefaComentarioException $exception) {
             return $this->sendResponse(
                 [],

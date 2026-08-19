@@ -1,10 +1,13 @@
 <?php
 
+use App\Exceptions\TarefaDomainException;
+use App\Exceptions\TarefaException;
 use App\Models\Prioridade;
 use App\Models\Projeto;
 use App\Models\Situacao;
 use App\Models\Tarefa;
 use App\Models\Tipo;
+use App\Services\TarefaService;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -13,7 +16,7 @@ new #[Layout('layouts.app')] class extends Component
     public string $titulo = '';
     public string $descricao = '';
     public ?int $projeto_id = null;
-    public ?int $tipo_id = null;
+    public ?int $tipo_id = 1;
     public ?int $situacao_id = 1;
     public ?int $prioridade_id = 1;
     public ?string $dt_inicio = null;
@@ -31,7 +34,7 @@ new #[Layout('layouts.app')] class extends Component
         }
     }
 
-    public function save(): void
+    public function save(TarefaService $service): void
     {
         $this->authorize('create', Tarefa::class);
 
@@ -47,11 +50,13 @@ new #[Layout('layouts.app')] class extends Component
             'tempo_estimado' => ['nullable', 'integer', 'min:0'],
         ]);
 
-        Tarefa::query()->create([
-            ...$data,
-            'usuario_id' => auth()->id(),
-            'status' => 0,
-        ]);
+        try {
+            $service->create((int) auth()->id(), $data);
+        } catch (TarefaDomainException|TarefaException $exception) {
+            $this->addError('titulo', $exception->getMessage());
+
+            return;
+        }
 
         session()->flash('status', 'Tarefa criada.');
         $this->redirect(route('tarefas.index'), navigate: true);
@@ -76,6 +81,9 @@ new #[Layout('layouts.app')] class extends Component
                 <div>
                     <x-input-label for="titulo" value="Título" />
                     <x-text-input wire:model="titulo" id="titulo" class="mt-1 block w-full" required />
+                    @error('titulo')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div>
                     <x-input-label for="projeto_id" value="Projeto" />
@@ -85,6 +93,9 @@ new #[Layout('layouts.app')] class extends Component
                             <option value="{{ $projeto->id }}">{{ $projeto->sigla }} — {{ $projeto->nome }}</option>
                         @endforeach
                     </select>
+                    @error('projeto_id')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
@@ -92,36 +103,57 @@ new #[Layout('layouts.app')] class extends Component
                         <select wire:model="tipo_id" id="tipo_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
                             @foreach ($tipos as $tipo)<option value="{{ $tipo->id }}">{{ $tipo->nome }}</option>@endforeach
                         </select>
+                        @error('tipo_id')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <x-input-label for="situacao_id" value="Situação" />
                         <select wire:model="situacao_id" id="situacao_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
                             @foreach ($situacoes as $situacao)<option value="{{ $situacao->id }}">{{ $situacao->nome }}</option>@endforeach
                         </select>
+                        @error('situacao_id')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <x-input-label for="prioridade_id" value="Prioridade" />
                         <select wire:model="prioridade_id" id="prioridade_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
                             @foreach ($prioridades as $prioridade)<option value="{{ $prioridade->id }}">{{ $prioridade->nome }}</option>@endforeach
                         </select>
+                        @error('prioridade_id')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
                 <div>
                     <x-input-label for="descricao" value="Descrição" />
                     <textarea wire:model="descricao" id="descricao" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                    @error('descricao')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <x-input-label for="dt_inicio" value="Início" />
                         <x-text-input wire:model="dt_inicio" id="dt_inicio" type="date" class="mt-1 block w-full" />
+                        @error('dt_inicio')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <x-input-label for="dt_prevista" value="Prevista" />
                         <x-text-input wire:model="dt_prevista" id="dt_prevista" type="date" class="mt-1 block w-full" />
+                        @error('dt_prevista')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <x-input-label for="tempo_estimado" value="Tempo estimado (h)" />
                         <x-text-input wire:model="tempo_estimado" id="tempo_estimado" type="number" class="mt-1 block w-full" />
+                        @error('tempo_estimado')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
                 <div class="flex gap-3">

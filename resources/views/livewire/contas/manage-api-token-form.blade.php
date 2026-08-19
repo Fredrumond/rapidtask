@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\TokenDomainException;
+use App\Exceptions\TokenException;
 use App\Models\Conta;
 use App\Services\TokenService;
 use Livewire\Volt\Component;
@@ -24,7 +26,13 @@ new class extends Component
     {
         abort_unless(auth()->id() === $this->conta->usuario_id, 403);
 
-        $token = $tokenService->issue($this->conta);
+        try {
+            $token = $tokenService->issue($this->conta);
+        } catch (TokenDomainException|TokenException $exception) {
+            $this->addError('token', $exception->getMessage());
+
+            return;
+        }
 
         $this->plainTextToken = $token->plainTextToken;
         $this->hasActiveToken = true;
@@ -36,7 +44,13 @@ new class extends Component
     {
         abort_unless(auth()->id() === $this->conta->usuario_id, 403);
 
-        $tokenService->revoke($this->conta);
+        try {
+            $tokenService->revoke($this->conta);
+        } catch (TokenDomainException|TokenException $exception) {
+            $this->addError('token', $exception->getMessage());
+
+            return;
+        }
 
         $this->plainTextToken = null;
         $this->hasActiveToken = false;
@@ -86,6 +100,10 @@ new class extends Component
                     {{ __('Revoke Token') }}
                 </x-danger-button>
             @endif
+
+            @error('token')
+                <p class="text-sm text-red-600">{{ $message }}</p>
+            @enderror
 
             <x-action-message class="me-3" on="api-token-generated">
                 {{ __('Token generated.') }}

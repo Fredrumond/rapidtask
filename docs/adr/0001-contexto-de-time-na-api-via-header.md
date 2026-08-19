@@ -47,5 +47,5 @@ Usar o header **`X-Time-Id`** como contrato de tenant da API, validado pelo midd
 
 ### Próximos passos (opcional)
 
-- Documentar o padrão em `docs/arquitetura.md` / `QUICK_START_GUIDE` para API.  
+- Documentar o padrão em `docs/arquitetura.md` / `docs/QUICK_START_GUIDE.md` para API.  
 - Reutilizar `EnsureApiTeam` em todo recurso API com isolamento por time.

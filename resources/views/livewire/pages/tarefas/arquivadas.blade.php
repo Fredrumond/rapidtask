@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Tarefa;
+use App\Services\TarefaService;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 use Livewire\WithPagination;
@@ -9,11 +10,11 @@ new #[Layout('layouts.app')] class extends Component
 {
     use WithPagination;
 
-    public function recuperar(int $id): void
+    public function recuperar(int $id, TarefaService $service): void
     {
         $tarefa = Tarefa::query()->findOrFail($id);
         $this->authorize('update', $tarefa);
-        $tarefa->update(['status' => 0]);
+        $service->recuperar($id);
         session()->flash('status', 'Tarefa recuperada.');
     }
 

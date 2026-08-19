@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cliente;
+use App\Services\ClienteService;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Volt\Component;
@@ -13,11 +14,11 @@ new #[Layout('layouts.app')] class extends Component
     #[Url]
     public string $busca = '';
 
-    public function delete(int $id): void
+    public function delete(int $id, ClienteService $service): void
     {
         $cliente = Cliente::query()->findOrFail($id);
         $this->authorize('delete', $cliente);
-        $cliente->delete();
+        $service->delete($id);
         session()->flash('status', 'Cliente excluído.');
     }
 

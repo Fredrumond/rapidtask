@@ -1,10 +1,12 @@
 <?php
 
+use App\Exceptions\TarefaDomainException;
 use App\Models\Prioridade;
 use App\Models\Projeto;
 use App\Models\Situacao;
 use App\Models\Tarefa;
 use App\Models\Tipo;
+use App\Services\TarefaService;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -38,7 +40,7 @@ new #[Layout('layouts.app')] class extends Component
         $this->tempo_estimado = $tarefa->tempo_estimado;
     }
 
-    public function save(): void
+    public function save(TarefaService $service): void
     {
         $this->authorize('update', $this->tarefa);
 
@@ -55,7 +57,14 @@ new #[Layout('layouts.app')] class extends Component
             'tempo_estimado' => ['nullable', 'integer', 'min:0'],
         ]);
 
-        $this->tarefa->update($data);
+        try {
+            $service->update((int) $this->tarefa->id, $data);
+        } catch (TarefaDomainException $exception) {
+            $this->addError('situacao_id', $exception->getMessage());
+
+            return;
+        }
+
         session()->flash('status', 'Tarefa atualizada.');
         $this->redirect(route('tarefas.index'), navigate: true);
     }

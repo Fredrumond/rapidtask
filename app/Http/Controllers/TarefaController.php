@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\TarefaDomainException;
 use App\Enums\HttpCode;
 use App\Exceptions\TarefaException;
 use App\Http\Requests\StoreTarefaRequest;
@@ -117,15 +118,10 @@ class TarefaController extends ApiController
     public function show(int $tarefa_id): JsonResponse
     {
         try {
-            $tarefa = Tarefa::query()->find($tarefa_id);
-
-            if ($tarefa === null) {
-                throw TarefaException::notFound();
-            }
-
+            $tarefa = $this->tarefaService->findModel($tarefa_id);
             $this->authorize('view', $tarefa);
 
-            $result = $this->tarefaService->find($tarefa_id);
+            $result = $this->tarefaService->present($tarefa);
 
             return $this->sendResponse(
                 $result,
@@ -182,8 +178,9 @@ class TarefaController extends ApiController
             $conta = $request->user();
 
             $result = $this->tarefaService->create(
-                $conta,
+                (int) $conta->usuario_id,
                 $request->tarefaAttributes(),
+                (int) $conta->id,
             );
 
             return $this->sendResponse(
@@ -193,6 +190,12 @@ class TarefaController extends ApiController
             );
         } catch (AuthorizationException $exception) {
             throw $exception;
+        } catch (TarefaDomainException $exception) {
+            return $this->sendResponse(
+                [],
+                $exception->getMessage(),
+                HttpCode::BAD_REQUEST->value,
+            );
         } catch (Throwable $exception) {
             return $this->sendResponse(
                 [],
@@ -240,12 +243,7 @@ class TarefaController extends ApiController
     public function update(UpdateTarefaRequest $request, int $tarefa_id): JsonResponse
     {
         try {
-            $tarefa = Tarefa::query()->find($tarefa_id);
-
-            if ($tarefa === null) {
-                throw TarefaException::notFound();
-            }
-
+            $tarefa = $this->tarefaService->findModel($tarefa_id);
             $this->authorize('update', $tarefa);
 
             $result = $this->tarefaService->update($tarefa_id, $request->tarefaAttributes());
@@ -262,6 +260,12 @@ class TarefaController extends ApiController
                 [],
                 $exception->getMessage(),
                 HttpCode::NOT_FOUND->value,
+            );
+        } catch (TarefaDomainException $exception) {
+            return $this->sendResponse(
+                [],
+                $exception->getMessage(),
+                HttpCode::BAD_REQUEST->value,
             );
         } catch (Throwable $exception) {
             return $this->sendResponse(
@@ -313,12 +317,7 @@ class TarefaController extends ApiController
     public function destroy(Request $request, int $tarefa_id): JsonResponse
     {
         try {
-            $tarefa = Tarefa::query()->find($tarefa_id);
-
-            if ($tarefa === null) {
-                throw TarefaException::notFound();
-            }
-
+            $tarefa = $this->tarefaService->findModel($tarefa_id);
             $this->authorize('delete', $tarefa);
 
             $this->tarefaService->delete($tarefa_id);
