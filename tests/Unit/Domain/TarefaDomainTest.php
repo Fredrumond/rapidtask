@@ -1,9 +1,9 @@
 <?php
 
-use App\Exceptions\TarefaDomainException;
+use App\Domain\TarefaDomain;
 use App\Enums\TarefaSituacao;
 use App\Enums\TarefaStatus;
-use App\Domain\TarefaDomain;
+use App\Exceptions\TarefaDomainException;
 
 function tarefaDomainNova(array $overrides = []): TarefaDomain
 {

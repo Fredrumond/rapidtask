@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Exceptions\TarefaDomainException;
-use App\Enums\TarefaSituacao;
-use App\Enums\TarefaStatus;
 use App\Domain\TarefaDomain;
 use App\DTO\Tarefa\NestedLookupDTO;
 use App\DTO\Tarefa\NestedUsuarioDTO;
 use App\DTO\Tarefa\TarefaResponseDTO;
+use App\Enums\TarefaSituacao;
+use App\Enums\TarefaStatus;
+use App\Exceptions\TarefaDomainException;
 use App\Exceptions\TarefaException;
 use App\Models\Tarefa;
 use App\Repositories\TarefaEloquentRepository;
