@@ -2,9 +2,9 @@
 
 namespace App\Domain;
 
-use App\Exceptions\TarefaDomainException;
 use App\Enums\TarefaSituacao;
 use App\Enums\TarefaStatus;
+use App\Exceptions\TarefaDomainException;
 use DateTimeImmutable;
 
 class TarefaDomain

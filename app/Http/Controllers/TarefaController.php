@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\TarefaDomainException;
 use App\Enums\HttpCode;
+use App\Exceptions\TarefaDomainException;
 use App\Exceptions\TarefaException;
 use App\Http\Requests\StoreTarefaRequest;
 use App\Http\Requests\UpdateTarefaRequest;
