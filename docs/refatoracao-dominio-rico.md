@@ -284,7 +284,7 @@ Priorize entidades com mutação de negócio clara e superfície web+API (ou web
 |-------|----------|------|-------------|-------|
 | 1 | **Tarefa** | 10 | Sim | Referência canônica (status, situação, datas, arquivar/recuperar) |
 | 2 | **TarefaComentario** | 10 | Sim | Texto obrigatório; `editarTexto`; web `show` + API via Service |
-| 3 | **Token** | 6 | Não | API com Domain parcial (`inactive` / `withPlainTextToken`); falta DomainException/invariantes/unit |
+| 3 | **Token** | 10 | Sim | Um ativo por conta; plaintext só na emissão; `anexarTextoPlano` / `revogar`; web + API via Service |
 | 4 | **Cliente** | 2 | Não | Volt + Model + Policy; introduzir Domain + Service; API se houver |
 | 5 | **Projeto** | 2 | Não | Volt + Model + Policy; datas, vínculo com cliente; Service compartilhado |
 | 6 | **Conta / Time / Convite** | 3 | Não | Fluxos SaaS; Domain fino, Application Service mais grosso |
@@ -322,6 +322,6 @@ Ao criar entidade **nova**, já nasça rica (Passos 2–9) em vez de Model-first
 
 ---
 
-**Versão:** 1.1  
-**Baseado em:** refatoração Tarefa (agosto 2026)  
+**Versão:** 1.2  
+**Baseado em:** refatoração Tarefa (agosto 2026); Token e TarefaComentario no mesmo padrão  
 **Projeto:** RapidTask

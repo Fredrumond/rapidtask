@@ -14,9 +14,12 @@ class TokenEloquentRepository
         $conta->tokens()->delete();
     }
 
-    public function create(Conta $conta): NewAccessToken
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    public function create(Conta $conta, array $data): NewAccessToken
     {
-        return $conta->createToken(TokenDomain::TOKEN_NAME);
+        return $conta->createToken((string) $data['name']);
     }
 
     public function hasActive(Conta $conta): bool
