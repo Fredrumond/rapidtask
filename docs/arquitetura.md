@@ -97,7 +97,7 @@ Padrão da página:
 1. `new #[Layout('layouts.app')] class extends Component`
 2. `mount()` / ações chamam `$this->authorize(...)`
 3. Validação com `$this->validate([...])` na própria página
-4. Persistência no model; flash + `$this->redirect(..., navigate: true)`
+4. Mutação via `*Service` → Domain; flash + `$this->redirect(..., navigate: true)` (listagem pode continuar Eloquent)
 5. Título via `<x-slot name="header">` (não usar `#[Title]`)
 6. Form com componentes Breeze (`x-text-input`, `x-primary-button`, …)
 7. Listagens: `WithPagination`, `#[Url]` para busca, `wire:confirm` na exclusão

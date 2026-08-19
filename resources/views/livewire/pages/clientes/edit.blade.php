@@ -1,6 +1,9 @@
 <?php
 
+use App\Exceptions\ClienteDomainException;
+use App\Exceptions\ClienteException;
 use App\Models\Cliente;
+use App\Services\ClienteService;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -20,7 +23,7 @@ new #[Layout('layouts.app')] class extends Component
         $this->telefone = (string) $cliente->telefone;
     }
 
-    public function save(): void
+    public function save(ClienteService $service): void
     {
         $this->authorize('update', $this->cliente);
 
@@ -30,7 +33,13 @@ new #[Layout('layouts.app')] class extends Component
             'telefone' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $this->cliente->update($data);
+        try {
+            $service->update((int) $this->cliente->id, $data);
+        } catch (ClienteDomainException|ClienteException $exception) {
+            $this->addError('nome', $exception->getMessage());
+
+            return;
+        }
 
         session()->flash('status', 'Cliente atualizado.');
         $this->redirect(route('clientes.index'), navigate: true);
