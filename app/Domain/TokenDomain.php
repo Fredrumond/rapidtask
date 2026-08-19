@@ -2,19 +2,81 @@
 
 namespace App\Domain;
 
-class TokenDomain
+use App\Enums\TokenStatus;
+use App\Exceptions\TokenDomainException;
+
+final class TokenDomain
 {
     public const TOKEN_NAME = 'api';
 
-    public function __construct(
-        private readonly bool $active,
-        private readonly ?string $plainTextToken = null,
-        private readonly ?string $createdAt = null,
-    ) {}
+    private function __construct(
+        private TokenStatus $status,
+        private ?string $plainTextToken = null,
+        private ?string $createdAt = null,
+    ) {
+        $this->assertInvariantes();
+    }
+
+    public static function criar(): self
+    {
+        return new self(status: TokenStatus::Ativo);
+    }
+
+    public static function reconstituir(
+        TokenStatus $status,
+        ?string $createdAt = null,
+        ?string $plainTextToken = null,
+    ): self {
+        return new self(
+            status: $status,
+            plainTextToken: $plainTextToken,
+            createdAt: $createdAt,
+        );
+    }
+
+    public static function inactive(): self
+    {
+        return self::reconstituir(TokenStatus::Inativo);
+    }
+
+    public static function active(?string $createdAt = null): self
+    {
+        return self::reconstituir(TokenStatus::Ativo, $createdAt);
+    }
+
+    public function anexarTextoPlano(string $plainTextToken): void
+    {
+        if (! $this->status->podeAnexarTextoPlano()) {
+            throw TokenDomainException::textoPlanoEmInativo();
+        }
+
+        $this->plainTextToken = trim($plainTextToken);
+        $this->assertInvariantes();
+    }
+
+    public function revogar(): void
+    {
+        if (! $this->status->podeRevogar()) {
+            throw TokenDomainException::jaRevogado();
+        }
+
+        $this->status = TokenStatus::Inativo;
+        $this->plainTextToken = null;
+    }
 
     public function isActive(): bool
     {
-        return $this->active;
+        return $this->status === TokenStatus::Ativo;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toPersistenceArray(): array
+    {
+        return [
+            'name' => self::TOKEN_NAME,
+        ];
     }
 
     public function getPlainTextToken(): ?string
@@ -32,26 +94,19 @@ class TokenDomain
         return self::TOKEN_NAME;
     }
 
-    public function withPlainTextToken(string $plainTextToken): self
+    public function getStatusEnum(): TokenStatus
     {
-        return new self(
-            active: true,
-            plainTextToken: $plainTextToken,
-            createdAt: $this->createdAt,
-        );
+        return $this->status;
     }
 
-    public static function inactive(): self
+    private function assertInvariantes(): void
     {
-        return new self(active: false);
-    }
+        if ($this->status === TokenStatus::Inativo && $this->plainTextToken !== null) {
+            throw TokenDomainException::textoPlanoEmInativo();
+        }
 
-    public static function active(?string $createdAt = null): self
-    {
-        return new self(
-            active: true,
-            plainTextToken: null,
-            createdAt: $createdAt,
-        );
+        if ($this->plainTextToken !== null && trim($this->plainTextToken) === '') {
+            throw TokenDomainException::textoPlanoObrigatorio();
+        }
     }
 }
