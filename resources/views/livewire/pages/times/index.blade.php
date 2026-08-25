@@ -1,7 +1,11 @@
 <?php
 
-use App\Models\Conta;
+use App\Exceptions\ContaDomainException;
+use App\Exceptions\ContaException;
+use App\Exceptions\TimeDomainException;
+use App\Exceptions\TimeException;
 use App\Models\Time;
+use App\Services\TimeService;
 use App\Support\CurrentTeam;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
@@ -10,7 +14,7 @@ new #[Layout('layouts.app')] class extends Component
 {
     public string $nome = '';
 
-    public function create(): void
+    public function create(TimeService $service): void
     {
         $this->authorize('create', Time::class);
 
@@ -18,28 +22,16 @@ new #[Layout('layouts.app')] class extends Component
             'nome' => ['required', 'string', 'max:255'],
         ]);
 
-        $user = auth()->user();
+        try {
+            $service->criar((int) auth()->id(), $data['nome']);
+        } catch (TimeDomainException|TimeException|ContaDomainException|ContaException $exception) {
+            $this->addError('nome', $exception->getMessage());
 
-        $conta = Conta::query()->firstOrCreate(
-            ['usuario_id' => $user->id],
-            ['nome' => 'Conta de '.$user->name],
-        );
-
-        $time = Time::query()->create([
-            'nome' => $data['nome'],
-            'usuario_id' => $user->id,
-            'conta_id' => $conta->id,
-        ]);
-
-        $time->membros()->create([
-            'usuario_id' => $user->id,
-            'nivel_id' => 1,
-        ]);
-
-        CurrentTeam::set($time->id);
+            return;
+        }
 
         session()->flash('status', 'Time criado.');
-        $this->redirect(route('times.show', $time), navigate: true);
+        $this->redirect(route('times.show', CurrentTeam::id()), navigate: true);
     }
 
     public function with(): array

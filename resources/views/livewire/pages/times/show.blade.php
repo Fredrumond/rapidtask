@@ -1,10 +1,12 @@
 <?php
 
+use App\Exceptions\TimeDomainException;
+use App\Exceptions\TimeException;
 use App\Mail\ConviteTimeMail;
 use App\Models\Time;
 use App\Models\TimeMembroConvite;
 use App\Models\User;
-use App\Support\CurrentTeam;
+use App\Services\TimeService;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -24,16 +26,16 @@ new #[Layout('layouts.app')] class extends Component
         $this->time = $time->load(['membros.usuario', 'membros.nivel']);
     }
 
-    public function delete(): void
+    public function delete(TimeService $service): void
     {
         $this->authorize('delete', $this->time);
 
-        $timeId = $this->time->id;
-        $this->time->delete();
+        try {
+            $service->excluir((int) $this->time->id, (int) auth()->id());
+        } catch (TimeDomainException|TimeException $exception) {
+            $this->addError('nome', $exception->getMessage());
 
-        if (CurrentTeam::id() === $timeId) {
-            $proximo = auth()->user()->times()->orderBy('nome')->first();
-            CurrentTeam::set($proximo?->id);
+            return;
         }
 
         session()->flash('status', 'Time excluído.');
