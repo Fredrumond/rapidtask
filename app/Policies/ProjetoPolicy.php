@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Conta;
 use App\Models\Projeto;
 use App\Models\User;
 use App\Policies\Concerns\HandlesTeamAuthorization;
@@ -10,28 +11,32 @@ class ProjetoPolicy
 {
     use HandlesTeamAuthorization;
 
-    public function viewAny(?User $user): bool
+    public function viewAny(Conta|User|null $actor): bool
     {
-        return $this->isAuthenticatedMember($user);
+        if ($actor instanceof Conta) {
+            return $this->canAccessCurrentTeam($actor);
+        }
+
+        return $this->isAuthenticatedMember($actor);
     }
 
-    public function view(?User $user, Projeto $projeto): bool
+    public function view(Conta|User|null $actor, Projeto $projeto): bool
     {
-        return $this->canAccessTeam($user, $projeto->time_id);
+        return $this->canAccessTeam($actor, (int) $projeto->time_id);
     }
 
-    public function create(?User $user): bool
+    public function create(Conta|User|null $actor): bool
     {
-        return $this->canAccessCurrentTeam($user);
+        return $this->canAccessCurrentTeam($actor);
     }
 
-    public function update(?User $user, Projeto $projeto): bool
+    public function update(Conta|User|null $actor, Projeto $projeto): bool
     {
-        return $this->canAccessTeam($user, $projeto->time_id);
+        return $this->canAccessTeam($actor, (int) $projeto->time_id);
     }
 
-    public function delete(?User $user, Projeto $projeto): bool
+    public function delete(Conta|User|null $actor, Projeto $projeto): bool
     {
-        return $this->canAccessTeam($user, $projeto->time_id);
+        return $this->canAccessTeam($actor, (int) $projeto->time_id);
     }
 }
