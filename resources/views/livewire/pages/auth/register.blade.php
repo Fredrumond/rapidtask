@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Conta;
 use App\Models\User;
+use App\Services\ContaService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +20,7 @@ new #[Layout('layouts.guest')] class extends Component
     /**
      * Handle an incoming registration request.
      */
-    public function register(): void
+    public function register(ContaService $contaService): void
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -30,13 +30,10 @@ new #[Layout('layouts.guest')] class extends Component
 
         $validated['password'] = Hash::make($validated['password']);
 
-        $user = DB::transaction(function () use ($validated) {
+        $user = DB::transaction(function () use ($validated, $contaService) {
             $user = User::create($validated);
 
-            Conta::query()->create([
-                'nome' => 'Conta de '.$user->name,
-                'usuario_id' => $user->id,
-            ]);
+            $contaService->criar($user->id, 'Conta de '.$user->name);
 
             return $user;
         });

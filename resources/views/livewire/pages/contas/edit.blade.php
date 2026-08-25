@@ -1,6 +1,9 @@
 <?php
 
+use App\Exceptions\ContaDomainException;
+use App\Exceptions\ContaException;
 use App\Models\Conta;
+use App\Services\ContaService;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -18,7 +21,7 @@ new #[Layout('layouts.app')] class extends Component
         $this->nome = $conta->nome;
     }
 
-    public function save(): void
+    public function save(ContaService $service): void
     {
         abort_unless(auth()->id() === $this->conta->usuario_id, 403);
 
@@ -26,7 +29,13 @@ new #[Layout('layouts.app')] class extends Component
             'nome' => ['required', 'string', 'max:255'],
         ]);
 
-        $this->conta->update($data);
+        try {
+            $service->renomear((int) $this->conta->id, $data['nome'], (int) auth()->id());
+        } catch (ContaDomainException|ContaException $exception) {
+            $this->addError('nome', $exception->getMessage());
+
+            return;
+        }
 
         session()->flash('status', 'Conta atualizada.');
         $this->redirect(route('contas.edit', $this->conta), navigate: true);

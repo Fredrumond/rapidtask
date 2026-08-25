@@ -286,8 +286,10 @@ Priorize entidades com mutação de negócio clara e superfície web+API (ou web
 | 2 | **TarefaComentario** | 10 | Sim | Texto obrigatório; `editarTexto`; web `show` + API via Service |
 | 3 | **Token** | 10 | Sim | Um ativo por conta; plaintext só na emissão; `anexarTextoPlano` / `revogar`; web + API via Service |
 | 4 | **Cliente** | 10 | Sim | Web-only: Domain rico (`renomear` / `atualizarContato`), Service nas mutações Volt; sem API (N/A) |
-| 5 | **Projeto** | 2 | Não | Volt + Model + Policy; datas, vínculo com cliente; Service compartilhado |
-| 6 | **Conta / Time / Convite** | 3 | Não | Fluxos SaaS; Domain fino, Application Service mais grosso |
+| 5 | **Projeto** | 10 | Sim | Domain rico + API (0008) + Web Volt via `ProjetoService` (create/edit/delete); Policy e isolamento por time intactos |
+| 6 | **Conta** | 10 | Sim | Web-only: Domain rico (`criar` / `renomear` + owner), Service no registro e Volt de configuração; sem API (N/A) |
+| 7 | **Time** | 10 | Sim | Web-only: Domain rico (`criar` / `excluir` + admin), Service nas mutações Volt; Policy admin; sem API (N/A) |
+| 8 | **Convite** | 10 | Sim | Web-only: Domain rico (`emitir` / `aceitar` / `recusar` + invariantes de pendência, e-mail e cross-conta); Service nas mutações Volt e no controller; URL assinada de 7 dias intacta; sem API (N/A) |
 | — | Lookups (Tipo, Situação, Prioridade) | — | N/A | Seed / dados de referência — em geral sem Domain rico |
 
 ---
@@ -322,6 +324,6 @@ Ao criar entidade **nova**, já nasça rica (Passos 2–9) em vez de Model-first
 
 ---
 
-**Versão:** 1.2  
-**Baseado em:** refatoração Tarefa (agosto 2026); Token e TarefaComentario no mesmo padrão  
+**Versão:** 1.4  
+**Baseado em:** refatoração Tarefa (agosto 2026); Token, TarefaComentario, Cliente, Projeto, Conta, Time e Convite no mesmo padrão  
 **Projeto:** RapidTask

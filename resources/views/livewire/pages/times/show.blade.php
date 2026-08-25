@@ -1,14 +1,13 @@
 <?php
 
-use App\Mail\ConviteTimeMail;
+use App\Exceptions\ConviteDomainException;
+use App\Exceptions\ConviteException;
+use App\Exceptions\TimeDomainException;
+use App\Exceptions\TimeException;
 use App\Models\Time;
 use App\Models\TimeMembroConvite;
-use App\Models\User;
-use App\Support\CurrentTeam;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
+use App\Services\ConviteService;
+use App\Services\TimeService;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -24,23 +23,23 @@ new #[Layout('layouts.app')] class extends Component
         $this->time = $time->load(['membros.usuario', 'membros.nivel']);
     }
 
-    public function delete(): void
+    public function delete(TimeService $service): void
     {
         $this->authorize('delete', $this->time);
 
-        $timeId = $this->time->id;
-        $this->time->delete();
+        try {
+            $service->excluir((int) $this->time->id, (int) auth()->id());
+        } catch (TimeDomainException|TimeException $exception) {
+            $this->addError('nome', $exception->getMessage());
 
-        if (CurrentTeam::id() === $timeId) {
-            $proximo = auth()->user()->times()->orderBy('nome')->first();
-            CurrentTeam::set($proximo?->id);
+            return;
         }
 
         session()->flash('status', 'Time excluído.');
         $this->redirect(route('times.index'), navigate: true);
     }
 
-    public function convidar(): void
+    public function convidar(ConviteService $service): void
     {
         $this->authorize('update', $this->time);
 
@@ -49,30 +48,13 @@ new #[Layout('layouts.app')] class extends Component
             'email' => ['required', 'email', 'max:255'],
         ]);
 
-        $contaId = $this->time->conta_id;
-        $convidado = User::query()->where('email', $data['email'])->first();
+        try {
+            $service->emitir((int) $this->time->id, (int) auth()->id(), $data);
+        } catch (ConviteDomainException|ConviteException $exception) {
+            $this->addError('email', $exception->getMessage());
 
-        if ($convidado !== null && $contaId !== null && $convidado->belongsToOtherConta((int) $contaId)) {
-            throw ValidationException::withMessages([
-                'email' => 'Este e-mail já pertence a outra conta na plataforma.',
-            ]);
+            return;
         }
-
-        $convite = TimeMembroConvite::query()->create([
-            'nome' => $data['nome'],
-            'email' => $data['email'],
-            'time_id' => $this->time->id,
-            'token' => Str::random(64),
-            'status' => 0,
-        ]);
-
-        $aceitarUrl = URL::temporarySignedRoute(
-            'convites.aceitar',
-            now()->addDays(7),
-            ['convite' => $convite->id]
-        );
-
-        Mail::to($convite->email)->queue(new ConviteTimeMail($convite, $aceitarUrl));
 
         $this->reset(['nome', 'email']);
         session()->flash('status', 'Convite enviado.');
@@ -149,6 +131,7 @@ new #[Layout('layouts.app')] class extends Component
                         <div>
                             <x-input-label for="nome" value="Nome" />
                             <x-text-input wire:model="nome" id="nome" class="mt-1 block w-full" required />
+                            <x-input-error :messages="$errors->get('nome')" class="mt-2" />
                         </div>
                         <div>
                             <x-input-label for="email" value="E-mail" />

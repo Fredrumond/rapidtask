@@ -2,68 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Time;
-use App\Models\TimeMembro;
+use App\Exceptions\ConviteDomainException;
+use App\Exceptions\ConviteException;
 use App\Models\TimeMembroConvite;
-use App\Support\CurrentTeam;
+use App\Services\ConviteService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class ConviteController extends Controller
 {
-    public function aceitar(TimeMembroConvite $convite): RedirectResponse
+    public function aceitar(TimeMembroConvite $convite, ConviteService $service): RedirectResponse
     {
-        abort_unless($convite->status === 0, 410, 'Convite já utilizado.');
-
         $user = Auth::user();
 
         if (! $user) {
             return redirect()->route('login');
         }
 
-        abort_unless(
-            strcasecmp($user->email, $convite->email) === 0,
-            403,
-            'Este convite é para outro e-mail.'
-        );
-
-        $contaId = Time::withoutGlobalScopes()
-            ->whereKey($convite->time_id)
-            ->value('conta_id');
-
-        abort_if(
-            $contaId !== null && $user->belongsToOtherConta((int) $contaId),
-            403,
-            'Você já pertence a outra conta na plataforma.'
-        );
-
-        TimeMembro::query()->firstOrCreate(
-            [
-                'time_id' => $convite->time_id,
-                'usuario_id' => $user->id,
-            ],
-            [
-                'nivel_id' => 2,
-            ]
-        );
-
-        $convite->update(['status' => 1]);
-
-        CurrentTeam::set($convite->time_id);
+        try {
+            $service->aceitar((int) $convite->id, (int) $user->id);
+        } catch (ConviteDomainException $exception) {
+            abort($exception->isGone() ? 410 : 403, $exception->getMessage());
+        } catch (ConviteException $exception) {
+            abort(404, $exception->getMessage());
+        }
 
         return redirect()
             ->route('times.show', $convite->time_id)
             ->with('status', 'Convite aceito.');
     }
 
-    public function recusar(TimeMembroConvite $convite): RedirectResponse
+    public function recusar(TimeMembroConvite $convite, ConviteService $service): RedirectResponse
     {
-        abort_unless($convite->status === 0, 410);
-
         $user = Auth::user();
-        abort_unless($user && strcasecmp($user->email, $convite->email) === 0, 403);
 
-        $convite->update(['status' => 2]);
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        try {
+            $service->recusar((int) $convite->id, (int) $user->id);
+        } catch (ConviteDomainException $exception) {
+            abort($exception->isGone() ? 410 : 403, $exception->getMessage());
+        } catch (ConviteException $exception) {
+            abort(404, $exception->getMessage());
+        }
 
         return redirect()
             ->route('dashboard')
