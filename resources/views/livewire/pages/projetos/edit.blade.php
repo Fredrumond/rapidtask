@@ -1,7 +1,10 @@
 <?php
 
+use App\Exceptions\ProjetoDomainException;
+use App\Exceptions\ProjetoException;
 use App\Models\Cliente;
 use App\Models\Projeto;
+use App\Services\ProjetoService;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -29,7 +32,7 @@ new #[Layout('layouts.app')] class extends Component
         $this->dt_fim = optional($projeto->dt_fim)?->format('Y-m-d');
     }
 
-    public function save(): void
+    public function save(ProjetoService $service): void
     {
         $this->authorize('update', $this->projeto);
 
@@ -43,7 +46,14 @@ new #[Layout('layouts.app')] class extends Component
             'dt_fim' => ['nullable', 'date'],
         ]);
 
-        $this->projeto->update($data);
+        try {
+            $service->update((int) $this->projeto->id, $data);
+        } catch (ProjetoDomainException|ProjetoException $exception) {
+            $this->addError('nome', $exception->getMessage());
+
+            return;
+        }
+
         session()->flash('status', 'Projeto atualizado.');
         $this->redirect(route('projetos.index'), navigate: true);
     }
@@ -62,10 +72,12 @@ new #[Layout('layouts.app')] class extends Component
                 <div>
                     <x-input-label for="nome" value="Nome" />
                     <x-text-input wire:model="nome" id="nome" class="mt-1 block w-full" required />
+                    <x-input-error :messages="$errors->get('nome')" class="mt-2" />
                 </div>
                 <div>
                     <x-input-label for="sigla" value="Sigla" />
                     <x-text-input wire:model="sigla" id="sigla" class="mt-1 block w-full" required />
+                    <x-input-error :messages="$errors->get('sigla')" class="mt-2" />
                 </div>
                 <div>
                     <x-input-label for="cliente_id" value="Cliente" />
@@ -74,23 +86,28 @@ new #[Layout('layouts.app')] class extends Component
                             <option value="{{ $cliente->id }}">{{ $cliente->nome }}</option>
                         @endforeach
                     </select>
+                    <x-input-error :messages="$errors->get('cliente_id')" class="mt-2" />
                 </div>
                 <div>
                     <x-input-label for="descricao" value="Descrição" />
                     <textarea wire:model="descricao" id="descricao" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" rows="4"></textarea>
+                    <x-input-error :messages="$errors->get('descricao')" class="mt-2" />
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                         <x-input-label for="dt_inicio" value="Início" />
                         <x-text-input wire:model="dt_inicio" id="dt_inicio" type="date" class="mt-1 block w-full" />
+                        <x-input-error :messages="$errors->get('dt_inicio')" class="mt-2" />
                     </div>
                     <div>
                         <x-input-label for="dt_prevista" value="Prevista" />
                         <x-text-input wire:model="dt_prevista" id="dt_prevista" type="date" class="mt-1 block w-full" />
+                        <x-input-error :messages="$errors->get('dt_prevista')" class="mt-2" />
                     </div>
                     <div>
                         <x-input-label for="dt_fim" value="Fim" />
                         <x-text-input wire:model="dt_fim" id="dt_fim" type="date" class="mt-1 block w-full" />
+                        <x-input-error :messages="$errors->get('dt_fim')" class="mt-2" />
                     </div>
                 </div>
                 <div class="flex gap-3">

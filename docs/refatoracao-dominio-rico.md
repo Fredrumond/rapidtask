@@ -286,7 +286,7 @@ Priorize entidades com mutação de negócio clara e superfície web+API (ou web
 | 2 | **TarefaComentario** | 10 | Sim | Texto obrigatório; `editarTexto`; web `show` + API via Service |
 | 3 | **Token** | 10 | Sim | Um ativo por conta; plaintext só na emissão; `anexarTextoPlano` / `revogar`; web + API via Service |
 | 4 | **Cliente** | 10 | Sim | Web-only: Domain rico (`renomear` / `atualizarContato`), Service nas mutações Volt; sem API (N/A) |
-| 5 | **Projeto** | 2 | Não | Volt + Model + Policy; datas, vínculo com cliente; Service compartilhado |
+| 5 | **Projeto** | 10 | Sim | Domain rico + API (0008) + Web Volt via `ProjetoService` (create/edit/delete); Policy e isolamento por time intactos |
 | 6 | **Conta / Time / Convite** | 3 | Não | Fluxos SaaS; Domain fino, Application Service mais grosso |
 | — | Lookups (Tipo, Situação, Prioridade) | — | N/A | Seed / dados de referência — em geral sem Domain rico |
 
