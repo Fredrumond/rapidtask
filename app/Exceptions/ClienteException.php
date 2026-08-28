@@ -25,4 +25,9 @@ class ClienteException extends Exception
     {
         return new self('Não foi possível excluir o cliente.');
     }
+
+    public static function operationFailed(): self
+    {
+        return new self('Não foi possível realizar a operação no cliente.');
+    }
 }

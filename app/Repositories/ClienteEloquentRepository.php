@@ -3,12 +3,38 @@
 namespace App\Repositories;
 
 use App\Models\Cliente;
+use Illuminate\Database\Eloquent\Collection;
 
 class ClienteEloquentRepository
 {
+    private const RELATIONS = [
+        'time',
+        'usuario',
+    ];
+
     public function find(int $id): ?Cliente
     {
         return Cliente::query()->find($id);
+    }
+
+    /**
+     * @return Collection<int, Cliente>
+     */
+    public function findByTime(int $timeId): Collection
+    {
+        return Cliente::query()
+            ->with(self::RELATIONS)
+            ->where('time_id', $timeId)
+            ->orderByDesc('id')
+            ->get();
+    }
+
+    public function findByIdAndTime(int $id, int $timeId): ?Cliente
+    {
+        return Cliente::query()
+            ->with(self::RELATIONS)
+            ->where('time_id', $timeId)
+            ->find($id);
     }
 
     public function exists(int $id): bool
@@ -24,7 +50,7 @@ class ClienteEloquentRepository
         /** @var Cliente $cliente */
         $cliente = Cliente::query()->create($data);
 
-        return $cliente;
+        return $cliente->load(self::RELATIONS);
     }
 
     /**
@@ -34,7 +60,7 @@ class ClienteEloquentRepository
     {
         $cliente->update($data);
 
-        return $cliente->fresh();
+        return $cliente->fresh(self::RELATIONS);
     }
 
     public function delete(Cliente $cliente): void
