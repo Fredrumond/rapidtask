@@ -11,6 +11,11 @@ class ClienteException extends Exception
         return new self('Cliente não encontrado.');
     }
 
+    public static function operationFailed(): self
+    {
+        return new self('Não foi possível realizar a operação no cliente.');
+    }
+
     public static function createFailed(): self
     {
         return new self('Não foi possível criar o cliente.');
