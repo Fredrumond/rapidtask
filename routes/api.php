@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProjetoController;
 use App\Http\Controllers\TarefaComentarioController;
 use App\Http\Controllers\TarefaController;
@@ -9,6 +10,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/tokens', [TokenController::class, 'store']);
     Route::delete('/tokens', [TokenController::class, 'destroy']);
+
+    Route::middleware('api.team')->prefix('clientes')->group(function (): void {
+        Route::get('/', [ClienteController::class, 'index']);
+        Route::post('/', [ClienteController::class, 'store']);
+        Route::get('/{cliente_id}', [ClienteController::class, 'show'])->whereNumber('cliente_id');
+        Route::put('/{cliente_id}', [ClienteController::class, 'update'])->whereNumber('cliente_id');
+        Route::delete('/{cliente_id}', [ClienteController::class, 'destroy'])->whereNumber('cliente_id');
+    });
 
     Route::middleware('api.team')->prefix('projetos')->group(function (): void {
         Route::get('/', [ProjetoController::class, 'index']);
