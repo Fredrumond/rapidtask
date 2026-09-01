@@ -5,8 +5,6 @@ Referência canônica de CRUD: **Cliente** (`app/Models/Cliente.php` + `resource
 
 Para padrões da API (Controller → Service → Repository → Domain/DTO): [`docs/QUICK_START_GUIDE.md`](QUICK_START_GUIDE.md).
 
-Para tornar Domain anêmico em **domínio rico** (API + Web): [`docs/refatoracao-dominio-rico.md`](refatoracao-dominio-rico.md).
-
 ---
 
 ## Stack

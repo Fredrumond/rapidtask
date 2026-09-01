@@ -129,9 +129,7 @@ class EntityNameEloquentRepository extends EloquentRepository
 - Métodos de regra de domínio (`activate()`, `deactivate()`, `isActive()`, etc.)
 - Validação de invariantes nos setters / construtor
 
-**Ponto-chave:** a lógica de negócio fica no Domain (e/ou no Service de aplicação), nunca no Controller ou no Repository.
-
-Para evoluir Domain anêmico → rico (compartilhado por API e Web), ver [`docs/refatoracao-dominio-rico.md`](refatoracao-dominio-rico.md). Referência: `TarefaDomain`.
+**Ponto-chave:** a lógica de negócio fica no Domain (e/ou no Service de aplicação), nunca no Controller ou no Repository. Referência: `TarefaDomain`.
 
 ---
 
@@ -566,7 +564,6 @@ Entidade **Tarefa**:
 - [PSR-12 Coding Standard](https://www.php-fig.org/psr/psr-12/)
 - [Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
 - Arquitetura web do projeto: [`docs/arquitetura.md`](arquitetura.md)
-- Refatoração para domínio rico: [`docs/refatoracao-dominio-rico.md`](refatoracao-dominio-rico.md)
 
 ---
 

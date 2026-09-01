@@ -3,15 +3,15 @@
 Critério do beta: **feature-complete do escopo 1.0**, utilizável no dia a dia (estudo / early adopters), com bugs conhecidos aceitáveis e API estável no que já existe.
 
 Versão atual documentada: `1.0.0-alpha.5`  
-Branch em curso: `dev` (comentários de tarefa no working tree; falta commit)  
-Tag existente: `v1.0.0-alpha.0`
+Branch em curso: `dev` (alinhada com `origin/dev`)  
+Tag existente: `v1.0.0-alpha.0` (faltam `v1.0.0-alpha.5` e `v1.0.0-beta.1`)
 
 Nomenclatura alvo:
 
 | Release | Quando |
 |---------|--------|
 | `1.0.0-alpha.4` | Conta SaaS + CRUD API + token por conta (feito; PR #53/#54) |
-| `1.0.0-alpha.5` | Comentários de tarefa UI + API (changelog atualizado; falta commit/tag) |
+| `1.0.0-alpha.5` | Comentários de tarefa UI + API (PR #55; changelog atualizado; falta tag) |
 | `1.0.0-beta.1` | Itens da seção **Entra no MVP do beta** fechados |
 | `1.0.0-rc.1` | Polimento + regressão sem gaps críticos |
 | `1.0.0` | Uso geral / “versão estável” |
@@ -40,6 +40,8 @@ Marcado como base; só regressão / ajuste pontual se quebrar.
 - [x] Sanctum: token por Conta (configurações da conta; 1 ativo)
 - [x] CRUD `/api/tarefas` com `time_id` (query GET / body mutações) + Swagger
 - [x] CRUD `/api/tarefas/{id}/comentarios` (listar / criar / editar / excluir) + schemas OpenAPI
+- [x] CRUD `/api/projetos` com `time_id` + schemas OpenAPI (PR / discovery 0008)
+- [x] CRUD `/api/clientes` com `time_id` + schemas OpenAPI (PR #64)
 
 ### Conta SaaS
 - [x] Schema `conta` + `time.conta_id` + backfill
@@ -49,8 +51,13 @@ Marcado como base; só regressão / ajuste pontual se quebrar.
 - [x] Scopes/policies + nav com nome da conta + testes cross-conta
 - [x] Merge `feature/conta-saas` (PR #53) e token por conta (PR #54) em `dev`
 
+### Domínio rico (padronização interna — discovery 0009)
+- [x] Tarefa, TarefaComentario, Token, Cliente, Projeto, Conta, Time e Convite com Domain + Service
+- [x] Mutações Volt (e API, quando existe) passam pelo Service compartilhado
+- [x] Testes unitários em `tests/Unit/Domain/` + Feature das mutações principais
+
 ### Tarefas — comentários (`1.0.0-alpha.5`)
-Discovery `0007`. Policy ajustada (update/delete só pelo autor). UI Volt em `tarefas/show` + API + testes Feature (web e API). Changelog em `config/versoes.php` atualizado.
+Discovery `0007`. Policy ajustada (update/delete só pelo autor). UI Volt em `tarefas/show` + API + testes Feature (web e API). Changelog em `config/versoes.php` atualizado. Merge no `dev`: PR #55.
 
 - [x] Listar comentários na show da tarefa (mais recentes no topo)
 - [x] Criar comentário (membro do time)
@@ -67,14 +74,14 @@ Discovery `0007`. Policy ajustada (update/delete só pelo autor). UI Volt em `ta
 Ordem sugerida. Cada item fecha com UI Volt (quando aplicável) + policy já existente + teste de isolamento mínimo.
 
 ### 0. Release hygiene (antes ou junto do beta)
-- [ ] Commit da fatia de comentários (UI + API + discovery 0007 + testes + `versoes.php` + checklist)
-- [ ] Merge / push de `dev` alinhado com a release
+- [x] Commit da fatia de comentários (UI + API + discovery 0007 + testes + `versoes.php` + checklist) — PR #55
+- [x] Merge / push de `dev` alinhado com o código atual (`origin/dev`)
 - [x] Atualizar `config/versoes.php`:
   - [x] Release `1.0.0-alpha.4` com Conta SaaS + CRUD API + token por conta
   - [x] Corrigir estados desatualizados: **editar time** e **excluir projeto** → `stable`
   - [x] Release `1.0.0-alpha.5` com comentários de tarefa (UI + API) como `stable`
 - [ ] Tag git alinhada (`v1.0.0-alpha.5` / depois `v1.0.0-beta.1`)
-- [ ] Suíte Pest verde no Docker/CI (web tenant + conta + API + comentários)
+- [ ] Suíte Pest verde no Docker/CI (web tenant + conta + API + comentários + arquivos + anotações)
 
 ### 1. Projetos — arquivos (model, policy, download e Form Request prontos; UI ausente)
 - [ ] Listar arquivos no detalhe do projeto
@@ -119,8 +126,10 @@ Não bloqueia `1.0.0-beta.1`. Pode entrar em beta.x só se sobrar capacidade e n
 - [ ] Escopos granulares e múltiplos tokens por usuário
 - [x] Tokens / contexto por tenant de conta (token Conta; `time_id` query/body)
 - [x] Endpoints de comentários de tarefa
+- [x] CRUD `/api/projetos`
+- [x] CRUD `/api/clientes`
 - [ ] Filtros na listagem de tarefas, `PATCH`, paginação avançada
-- [ ] Endpoints de projetos, clientes, times, arquivos
+- [ ] Endpoints de times, conta, arquivos e anotações
 - [ ] Webhooks / eventos
 
 ### Ops / qualidade extra
@@ -135,12 +144,13 @@ Não bloqueia `1.0.0-beta.1`. Pode entrar em beta.x só se sobrar capacidade e n
 | Item | Beta MVP | Motivo |
 |------|----------|--------|
 | Conta SaaS + token por conta | Feito | PRs #53/#54 em `dev`; falta tag `v1.0.0-alpha.4`/`alpha.5` |
-| Comentários de tarefa (UI + API) | Feito no código | `alpha.5` no changelog; falta commit + tag |
+| Comentários de tarefa (UI + API) | Feito | PR #55; `alpha.5` no changelog; falta tag |
+| CRUD API projetos e clientes | Feito | Discoveries 0008 / PR #64; não bloqueia o beta |
 | Arquivos de projeto (UI) | Deve | Backend quase pronto; fluxo de projeto incompleto sem isso |
 | Anotações de projeto (UI) | Deve | Idem |
 | Histórico (tarefa/projeto) | Depois | Útil, não bloqueia operar o produto |
 | Avatar | Depois | Cosmético |
-| Expandir API além de tarefas/comentários | Depois | Escopo explícito dos discoveries 0001/0002; comentários antecipados no 0007 |
+| Expandir API (times, conta, arquivos, PATCH/filtros) | Depois | Fora do critério de saída do beta |
 | Multi-conta / billing | Depois | Fora das fatias 0003–0005 |
 
 ---
@@ -156,5 +166,5 @@ Para cada uma das três fatias do MVP:
 5. Teste Pest Feature no cenário de dois times/contas
 6. Item correspondente em `config/versoes.php` marcado `stable`
 
-**Comentários:** DoD completo no working tree (`1.0.0-alpha.5`).  
+**Comentários:** DoD completo e mergeado no `dev` (`1.0.0-alpha.5`, PR #55).  
 **Arquivos / anotações:** ainda abertos (bloqueiam `1.0.0-beta.1`).
