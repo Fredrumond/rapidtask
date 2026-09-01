@@ -209,7 +209,7 @@ return [
                         ['titulo' => 'Quadro por situação', 'estado' => 'stable'],
                         ['titulo' => 'Editar', 'estado' => 'stable'],
                         ['titulo' => 'Arquivos', 'estado' => 'development', 'nota' => 'Model, policy e download prontos; tela pendente'],
-                        ['titulo' => 'Anotações', 'estado' => 'development', 'nota' => 'Model e policy prontos; tela pendente'],
+                        ['titulo' => 'Anotações', 'estado' => 'stable', 'nota' => 'Listar, criar, editar e excluir no detalhe do projeto; somente o autor edita/exclui'],
                         ['titulo' => 'Histórico', 'estado' => 'development'],
                         ['titulo' => 'Excluir projeto', 'estado' => 'stable'],
                     ],
