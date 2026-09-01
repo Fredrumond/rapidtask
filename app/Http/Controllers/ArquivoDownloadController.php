@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProjetoArquivo;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ArquivoDownloadController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __invoke(ProjetoArquivo $arquivo): StreamedResponse
     {
         $this->authorize('view', $arquivo);
