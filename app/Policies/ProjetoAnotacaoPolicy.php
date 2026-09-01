@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Conta;
 use App\Models\ProjetoAnotacao;
 use App\Models\User;
 use App\Policies\Concerns\HandlesTeamAuthorization;
@@ -10,40 +11,48 @@ class ProjetoAnotacaoPolicy
 {
     use HandlesTeamAuthorization;
 
-    public function viewAny(?User $user): bool
+    public function viewAny(Conta|User|null $actor): bool
     {
-        return $this->isAuthenticatedMember($user);
-    }
-
-    public function view(?User $user, ProjetoAnotacao $projetoAnotacao): bool
-    {
-        return $this->canAccessTeam($user, $this->teamId($projetoAnotacao));
-    }
-
-    public function create(?User $user): bool
-    {
-        return $this->canAccessCurrentTeam($user);
-    }
-
-    public function update(?User $user, ProjetoAnotacao $projetoAnotacao): bool
-    {
-        return $this->canAccessTeam($user, $this->teamId($projetoAnotacao))
-            && $this->isAuthor($user, $projetoAnotacao);
-    }
-
-    public function delete(?User $user, ProjetoAnotacao $projetoAnotacao): bool
-    {
-        return $this->canAccessTeam($user, $this->teamId($projetoAnotacao))
-            && $this->isAuthor($user, $projetoAnotacao);
-    }
-
-    protected function isAuthor(?User $user, ProjetoAnotacao $projetoAnotacao): bool
-    {
-        if ($user === null) {
-            return false;
+        if ($actor instanceof Conta) {
+            return $this->canAccessCurrentTeam($actor);
         }
 
-        return (int) $projetoAnotacao->usuario_id === (int) $user->id;
+        return $this->isAuthenticatedMember($actor);
+    }
+
+    public function view(Conta|User|null $actor, ProjetoAnotacao $projetoAnotacao): bool
+    {
+        return $this->canAccessTeam($actor, $this->teamId($projetoAnotacao));
+    }
+
+    public function create(Conta|User|null $actor): bool
+    {
+        return $this->canAccessCurrentTeam($actor);
+    }
+
+    public function update(Conta|User|null $actor, ProjetoAnotacao $projetoAnotacao): bool
+    {
+        return $this->canAccessTeam($actor, $this->teamId($projetoAnotacao))
+            && $this->isAuthor($actor, $projetoAnotacao);
+    }
+
+    public function delete(Conta|User|null $actor, ProjetoAnotacao $projetoAnotacao): bool
+    {
+        return $this->canAccessTeam($actor, $this->teamId($projetoAnotacao))
+            && $this->isAuthor($actor, $projetoAnotacao);
+    }
+
+    protected function isAuthor(Conta|User|null $actor, ProjetoAnotacao $projetoAnotacao): bool
+    {
+        if ($actor instanceof Conta) {
+            return (int) $projetoAnotacao->usuario_id === (int) $actor->usuario_id;
+        }
+
+        if ($actor instanceof User) {
+            return (int) $projetoAnotacao->usuario_id === (int) $actor->id;
+        }
+
+        return false;
     }
 
     protected function teamId(ProjetoAnotacao $projetoAnotacao): int
