@@ -1,16 +1,29 @@
 <?php
 
 use App\Exceptions\ProjetoAnotacaoDomainException;
+use App\Exceptions\ProjetoArquivoDomainException;
 use App\Models\Projeto;
 use App\Models\ProjetoAnotacao;
+use App\Models\ProjetoArquivo;
 use App\Models\Situacao;
 use App\Services\ProjetoAnotacaoService;
+use App\Services\ProjetoArquivoService;
+use Illuminate\Validation\Rules\File;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use Livewire\WithFileUploads;
 
 new #[Layout('layouts.app')] class extends Component
 {
+    use WithFileUploads;
+
     public Projeto $projeto;
+
+    public string $arquivoNome = '';
+
+    public string $arquivoDescricao = '';
+
+    public $arquivo = null;
 
     public string $novaAnotacao = '';
 
@@ -22,6 +35,49 @@ new #[Layout('layouts.app')] class extends Component
     {
         $this->authorize('view', $projeto);
         $this->projeto = $projeto->load(['cliente', 'tarefas.prioridade', 'tarefas.situacao']);
+    }
+
+    public function enviarArquivo(ProjetoArquivoService $service): void
+    {
+        $this->authorize('create', ProjetoArquivo::class);
+
+        $data = $this->validate([
+            'arquivoNome' => ['required', 'string', 'max:255'],
+            'arquivoDescricao' => ['required', 'string'],
+            'arquivo' => [
+                'required',
+                File::types(['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx', 'xls', 'xlsx', 'txt'])
+                    ->max(10 * 1024),
+            ],
+        ]);
+
+        try {
+            $service->create((int) auth()->id(), (int) $this->projeto->id, [
+                'nome' => $data['arquivoNome'],
+                'descricao' => $data['arquivoDescricao'],
+                'arquivo' => $data['arquivo'],
+            ]);
+        } catch (ProjetoArquivoDomainException $exception) {
+            $this->addError('arquivoNome', $exception->getMessage());
+
+            return;
+        }
+
+        $this->reset('arquivoNome', 'arquivoDescricao', 'arquivo');
+        session()->flash('status', 'Arquivo enviado.');
+    }
+
+    public function excluirArquivo(int $arquivoId, ProjetoArquivoService $service): void
+    {
+        $arquivo = ProjetoArquivo::query()
+            ->where('projeto_id', $this->projeto->id)
+            ->findOrFail($arquivoId);
+
+        $this->authorize('delete', $arquivo);
+
+        $service->delete((int) $this->projeto->id, $arquivoId);
+
+        session()->flash('status', 'Arquivo excluído.');
     }
 
     public function criarAnotacao(ProjetoAnotacaoService $service): void
@@ -112,9 +168,10 @@ new #[Layout('layouts.app')] class extends Component
         $tarefasPorSituacao = $this->projeto->tarefas
             ->where('status', 0)
             ->groupBy('situacao_id');
+        $arquivos = app(ProjetoArquivoService::class)->list((int) $this->projeto->id);
         $anotacoes = app(ProjetoAnotacaoService::class)->list((int) $this->projeto->id);
 
-        return compact('situacoes', 'tarefasPorSituacao', 'anotacoes');
+        return compact('situacoes', 'tarefasPorSituacao', 'arquivos', 'anotacoes');
     }
 }; ?>
 
@@ -160,6 +217,64 @@ new #[Layout('layouts.app')] class extends Component
                         </div>
                     </div>
                 @endforeach
+            </div>
+
+            <div class="bg-white shadow-sm sm:rounded-lg p-6 space-y-4">
+                <h3 class="font-medium text-gray-900">Arquivos</h3>
+
+                <form wire:submit="enviarArquivo" class="space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <x-input-label for="arquivoNome" value="Nome" />
+                            <x-text-input wire:model="arquivoNome" id="arquivoNome" class="mt-1 block w-full" required />
+                            <x-input-error :messages="$errors->get('arquivoNome')" class="mt-2" />
+                        </div>
+                        <div>
+                            <x-input-label for="arquivo" value="Arquivo" />
+                            <input
+                                type="file"
+                                wire:model="arquivo"
+                                id="arquivo"
+                                class="mt-1 block w-full text-sm text-gray-700"
+                            />
+                            <x-input-error :messages="$errors->get('arquivo')" class="mt-2" />
+                        </div>
+                    </div>
+                    <div>
+                        <x-input-label for="arquivoDescricao" value="Descrição" />
+                        <textarea
+                            wire:model="arquivoDescricao"
+                            id="arquivoDescricao"
+                            rows="2"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                            required
+                        ></textarea>
+                        <x-input-error :messages="$errors->get('arquivoDescricao')" class="mt-2" />
+                    </div>
+                    <x-primary-button>Enviar arquivo</x-primary-button>
+                </form>
+
+                <div class="divide-y divide-gray-100 border-t border-gray-100">
+                    @forelse ($arquivos as $arquivoItem)
+                        <div class="py-4 space-y-1" wire:key="arquivo-{{ $arquivoItem->id }}">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ $arquivoItem->nome }}</p>
+                                    <p class="text-xs text-gray-500">{{ $arquivoItem->usuario?->name }} · {{ $arquivoItem->created_at?->format('d/m/Y H:i') }}</p>
+                                    <p class="text-sm text-gray-700 mt-1 whitespace-pre-wrap">{{ $arquivoItem->descricao }}</p>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm shrink-0">
+                                    <a href="{{ route('arquivos.download', $arquivoItem) }}" class="text-indigo-600 hover:underline">Baixar</a>
+                                    @can('delete', $arquivoItem)
+                                        <button type="button" wire:click="excluirArquivo({{ $arquivoItem->id }})" wire:confirm="Excluir este arquivo?" class="text-red-600 hover:underline">Excluir</button>
+                                    @endcan
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="py-6 text-sm text-gray-500">Nenhum arquivo ainda.</p>
+                    @endforelse
+                </div>
             </div>
 
             <div class="bg-white shadow-sm sm:rounded-lg p-6 space-y-4">
