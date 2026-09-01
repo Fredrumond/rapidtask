@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ProjetoArquivoController;
 use App\Http\Controllers\ProjetoController;
 use App\Http\Controllers\TarefaComentarioController;
 use App\Http\Controllers\TarefaController;
@@ -25,6 +26,11 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::get('/{projeto_id}', [ProjetoController::class, 'show'])->whereNumber('projeto_id');
         Route::put('/{projeto_id}', [ProjetoController::class, 'update'])->whereNumber('projeto_id');
         Route::delete('/{projeto_id}', [ProjetoController::class, 'destroy'])->whereNumber('projeto_id');
+
+        Route::get('/{projeto_id}/arquivos', [ProjetoArquivoController::class, 'index'])->whereNumber('projeto_id');
+        Route::post('/{projeto_id}/arquivos', [ProjetoArquivoController::class, 'store'])->whereNumber('projeto_id');
+        Route::delete('/{projeto_id}/arquivos/{arquivo_id}', [ProjetoArquivoController::class, 'destroy'])
+            ->whereNumber(['projeto_id', 'arquivo_id']);
     });
 
     Route::middleware('api.team')->prefix('tarefas')->group(function (): void {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Conta;
 use App\Models\ProjetoArquivo;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\File;
@@ -13,10 +14,16 @@ class StoreProjetoArquivoRequest extends FormRequest
         return $this->user()?->can('create', ProjetoArquivo::class) ?? false;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function rules(): array
     {
+        $isApi = $this->user() instanceof Conta;
+
         return [
-            'projeto_id' => ['required', 'exists:projetos,id'],
+            'time_id' => $isApi ? ['required', 'integer', 'min:1'] : ['sometimes', 'integer', 'min:1'],
+            'projeto_id' => $isApi ? ['sometimes', 'integer'] : ['required', 'exists:projetos,id'],
             'nome' => ['required', 'string', 'max:255'],
             'descricao' => ['required', 'string'],
             'arquivo' => [
@@ -25,5 +32,16 @@ class StoreProjetoArquivoRequest extends FormRequest
                     ->max(10 * 1024),
             ],
         ];
+    }
+
+    /**
+     * @return array{nome: string, descricao: string, arquivo: \Illuminate\Http\UploadedFile}
+     */
+    public function arquivoAttributes(): array
+    {
+        /** @var array{nome: string, descricao: string, arquivo: \Illuminate\Http\UploadedFile} $attributes */
+        $attributes = $this->safe()->only(['nome', 'descricao', 'arquivo']);
+
+        return $attributes;
     }
 }
