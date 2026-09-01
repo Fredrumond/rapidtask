@@ -1,9 +1,12 @@
 <?php
 
+use App\Exceptions\ProjetoAnotacaoDomainException;
 use App\Exceptions\ProjetoArquivoDomainException;
 use App\Models\Projeto;
+use App\Models\ProjetoAnotacao;
 use App\Models\ProjetoArquivo;
 use App\Models\Situacao;
+use App\Services\ProjetoAnotacaoService;
 use App\Services\ProjetoArquivoService;
 use Illuminate\Validation\Rules\File;
 use Livewire\Attributes\Layout;
@@ -21,6 +24,12 @@ new #[Layout('layouts.app')] class extends Component
     public string $arquivoDescricao = '';
 
     public $arquivo = null;
+
+    public string $novaAnotacao = '';
+
+    public ?int $editandoId = null;
+
+    public string $editandoTexto = '';
 
     public function mount(Projeto $projeto): void
     {
@@ -71,6 +80,88 @@ new #[Layout('layouts.app')] class extends Component
         session()->flash('status', 'Arquivo excluído.');
     }
 
+    public function criarAnotacao(ProjetoAnotacaoService $service): void
+    {
+        $this->authorize('create', ProjetoAnotacao::class);
+
+        $data = $this->validate([
+            'novaAnotacao' => ['required', 'string'],
+        ]);
+
+        try {
+            $service->create((int) auth()->id(), (int) $this->projeto->id, [
+                'anotacao' => $data['novaAnotacao'],
+            ]);
+        } catch (ProjetoAnotacaoDomainException $exception) {
+            $this->addError('novaAnotacao', $exception->getMessage());
+
+            return;
+        }
+
+        $this->reset('novaAnotacao');
+        session()->flash('status', 'Anotação adicionada.');
+    }
+
+    public function iniciarEdicao(int $anotacaoId): void
+    {
+        $anotacao = ProjetoAnotacao::query()
+            ->where('projeto_id', $this->projeto->id)
+            ->findOrFail($anotacaoId);
+
+        $this->authorize('update', $anotacao);
+
+        $this->editandoId = $anotacao->id;
+        $this->editandoTexto = $anotacao->anotacao;
+    }
+
+    public function cancelarEdicao(): void
+    {
+        $this->reset('editandoId', 'editandoTexto');
+    }
+
+    public function salvarEdicao(ProjetoAnotacaoService $service): void
+    {
+        $anotacao = ProjetoAnotacao::query()
+            ->where('projeto_id', $this->projeto->id)
+            ->findOrFail($this->editandoId);
+
+        $this->authorize('update', $anotacao);
+
+        $data = $this->validate([
+            'editandoTexto' => ['required', 'string'],
+        ]);
+
+        try {
+            $service->update((int) $this->projeto->id, (int) $anotacao->id, [
+                'anotacao' => $data['editandoTexto'],
+            ]);
+        } catch (ProjetoAnotacaoDomainException $exception) {
+            $this->addError('editandoTexto', $exception->getMessage());
+
+            return;
+        }
+
+        $this->reset('editandoId', 'editandoTexto');
+        session()->flash('status', 'Anotação atualizada.');
+    }
+
+    public function excluirAnotacao(int $anotacaoId, ProjetoAnotacaoService $service): void
+    {
+        $anotacao = ProjetoAnotacao::query()
+            ->where('projeto_id', $this->projeto->id)
+            ->findOrFail($anotacaoId);
+
+        $this->authorize('delete', $anotacao);
+
+        $service->delete((int) $this->projeto->id, $anotacaoId);
+
+        if ($this->editandoId === $anotacaoId) {
+            $this->reset('editandoId', 'editandoTexto');
+        }
+
+        session()->flash('status', 'Anotação excluída.');
+    }
+
     public function with(): array
     {
         $situacoes = Situacao::query()->orderBy('id')->get();
@@ -78,8 +169,9 @@ new #[Layout('layouts.app')] class extends Component
             ->where('status', 0)
             ->groupBy('situacao_id');
         $arquivos = app(ProjetoArquivoService::class)->list((int) $this->projeto->id);
+        $anotacoes = app(ProjetoAnotacaoService::class)->list((int) $this->projeto->id);
 
-        return compact('situacoes', 'tarefasPorSituacao', 'arquivos');
+        return compact('situacoes', 'tarefasPorSituacao', 'arquivos', 'anotacoes');
     }
 }; ?>
 
@@ -181,6 +273,70 @@ new #[Layout('layouts.app')] class extends Component
                         </div>
                     @empty
                         <p class="py-6 text-sm text-gray-500">Nenhum arquivo ainda.</p>
+                    @endforelse
+                </div>
+            </div>
+
+            <div class="bg-white shadow-sm sm:rounded-lg p-6 space-y-4">
+                <h3 class="font-medium text-gray-900">Anotações</h3>
+
+                <form wire:submit="criarAnotacao" class="space-y-3">
+                    <div>
+                        <x-input-label for="novaAnotacao" value="Nova anotação" />
+                        <textarea
+                            wire:model="novaAnotacao"
+                            id="novaAnotacao"
+                            rows="3"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                            required
+                        ></textarea>
+                        @error('novaAnotacao')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <x-primary-button>Adicionar anotação</x-primary-button>
+                </form>
+
+                <div class="divide-y divide-gray-100 border-t border-gray-100">
+                    @forelse ($anotacoes as $anotacao)
+                        <div class="py-4 space-y-2" wire:key="anotacao-{{ $anotacao->id }}">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">{{ $anotacao->usuario?->name }}</p>
+                                    <p class="text-xs text-gray-500">{{ $anotacao->created_at?->format('d/m/Y H:i') }}</p>
+                                </div>
+                                @can('update', $anotacao)
+                                    <div class="flex items-center gap-2 text-sm shrink-0">
+                                        @if ($editandoId !== $anotacao->id)
+                                            <button type="button" wire:click="iniciarEdicao({{ $anotacao->id }})" class="text-indigo-600 hover:underline">Editar</button>
+                                            <button type="button" wire:click="excluirAnotacao({{ $anotacao->id }})" wire:confirm="Excluir esta anotação?" class="text-red-600 hover:underline">Excluir</button>
+                                        @endif
+                                    </div>
+                                @endcan
+                            </div>
+
+                            @if ($editandoId === $anotacao->id)
+                                <form wire:submit="salvarEdicao" class="space-y-3">
+                                    <textarea
+                                        wire:model="editandoTexto"
+                                        rows="3"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        required
+                                    ></textarea>
+                                    @error('editandoTexto')
+                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                    <div class="flex gap-3">
+                                        <x-primary-button>Salvar</x-primary-button>
+                                        <button type="button" wire:click="cancelarEdicao" class="text-sm text-gray-600 hover:underline">Cancelar</button>
+                                    </div>
+                                </form>
+                            @else
+                                <p class="text-sm text-gray-700 whitespace-pre-wrap">{{ $anotacao->anotacao }}</p>
+                            @endif
+                        </div>
+                    @empty
+                        <p class="py-6 text-sm text-gray-500">Nenhuma anotação ainda.</p>
                     @endforelse
                 </div>
             </div>

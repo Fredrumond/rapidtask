@@ -6,10 +6,11 @@ use App\Models\Concerns\BelongsToTeamViaProjeto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProjetoAnotacao extends Model
 {
-    use BelongsToTeamViaProjeto, HasFactory;
+    use BelongsToTeamViaProjeto, HasFactory, SoftDeletes;
 
     protected $table = 'projetos_anotacoes';
 
@@ -18,6 +19,13 @@ class ProjetoAnotacao extends Model
         'usuario_id',
         'anotacao',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     public function projeto(): BelongsTo
     {

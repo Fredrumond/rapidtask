@@ -27,12 +27,23 @@ class ProjetoAnotacaoPolicy
 
     public function update(?User $user, ProjetoAnotacao $projetoAnotacao): bool
     {
-        return $this->canAccessTeam($user, $this->teamId($projetoAnotacao));
+        return $this->canAccessTeam($user, $this->teamId($projetoAnotacao))
+            && $this->isAuthor($user, $projetoAnotacao);
     }
 
     public function delete(?User $user, ProjetoAnotacao $projetoAnotacao): bool
     {
-        return $this->canAccessTeam($user, $this->teamId($projetoAnotacao));
+        return $this->canAccessTeam($user, $this->teamId($projetoAnotacao))
+            && $this->isAuthor($user, $projetoAnotacao);
+    }
+
+    protected function isAuthor(?User $user, ProjetoAnotacao $projetoAnotacao): bool
+    {
+        if ($user === null) {
+            return false;
+        }
+
+        return (int) $projetoAnotacao->usuario_id === (int) $user->id;
     }
 
     protected function teamId(ProjetoAnotacao $projetoAnotacao): int
