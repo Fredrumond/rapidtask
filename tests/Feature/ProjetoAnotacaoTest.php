@@ -4,6 +4,7 @@ use App\Models\ProjetoAnotacao;
 use App\Models\User;
 use App\Support\CurrentTeam;
 use Database\Factories\TimeMembroFactory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Volt\Volt;
 
@@ -92,11 +93,11 @@ test('conta A nao altera anotacao da conta B', function (): void {
 
     expect(fn () => Volt::test('pages.projetos.show', ['projeto' => $cenario['projetoA']])
         ->call('iniciarEdicao', $anotacaoB->id)
-    )->toThrow(Illuminate\Database\Eloquent\ModelNotFoundException::class);
+    )->toThrow(ModelNotFoundException::class);
 
     expect(fn () => Volt::test('pages.projetos.show', ['projeto' => $cenario['projetoA']])
         ->call('excluirAnotacao', $anotacaoB->id)
-    )->toThrow(Illuminate\Database\Eloquent\ModelNotFoundException::class);
+    )->toThrow(ModelNotFoundException::class);
 
     $this->assertDatabaseHas('projetos_anotacoes', [
         'id' => $anotacaoB->id,
