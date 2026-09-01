@@ -4,6 +4,7 @@ use App\Models\ProjetoArquivo;
 use App\Models\User;
 use App\Support\CurrentTeam;
 use Database\Factories\TimeMembroFactory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
@@ -77,7 +78,7 @@ test('conta A nao baixa e nao exclui arquivo da conta B', function (): void {
 
     expect(fn () => Volt::test('pages.projetos.show', ['projeto' => $cenario['projetoA']])
         ->call('excluirArquivo', $arquivoB->id))
-        ->toThrow(Illuminate\Database\Eloquent\ModelNotFoundException::class);
+        ->toThrow(ModelNotFoundException::class);
 
     $this->assertDatabaseHas('projetos_arquivos', [
         'id' => $arquivoB->id,

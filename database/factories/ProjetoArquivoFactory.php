@@ -27,4 +27,4 @@ class ProjetoArquivoFactory extends Factory
             'src' => 'projetos/'.fake()->uuid().'.pdf',
         ];
     }
-};
+}
