@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Domain\ProjetoAnotacaoDomain;
+use App\DTO\ProjetoAnotacao\ProjetoAnotacaoResponseDTO;
+use App\DTO\Tarefa\NestedUsuarioDTO;
 use App\Exceptions\ProjetoAnotacaoDomainException;
 use App\Exceptions\ProjetoAnotacaoException;
 use App\Models\ProjetoAnotacao;
@@ -31,14 +33,36 @@ class ProjetoAnotacaoService
     }
 
     /**
+     * @return list<ProjetoAnotacaoResponseDTO>
+     */
+    public function listForApi(int $projetoId): array
+    {
+        $items = [];
+
+        foreach ($this->list($projetoId) as $anotacao) {
+            $items[] = $this->convertToDTO($this->convertRecordToDomain($anotacao));
+        }
+
+        Log::info('projeto_anotacao_listed', [
+            'conta_id' => current_conta_id(),
+            'time_id' => current_time_id(),
+            'projeto_id' => $projetoId,
+            'action' => 'list',
+            'count' => count($items),
+        ]);
+
+        return $items;
+    }
+
+    /**
      * @param  array<string, mixed>  $data
      */
-    public function create(int $usuarioId, int $projetoId, array $data, ?int $contaId = null): ProjetoAnotacaoDomain
+    public function create(int $usuarioId, int $projetoId, array $data, ?int $contaId = null): ProjetoAnotacaoResponseDTO
     {
         $this->assertProjetoExists($projetoId);
 
         try {
-            $result = DB::transaction(function () use ($usuarioId, $projetoId, $data): ProjetoAnotacaoDomain {
+            $result = DB::transaction(function () use ($usuarioId, $projetoId, $data): ProjetoAnotacaoResponseDTO {
                 $domain = ProjetoAnotacaoDomain::criar(
                     projetoId: $projetoId,
                     usuarioId: $usuarioId,
@@ -47,14 +71,14 @@ class ProjetoAnotacaoService
 
                 $anotacao = $this->repository->create($domain->toPersistenceArray());
 
-                return $this->convertRecordToDomain($anotacao);
+                return $this->convertToDTO($this->convertRecordToDomain($anotacao));
             });
 
             Log::info('projeto_anotacao_created', [
                 'conta_id' => $contaId ?? current_conta_id(),
                 'time_id' => current_time_id(),
                 'projeto_id' => $projetoId,
-                'anotacao_id' => $result->getId(),
+                'anotacao_id' => $result->id,
                 'action' => 'create',
             ]);
 
@@ -79,12 +103,12 @@ class ProjetoAnotacaoService
     /**
      * @param  array<string, mixed>  $data
      */
-    public function update(int $projetoId, int $anotacaoId, array $data): ProjetoAnotacaoDomain
+    public function update(int $projetoId, int $anotacaoId, array $data): ProjetoAnotacaoResponseDTO
     {
         $this->assertProjetoExists($projetoId);
 
         try {
-            $result = DB::transaction(function () use ($projetoId, $anotacaoId, $data): ProjetoAnotacaoDomain {
+            $result = DB::transaction(function () use ($projetoId, $anotacaoId, $data): ProjetoAnotacaoResponseDTO {
                 $anotacao = $this->repository->findForProjeto($projetoId, $anotacaoId);
 
                 if ($anotacao === null) {
@@ -96,14 +120,14 @@ class ProjetoAnotacaoService
 
                 $updated = $this->repository->update($anotacao, $domain->toPersistenceArray());
 
-                return $this->convertRecordToDomain($updated);
+                return $this->convertToDTO($this->convertRecordToDomain($updated));
             });
 
             Log::info('projeto_anotacao_updated', [
                 'conta_id' => current_conta_id(),
                 'time_id' => current_time_id(),
                 'projeto_id' => $projetoId,
-                'anotacao_id' => $result->getId(),
+                'anotacao_id' => $result->id,
                 'action' => 'update',
             ]);
 
@@ -183,6 +207,20 @@ class ProjetoAnotacaoService
                 : null,
             createdAt: $anotacao->created_at?->toIso8601String(),
             updatedAt: $anotacao->updated_at?->toIso8601String(),
+        );
+    }
+
+    private function convertToDTO(ProjetoAnotacaoDomain $domain): ProjetoAnotacaoResponseDTO
+    {
+        $usuario = $domain->getUsuario();
+
+        return new ProjetoAnotacaoResponseDTO(
+            id: (int) $domain->getId(),
+            projetoId: $domain->getProjetoId(),
+            anotacao: $domain->getAnotacao(),
+            usuario: $usuario !== null ? new NestedUsuarioDTO($usuario['id'], $usuario['name']) : null,
+            createdAt: $domain->getCreatedAt(),
+            updatedAt: $domain->getUpdatedAt(),
         );
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ProjetoAnotacaoController;
 use App\Http\Controllers\ProjetoArquivoController;
 use App\Http\Controllers\ProjetoController;
 use App\Http\Controllers\TarefaComentarioController;
@@ -31,6 +32,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
         Route::post('/{projeto_id}/arquivos', [ProjetoArquivoController::class, 'store'])->whereNumber('projeto_id');
         Route::delete('/{projeto_id}/arquivos/{arquivo_id}', [ProjetoArquivoController::class, 'destroy'])
             ->whereNumber(['projeto_id', 'arquivo_id']);
+
+        Route::get('/{projeto_id}/anotacoes', [ProjetoAnotacaoController::class, 'index'])->whereNumber('projeto_id');
+        Route::post('/{projeto_id}/anotacoes', [ProjetoAnotacaoController::class, 'store'])->whereNumber('projeto_id');
+        Route::put('/{projeto_id}/anotacoes/{anotacao_id}', [ProjetoAnotacaoController::class, 'update'])
+            ->whereNumber(['projeto_id', 'anotacao_id']);
+        Route::delete('/{projeto_id}/anotacoes/{anotacao_id}', [ProjetoAnotacaoController::class, 'destroy'])
+            ->whereNumber(['projeto_id', 'anotacao_id']);
     });
 
     Route::middleware('api.team')->prefix('tarefas')->group(function (): void {

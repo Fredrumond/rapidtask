@@ -2,7 +2,7 @@
 
 Visão consolidada de todos os endpoints (API REST e rotas Web) do RapidTask: o que já existe e o que falta implementar.
 
-Última atualização: 2026-09-01 — `routes/api.php`, `routes/web.php`, `docs/mvp-beta-checklist.md`, PRs #55 (comentários), #61 (domínio rico), #64 (CRUD clientes API), EAS-15 (API de arquivos de projeto).
+Última atualização: 2026-09-01 — `routes/api.php`, `routes/web.php`, `docs/mvp-beta-checklist.md`, PRs #55 (comentários), #61 (domínio rico), #64 (CRUD clientes API), EAS-15 (API de arquivos de projeto), EAS-16 (anotações de projeto API).
 
 ---
 
@@ -40,10 +40,10 @@ Swagger UI disponível em `/api/documentation`.
 | ✅ | `GET` | `/api/projetos/{projeto_id}/arquivos` | Listar arquivos do projeto |
 | ✅ | `POST` | `/api/projetos/{projeto_id}/arquivos` | Upload de arquivo no projeto |
 | ✅ | `DELETE` | `/api/projetos/{projeto_id}/arquivos/{arquivo_id}` | Excluir arquivo do projeto |
-| ⬜ | `GET` | `/api/projetos/{projeto_id}/anotacoes` | Listar anotações do projeto |
-| ⬜ | `POST` | `/api/projetos/{projeto_id}/anotacoes` | Criar anotação no projeto |
-| ⬜ | `PUT` | `/api/projetos/{projeto_id}/anotacoes/{anotacao_id}` | Editar anotação |
-| ⬜ | `DELETE` | `/api/projetos/{projeto_id}/anotacoes/{anotacao_id}` | Excluir anotação |
+| ✅ | `GET` | `/api/projetos/{projeto_id}/anotacoes` | Listar anotações do projeto |
+| ✅ | `POST` | `/api/projetos/{projeto_id}/anotacoes` | Criar anotação no projeto |
+| ✅ | `PUT` | `/api/projetos/{projeto_id}/anotacoes/{anotacao_id}` | Editar anotação |
+| ✅ | `DELETE` | `/api/projetos/{projeto_id}/anotacoes/{anotacao_id}` | Excluir anotação |
 
 ### Tarefas
 
@@ -287,12 +287,12 @@ Auth: sessão Breeze. Tenant: `current_time_id` + `current_conta_id` via `SetCur
 
 #### C-5 · Anotações de Projeto via API
 
-- [ ] `GET /api/projetos/{projeto_id}/anotacoes`
-- [ ] `POST /api/projetos/{projeto_id}/anotacoes`
-- [ ] `PUT /api/projetos/{projeto_id}/anotacoes/{anotacao_id}`
-- [ ] `DELETE /api/projetos/{projeto_id}/anotacoes/{anotacao_id}`
-- [ ] Schemas OpenAPI / Swagger
-- [ ] Teste Feature: isolamento cross-tenant
+- [x] `GET /api/projetos/{projeto_id}/anotacoes`
+- [x] `POST /api/projetos/{projeto_id}/anotacoes`
+- [x] `PUT /api/projetos/{projeto_id}/anotacoes/{anotacao_id}`
+- [x] `DELETE /api/projetos/{projeto_id}/anotacoes/{anotacao_id}`
+- [x] Schemas OpenAPI / Swagger
+- [x] Teste Feature: isolamento cross-tenant
 
 ---
 
@@ -322,7 +322,7 @@ Auth: sessão Breeze. Tenant: `current_time_id` + `current_conta_id` via `SetCur
 |-------|-------|-------------|---------|
 | API — Tokens | 2 | 2 ✅ | 0 |
 | API — Projetos (CRUD base) | 5 | 5 ✅ | 0 |
-| API — Projetos (arquivos + anotações) | 7 | 3 ✅ | 4 ⬜ |
+| API — Projetos (arquivos + anotações) | 7 | 7 ✅ | 0 |
 | API — Tarefas (CRUD base) | 5 | 5 ✅ | 0 |
 | API — Tarefas (PATCH + filtros) | 2 | 0 | 2 ⬜ |
 | API — Comentários | 4 | 4 ✅ | 0 |
@@ -336,4 +336,4 @@ Auth: sessão Breeze. Tenant: `current_time_id` + `current_conta_id` via `SetCur
 | Web — Tarefas | 5 | 5 ✅ | 0 |
 | Web — Times | 2 | 2 ✅ | 0 |
 | Web — Conta / Convites | 3 | 3 ✅ | 0 |
-| **Total** | **61** | **51 ✅** | **10** |
+| **Total** | **61** | **55 ✅** | **6** |
