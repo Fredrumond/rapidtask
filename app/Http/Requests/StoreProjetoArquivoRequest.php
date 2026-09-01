@@ -35,13 +35,10 @@ class StoreProjetoArquivoRequest extends FormRequest
     }
 
     /**
-     * @return array{nome: string, descricao: string, arquivo: \Illuminate\Http\UploadedFile}
+     * @return array<string, mixed>
      */
     public function arquivoAttributes(): array
     {
-        /** @var array{nome: string, descricao: string, arquivo: \Illuminate\Http\UploadedFile} $attributes */
-        $attributes = $this->safe()->only(['nome', 'descricao', 'arquivo']);
-
-        return $attributes;
+        return $this->safe()->only(['nome', 'descricao', 'arquivo']);
     }
 }
