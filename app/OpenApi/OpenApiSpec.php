@@ -18,6 +18,7 @@ use OpenApi\Attributes as OA;
     bearerFormat: 'JWT',
 )]
 #[OA\Tag(name: 'Anotações de Projeto', description: 'Anotações vinculadas a um projeto')]
+#[OA\Tag(name: 'Arquivos de Projeto', description: 'Arquivos anexados a um projeto')]
 #[OA\Tag(name: 'Clientes', description: 'CRUD de clientes')]
 #[OA\Tag(name: 'Projetos', description: 'CRUD de projetos')]
 #[OA\Tag(name: 'Tarefas', description: 'CRUD de tarefas')]

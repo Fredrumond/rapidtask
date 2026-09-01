@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Domain\ProjetoArquivoDomain;
+use App\DTO\ProjetoArquivo\ProjetoArquivoResponseDTO;
+use App\DTO\Tarefa\NestedUsuarioDTO;
 use App\Exceptions\ProjetoArquivoDomainException;
 use App\Exceptions\ProjetoArquivoException;
 use App\Models\ProjetoArquivo;
@@ -27,6 +29,33 @@ class ProjetoArquivoService
         $this->assertProjetoExists($projetoId);
 
         return $this->repository->listByProjeto($projetoId);
+    }
+
+    /**
+     * @return list<ProjetoArquivoResponseDTO>
+     */
+    public function listResponses(int $projetoId): array
+    {
+        $items = [];
+
+        foreach ($this->list($projetoId) as $arquivo) {
+            $items[] = $this->convertToDTO($this->convertRecordToDomain($arquivo));
+        }
+
+        Log::info('api_projeto_arquivo_listed', [
+            'conta_id' => auth()->id(),
+            'time_id' => current_time_id(),
+            'projeto_id' => $projetoId,
+            'action' => 'list',
+            'count' => count($items),
+        ]);
+
+        return $items;
+    }
+
+    public function present(ProjetoArquivo $arquivo): ProjetoArquivoResponseDTO
+    {
+        return $this->convertToDTO($this->convertRecordToDomain($arquivo));
     }
 
     /**
@@ -130,5 +159,37 @@ class ProjetoArquivoService
         if (! $this->repository->projetoExists($projetoId)) {
             throw ProjetoArquivoException::projetoNotFound();
         }
+    }
+
+    private function convertRecordToDomain(ProjetoArquivo $arquivo): ProjetoArquivoDomain
+    {
+        return ProjetoArquivoDomain::reconstituir(
+            id: (int) $arquivo->id,
+            projetoId: (int) $arquivo->projeto_id,
+            usuarioId: (int) $arquivo->usuario_id,
+            nome: $arquivo->nome,
+            descricao: $arquivo->descricao,
+            src: $arquivo->src,
+            usuarioLookup: $arquivo->usuario !== null
+                ? ['id' => $arquivo->usuario->id, 'name' => $arquivo->usuario->name]
+                : null,
+            createdAt: $arquivo->created_at?->toIso8601String(),
+            updatedAt: $arquivo->updated_at?->toIso8601String(),
+        );
+    }
+
+    private function convertToDTO(ProjetoArquivoDomain $domain): ProjetoArquivoResponseDTO
+    {
+        $usuario = $domain->getUsuario();
+
+        return new ProjetoArquivoResponseDTO(
+            id: (int) $domain->getId(),
+            projetoId: $domain->getProjetoId(),
+            nome: $domain->getNome(),
+            descricao: $domain->getDescricao(),
+            usuario: $usuario !== null ? new NestedUsuarioDTO($usuario['id'], $usuario['name']) : null,
+            createdAt: $domain->getCreatedAt(),
+            updatedAt: $domain->getUpdatedAt(),
+        );
     }
 }
