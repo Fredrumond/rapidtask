@@ -32,7 +32,14 @@ class ProjetoArquivoPolicy
 
     public function delete(?User $user, ProjetoArquivo $projetoArquivo): bool
     {
-        return $this->canAccessTeam($user, $this->teamId($projetoArquivo));
+        return $this->canAccessTeam($user, $this->teamId($projetoArquivo))
+            && $this->isOwner($user, $projetoArquivo);
+    }
+
+    protected function isOwner(?User $user, ProjetoArquivo $projetoArquivo): bool
+    {
+        return $user !== null
+            && (int) $projetoArquivo->usuario_id === (int) $user->id;
     }
 
     protected function teamId(ProjetoArquivo $projetoArquivo): int

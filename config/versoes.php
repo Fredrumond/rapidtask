@@ -208,7 +208,7 @@ return [
                         ['titulo' => 'Listar com busca', 'estado' => 'stable'],
                         ['titulo' => 'Quadro por situação', 'estado' => 'stable'],
                         ['titulo' => 'Editar', 'estado' => 'stable'],
-                        ['titulo' => 'Arquivos', 'estado' => 'development', 'nota' => 'Model, policy e download prontos; tela pendente'],
+                        ['titulo' => 'Arquivos', 'estado' => 'stable', 'nota' => 'Listar, enviar, baixar e excluir no detalhe do projeto; exclusão só do dono'],
                         ['titulo' => 'Anotações', 'estado' => 'development', 'nota' => 'Model e policy prontos; tela pendente'],
                         ['titulo' => 'Histórico', 'estado' => 'development'],
                         ['titulo' => 'Excluir projeto', 'estado' => 'stable'],
