@@ -25,6 +25,33 @@ return [
     'releases' => [
 
         [
+            'versao' => '1.0.0-alpha.6',
+            'data' => '2026-09-24',
+            'estado' => 'development',
+            'titulo' => 'Página inicial de apresentação',
+            'resumo' => 'A entrada pública apresenta o RapidTask, leva o visitante ao cadastro e registra dúvidas enviadas pelo rodapé.',
+            'nota' => 'Discovery 0011. Sem trial, pagamento ou tela para consultar as dúvidas. Depois do cadastro, o destino continua sendo o painel.',
+            'modulos' => [
+                [
+                    'nome' => 'Página inicial',
+                    'itens' => [
+                        ['titulo' => 'Apresentação pública', 'estado' => 'stable', 'nota' => 'Substitui a tela padrão do framework'],
+                        ['titulo' => 'Call to action para criar conta', 'estado' => 'stable', 'nota' => 'Rota register; destino após o cadastro permanece o painel'],
+                        ['titulo' => 'Pontos da ferramenta', 'estado' => 'stable', 'nota' => 'Troca entre autenticação, CRUD, tokens e dashboard'],
+                        ['titulo' => 'Carrossel de depoimentos', 'estado' => 'stable', 'nota' => 'Quatro textos fictícios, só texto e autor'],
+                    ],
+                ],
+                [
+                    'nome' => 'Dúvidas',
+                    'itens' => [
+                        ['titulo' => 'Formulário no rodapé', 'estado' => 'stable', 'nota' => 'Nome, e-mail, telefone e dúvida'],
+                        ['titulo' => 'Registro em duvidas', 'estado' => 'stable', 'nota' => 'Consulta por uma equipe fica para o futuro'],
+                    ],
+                ],
+            ],
+        ],
+
+        [
             'versao' => '1.0.0-alpha.5',
             'data' => '2026-08-11',
             'estado' => 'development',
