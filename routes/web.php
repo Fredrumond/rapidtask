@@ -5,7 +5,7 @@ use App\Http\Controllers\ConviteController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
-Route::view('/', 'welcome');
+Volt::route('/', 'pages.home');
 
 Route::get('/convites/{convite}/aceitar', [ConviteController::class, 'aceitar'])
     ->middleware(['signed', 'auth'])
