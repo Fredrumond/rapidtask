@@ -1,0 +1,31 @@
+---
+description: Isolamento por conta e time, policies e camadas PHP do RapidTask. Use ao editar models, services, domains, policies ou controllers.
+globs: app/**/*.php
+alwaysApply: false
+---
+
+# Domínio PHP
+
+A conta é a fronteira de isolamento. O time ativo é a unidade de query. Contexto: `App\Support\CurrentTeam` e os helpers `current_time_id()` / `current_conta_id()`.
+
+Escolha o trait pelo dado que a tabela tem:
+
+- `time_id` na tabela → `BelongsToTeam` (Cliente, Projeto)
+- tenant via projeto → `BelongsToTeamViaProjeto` (Tarefa)
+- tenant via tarefa → `BelongsToTeamViaTarefa` (TarefaComentario)
+- o próprio time → `ScopedToMemberTeams`
+
+Policy de recurso de time usa `HandlesTeamAuthorization`. Sem registro manual no provider.
+
+CRUD web não ganha controller. API segue Controller → Service → Repository, e o Service converte Model → Domain → DTO. Token Sanctum autentica `Conta`; `time_id` vai na query (GET) ou no body (mutação). Não reintroduzir o header `X-Time-Id`.
+
+```php
+// Create com tenant direto
+Cliente::query()->create([
+    ...$data,
+    'usuario_id' => auth()->id(),
+    'time_id' => current_time_id(),
+]);
+```
+
+Detalhe: `docs/arquitetura.md` e `docs/adr/0003-token-api-por-conta-e-time-id.md`.

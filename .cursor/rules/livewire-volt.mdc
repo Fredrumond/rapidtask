@@ -1,0 +1,23 @@
+---
+description: Páginas Volt do RapidTask. Use ao criar ou alterar telas Livewire, rotas web ou o menu.
+globs: resources/views/livewire/**/*.blade.php
+alwaysApply: false
+---
+
+# Livewire Volt
+
+CRUD de domínio é Volt single-file em `resources/views/livewire/pages/{entidade}/{acao}.blade.php`. Copie Cliente (`pages/clientes/`), não uma classe Livewire PHP.
+
+Na página:
+
+1. `new #[Layout('layouts.app')] class extends Component`
+2. `mount()` e ações chamam `$this->authorize(...)`
+3. Validar com `$this->validate()` na própria página
+4. Mutar via `*Service` → Domain; listagem pode seguir Eloquent
+5. Título no `<x-slot name="header">` — não usar `#[Title]`
+6. Form com componentes Breeze; listagem com `WithPagination`, `#[Url]` e `wire:confirm` na exclusão
+7. Redirecionar com `$this->redirect(..., navigate: true)`
+
+Rotas: `Volt::route` no grupo `auth` de `routes/web.php`. Link novo entra no menu desktop e no mobile em `navigation.blade.php`.
+
+Não usar controller de CRUD, jQuery, exclusão via GET nem Form Request nestas telas.

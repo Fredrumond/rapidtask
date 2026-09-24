@@ -6,7 +6,13 @@
 .phpactor.json
 .phpunit.result.cache
 /.codex
-/.cursor/
+/.cursor/*
+!/.cursor/rules/
+!/.cursor/skills/
+!/.cursor/commands/
+!/.cursor/agents/
+!/.cursor/hooks/
+!/.cursor/hooks.json
 /.idea
 /.nova
 /.phpunit.cache

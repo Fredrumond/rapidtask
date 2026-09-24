@@ -1,0 +1,18 @@
+---
+description: Testes Pest do RapidTask. Use ao escrever ou alterar testes de feature, isolamento de tenant ou páginas Volt.
+globs: tests/**/*.php
+alwaysApply: false
+---
+
+# Testes Pest
+
+Feature tests usam `RefreshDatabase` via `tests/Pest.php`. Lookups fixos entram por `seedLookups()`. Isolamento entre contas usa `criarCenarioDoisTimes()` (`contaA`/`contaB`, `timeA`/`timeB`).
+
+Entidade nova precisa provar que a conta B não vê nem altera recurso da conta A. A sessão do teste define `current_time_id` e `current_conta_id` juntos (`CurrentTeam::set` quando a policy exige conta).
+
+Página Volt: `Volt::test('pages.…')` com `actingAs`. Não criar teste de CRUD web batendo num controller que não existe.
+
+```bash
+docker compose exec app php artisan test
+docker compose exec app vendor/bin/pint --test
+```

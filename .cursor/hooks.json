@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/gate-shell.py"
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/pint-after-edit.py"
+      }
+    ]
+  }
+}
